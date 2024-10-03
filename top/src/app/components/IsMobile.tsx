@@ -1,10 +1,8 @@
-// src/IsMobile.tsx
-
 "use client";
 import React, { useEffect, useState, PropsWithChildren } from 'react';
 import NotAllowed from './NotAllowed';
 
-const IsMobile: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+const IsMobile: React.FC<PropsWithChildren<object>> = ({ children }) => {
     const [isMobile, setIsMobile] = useState<boolean>(false);
 
     useEffect(() => {
@@ -27,4 +25,5 @@ const IsMobile: React.FC<PropsWithChildren<{}>> = ({ children }) => {
 
     return <>{children}</>;
 };
+
 export default IsMobile;

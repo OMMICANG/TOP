@@ -1,4 +1,6 @@
 // src/IsMobile.tsx
+
+"use client";
 import React, { useEffect, useState, PropsWithChildren } from 'react';
 import NotAllowed from './NotAllowed';
 

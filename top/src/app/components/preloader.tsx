@@ -1,8 +1,10 @@
 // src/Preloader.js
 // Special Thanks to Mr. Alien on codepen for the preloader, Slight Mods by My Darling ChatGPT.
 
+"use client";
+
 import React from 'react';
-import '../styles/LandingPage.css' // Make sure to create this CSS file for styling
+import '../styles/Preloader.css' // Make sure to create this CSS file for styling
 
 const Preloader = () => {
     return (

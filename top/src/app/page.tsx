@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import Preloader from './components/preloader'; // Assuming Preloader is in the components folder
 import LandingPage from './components/landingPage'; // Assuming LandingPage is in the components folder

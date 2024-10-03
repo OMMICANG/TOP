@@ -1,4 +1,6 @@
 // src/NotAllowed.tsx
+
+"use client";
 import React from 'react';
 
 const NotAllowed: React.FC = () => {

@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect } from 'react';
 import { useRouter } from 'next/router'; // Use Next.js's useRouter for navigation
 import '../styles/LandingPage.css'; // Ensure you have this file for custom styles

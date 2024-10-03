@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Preloader from './components/preloader'; // Assuming Preloader is in the components folder
-import LandingPage from './components/landingPage'; // Assuming LandingPage is in the components folder
-import IsMobile from './components/IsMobile'; // Assuming IsMobile is in the components folder
+import Preloader from './preloader/page';
+import LandingPage from './landingPage/page';
+import IsMobile from './components/IsMobile';
 
-// Define the type for the window object with Telegram
 interface TelegramWindow extends Window {
   Telegram: {
     WebApp: {
@@ -15,29 +14,36 @@ interface TelegramWindow extends Window {
   };
 }
 
-// Create a type assertion for window
 declare const window: TelegramWindow;
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('useEffect triggered');
+    
     const handleTelegramInit = () => {
-      const webapp = window.Telegram.WebApp;
+      console.log('Telegram WebApp initialization started');
 
-      webapp.ready(); // Initialize the Telegram Web App
-      webapp.expand(); // Expand the Web App to full height
+      if (window.Telegram && window.Telegram.WebApp) {
+        const webapp = window.Telegram.WebApp;
+        webapp.ready(); 
+        webapp.expand(); 
 
-      // Simulate a loading delay for demonstration purposes
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000); // Adjust the delay as needed
+        // Simulate a loading delay
+        setTimeout(() => {
+          console.log('Preloader finished, showing LandingPage');
+          setLoading(false);
+        }, 2000);
+      } else {
+        console.log('Telegram WebApp not found');
+      }
     };
 
-    // Ensure the Telegram Web App SDK is loaded before trying to initialize
     if (window.Telegram) {
       handleTelegramInit();
     } else {
+      console.log('Listening for TelegramWebAppReady event');
       document.addEventListener('TelegramWebAppReady', handleTelegramInit);
     }
 

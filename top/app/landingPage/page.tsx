@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/router'; // Use Next.js's useRouter for navigation
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Use Next.js's useRouter for navigation
 import '../styles/LandingPage.css'; // Ensure you have this file for custom styles
 
 const LandingPage: React.FC = () => {

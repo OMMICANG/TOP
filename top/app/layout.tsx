@@ -1,35 +1,16 @@
-import type { Metadata } from "next";
-// import localFont from "next/font/local";
-// import "top/src/app/globals.css";
-
-// const geistSans = localFont({
-//   src: "./fonts/GeistVF.woff",
-//   variable: "--font-geist-sans",
-//   weight: "100 900",
-// });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
-
-export const metadata: Metadata = {
-  title: "THE OMMICANG PROJECT",
-  description: "BY OMMICAMG | FOR HUMANITY",
-};
+export const metadata = {
+  title: 'THE OMMICANG PROJECT',
+  description: 'BY OMMICANG | FOR HUMANITY',
+}
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body
-        // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
-  );
+  )
 }

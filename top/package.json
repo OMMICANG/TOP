@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "description": "An App Built For Humanity",
   "private": true,
-  "homepage": "https://ommicang.onrender.com",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

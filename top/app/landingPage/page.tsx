@@ -9,7 +9,7 @@ const LandingPage: React.FC = () => {
     const router = useRouter(); // Use router instead of navigate
 
     const handleClick = () => {
-        router.push('/top/app/kyc/page'); // Next.js way to navigate to another page
+        router.push('/kyc'); // Next.js way to navigate to another page
     };
 
     useEffect(() => {

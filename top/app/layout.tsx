@@ -5,15 +5,22 @@ export const metadata = {
   description: 'BY OMMICANG | FOR HUMANITY',
 }
 
+import Script from 'next/script';
+
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
-      <head>
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
-        {/* You can also add any other meta tags or styles here */}
-      </head>
       <body>
         {children}
+        <Script
+          src="https://telegram.org/js/telegram-web-app.js"
+          // strategy="lazyOnload" // Ensures the script is loaded lazily, after the page content is loaded
+          // onLoad={() => {
+          //   // Any initialization logic for Telegram SDK
+          //   window.Telegram?.WebApp?.ready();
+          //   window.Telegram?.WebApp?.expand();
+          // }}
+        />
       </body>
     </html>
   );

@@ -57,14 +57,15 @@ const Home: React.FC = () => {
 
         // Simulate a loading delay
         setTimeout(() => {
-          console.log('Preloader finished, showing LandingPage');
+          // console.log('Preloader finished, showing LandingPage');
           setLoading(false);
         }, 2000);
       // } else {
       //   console.log('Telegram WebApp not found');
       // }
     };
-
+    
+// Ensure the Telegram Web App SDK is loaded before trying to initialize
     if (window.Telegram) {
       handleTelegramInit();
     } else {

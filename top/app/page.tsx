@@ -18,7 +18,7 @@ interface TelegramWindow extends Window {
 // Create a type assertion for window
 declare const window: TelegramWindow;
 
-const Home: React.FC = () => {
+const Home = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

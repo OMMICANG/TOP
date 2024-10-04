@@ -33,6 +33,14 @@ const Home = () => {
       setTimeout(() => {
         setLoading(false);
       }, 2000); // Adjust the delay as needed
+
+      return (
+        <IsMobile>
+          <div>
+            {loading ? <Preloader /> : <LandingPage />}
+          </div>
+        </IsMobile>
+      );
     };
 
     // Ensure the Telegram Web App SDK is loaded before trying to initialize
@@ -48,13 +56,7 @@ const Home = () => {
   }, []);
 
 
-  return (
-    <IsMobile>
-      <div>
-        {loading ? <Preloader /> : <LandingPage />}
-      </div>
-    </IsMobile>
-  );
+  
 };
 
 export default Home;

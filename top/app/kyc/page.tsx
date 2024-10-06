@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { supabase } from "../lib/supabaseClient"; // Assuming Supabase is initialized
+import IsMobile from '../components/IsMobile';
+import '../styles/Kyc.css'; // Ensure you have custom styles for this page
 
 const KYCForm: React.FC = () => {
   const [name, setName] = useState("");
@@ -60,6 +62,7 @@ const KYCForm: React.FC = () => {
   };
 
   return (
+    <IsMobile>
     <div>
       <h1>KYC Verification</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -86,6 +89,7 @@ const KYCForm: React.FC = () => {
         <button type="submit">Submit</button>
       </form>
     </div>
+    </IsMobile>
   );
 };
 

@@ -64,7 +64,7 @@ const KYCPhase1: React.FC = () => {
     setIdentityCard(null);
 
     // Navigate to Phase 2 (Face Capture)
-    router.push("/kyc/face-capture");
+    router.push("/kyc/faceCapture");
   };
 
   return (

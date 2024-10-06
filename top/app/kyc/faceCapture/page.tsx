@@ -41,7 +41,7 @@ const FaceCapture: React.FC = () => {
 
       // Update user data in Supabase with the face image URL
       const faceImageURL = data?.path || "";
-      const { error: dbError } = await supabase.from("kyc_users").update({
+      const { error: dbError } = await supabase.from("kyc_users").insert({ //amended function from update to insert
         face_image_url: faceImageURL,
       });
 

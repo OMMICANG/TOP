@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react';
 import Webcam from "react-webcam";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from 'next/navigation';
-import '../styles/FaceCapture.css'; // Add this for custom styling
+import '../../styles/FaceCapture.css'; // Add this for custom styling
 
 const FaceCapture: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);

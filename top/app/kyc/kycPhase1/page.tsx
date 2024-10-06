@@ -5,7 +5,7 @@ import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import IsMobile from "../../components/IsMobile";
-import "../styles/Kyc.css";
+import "../../styles/Kyc.css";
 
 const KYCPhase1: React.FC = () => {
   const [name, setName] = useState("");

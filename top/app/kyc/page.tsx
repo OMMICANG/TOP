@@ -32,7 +32,7 @@ const KYCForm: React.FC = () => {
     let identityCardURL = "";
     if (identityCard) {
       const { data, error: uploadError } = await supabase.storage
-        .from("kyc-identity-cards")
+        .from("kyc_identity_cards")
         .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
 
       if (uploadError) {

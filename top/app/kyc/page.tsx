@@ -28,72 +28,186 @@ const KYCForm: React.FC = () => {
       return;
     }
 
-    // Upload file to Supabase storage (optional, depends on how you want to handle identity card image)
+    // Upload file to Supabase storage
     let identityCardURL = "";
-    if (identityCard) {
-      const { data, error: uploadError } = await supabase.storage
-        .from("kyc_identity_cards")
-        .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
+    try {
+      if (identityCard) {
+        const { data, error: uploadError } = await supabase.storage
+          .from("kyc_identity_cards") // Ensure the bucket name matches your setup
+          .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
 
-      if (uploadError) {
-        setError("Failed to upload identity card. Try again.");
-        return;
+        if (uploadError) {
+          throw new Error(uploadError.message || "Upload failed");
+        }
+
+        identityCardURL = data?.path || "";
       }
-
-      identityCardURL = data?.path || "";
-    }
-
-    // Insert data into Supabase
-    const { error: dbError } = await supabase.from("kyc_users").insert([
-      {
-        name,
-        identity_card_url: identityCardURL,
-      },
-    ]);
-
-    if (dbError) {
-      setError("Failed to submit. Try again.");
+    } catch (uploadError) {
+      console.error("Upload error: ", uploadError);
+      setError("Failed to upload identity card. Please try again.");
       return;
     }
 
-    setSuccess(true);
-    setName("");
-    setIdentityCard(null);
+    // Insert data into Supabase
+    try {
+      const { error: dbError } = await supabase.from("kyc_users").insert([
+        {
+          name,
+          identity_card_url: identityCardURL,
+        },
+      ]);
+
+      if (dbError) {
+        throw new Error(dbError.message || "Failed to submit data");
+      }
+
+      // Success handling
+      setSuccess(true);
+      setName("");
+      setIdentityCard(null);
+
+    } catch (dbError) {
+      console.error("Database error: ", dbError);
+      setError("Failed to submit. Please try again.");
+    }
   };
 
   return (
     <IsMobile>
-    <div>
-      <h1>KYC Verification</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>KYC submitted successfully!</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Upload Identity Card</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            required
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+      <div>
+        <h1>KYC Verification</h1>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        {success && <p style={{ color: "green" }}>KYC submitted successfully!</p>}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label>Upload Identity Card</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              required
+            />
+          </div>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
     </IsMobile>
   );
 };
 
 export default KYCForm;
+
+
+
+
+
+//********************************************************************** */
+
+// "use client";
+
+// import { useState } from "react";
+// import { supabase } from "../lib/supabaseClient"; // Assuming Supabase is initialized
+// import IsMobile from '../components/IsMobile';
+// import '../styles/Kyc.css'; // Ensure you have custom styles for this page
+
+// const KYCForm: React.FC = () => {
+//   const [name, setName] = useState("");
+//   const [identityCard, setIdentityCard] = useState<File | null>(null);
+//   const [error, setError] = useState("");
+//   const [success, setSuccess] = useState(false);
+
+//   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = event.target.files?.[0];
+//     if (file) {
+//       setIdentityCard(file);
+//     }
+//   };
+
+//   const handleSubmit = async (event: React.FormEvent) => {
+//     event.preventDefault();
+//     setError("");
+//     setSuccess(false);
+
+//     if (!name || !identityCard) {
+//       setError("Please fill in all the fields.");
+//       return;
+//     }
+
+//     // Upload file to Supabase storage (optional, depends on how you want to handle identity card image)
+//     let identityCardURL = "";
+//     if (identityCard) {
+//       const { data, error: uploadError } = await supabase.storage
+//         .from("kyc_identity_cards")
+//         .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
+
+//       if (uploadError) {
+//         setError("Failed to upload identity card. Try again.");
+//         return;
+//       }
+
+//       identityCardURL = data?.path || "";
+//     }
+
+//     // Insert data into Supabase
+//     const { error: dbError } = await supabase.from("kyc_users").insert([
+//       {
+//         name,
+//         identity_card_url: identityCardURL,
+//       },
+//     ]);
+
+//     if (dbError) {
+//       setError("Failed to submit. Try again.");
+//       return;
+//     }
+
+//     setSuccess(true);
+//     setName("");
+//     setIdentityCard(null);
+//   };
+
+//   return (
+//     <IsMobile>
+//     <div>
+//       <h1>KYC Verification</h1>
+//       {error && <p style={{ color: "red" }}>{error}</p>}
+//       {success && <p style={{ color: "green" }}>KYC submitted successfully!</p>}
+//       <form onSubmit={handleSubmit}>
+//         <div>
+//           <label>Name</label>
+//           <input
+//             type="text"
+//             value={name}
+//             onChange={(e) => setName(e.target.value)}
+//             required
+//           />
+//         </div>
+//         <div>
+//           <label>Upload Identity Card</label>
+//           <input
+//             type="file"
+//             accept="image/*"
+//             onChange={handleFileChange}
+//             required
+//           />
+//         </div>
+//         <button type="submit">Submit</button>
+//       </form>
+//     </div>
+//     </IsMobile>
+//   );
+// };
+
+// export default KYCForm;
 
 
 

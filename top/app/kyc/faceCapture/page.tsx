@@ -1,11 +1,10 @@
-// "use client";
 "use client";
 
 import React, { useRef, useState } from 'react';
 import Webcam from "react-webcam";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from 'next/navigation';
-import '../../styles/FaceCapture.css'; // Add this for custom styling
+import '../styles/FaceCapture.css'; // Add this for custom styling
 
 const FaceCapture: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
@@ -63,13 +62,14 @@ const FaceCapture: React.FC = () => {
       {error && <p style={{ color: "red" }}>{error}</p>}
       
       <div className="webcam-wrapper">
-        <Webcam
-          audio={false}
-          ref={webcamRef}
-          screenshotFormat="image/png"
-          className="webcam-feed"
-        />
-        <div className="circle-overlay"></div> {/* Circle overlay for guidance */}
+        <div className="circle-wrapper">
+          <Webcam
+            audio={false}
+            ref={webcamRef}
+            screenshotFormat="image/png"
+            className="webcam-feed"
+          />
+        </div>
       </div>
       
       <button onClick={capture} disabled={capturing}>
@@ -80,6 +80,7 @@ const FaceCapture: React.FC = () => {
 };
 
 export default FaceCapture;
+
 
 
 // ************************************************************************

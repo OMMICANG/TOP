@@ -4,15 +4,7 @@ import React, { useRef, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 
-interface Phase3Props {
-  kycData: {
-    name: string;
-    identityCard: File | null;
-    faceImage: string;
-  };
-}
-
-const VideoSubmission: React.FC<Phase3Props> = ({ kycData }) => {
+const VideoSubmission: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const [recording, setRecording] = useState(false);
@@ -20,6 +12,13 @@ const VideoSubmission: React.FC<Phase3Props> = ({ kycData }) => {
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  // For holding the entire KYC data locally (Phase 1 and Phase 2 inputs)
+  const [kycData] = useState({
+    name: "",  // Placeholder for name
+    identityCard: null as File | null, // Placeholder for identity card (File)
+    faceImage: "", // Placeholder for base64 string of face image
+  });
 
   const startRecording = async () => {
     setError(null);
@@ -30,7 +29,7 @@ const VideoSubmission: React.FC<Phase3Props> = ({ kycData }) => {
     const mediaRecorder = new MediaRecorder(stream);
     mediaRecorderRef.current = mediaRecorder;
 
-    const chunks: BlobPart[] = []; // Use 'const' for 'chunks' since it is not reassigned.
+    const chunks: BlobPart[] = [];
     mediaRecorder.ondataavailable = (event) => {
       chunks.push(event.data);
     };
@@ -109,7 +108,7 @@ const VideoSubmission: React.FC<Phase3Props> = ({ kycData }) => {
 
       // Navigate to the success page or show a success message
       router.push("/kyc/success");
-    } catch (err: unknown) { // Update 'err' to be of type 'unknown'
+    } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {

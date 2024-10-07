@@ -30,7 +30,7 @@ const FaceCapture: React.FC = () => {
       setCapturing(false);
 
       // Navigate to Phase 3 (Video Submission)
-      router.push('/kyc/video');
+      router.push('/kyc/kycPhase3');
     }
   };
 

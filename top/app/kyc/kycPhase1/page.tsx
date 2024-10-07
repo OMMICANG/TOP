@@ -30,6 +30,9 @@ const KYCPhase1: React.FC = () => {
       return;
     }
 
+    // Generate a unique UUID for the KYC process
+    const kycUUID = crypto.randomUUID();
+
     // Upload file to Supabase storage
     let identityCardURL = "";
     if (identityCard) {
@@ -45,9 +48,10 @@ const KYCPhase1: React.FC = () => {
       identityCardURL = data?.path || "";
     }
 
-    // Insert data into Supabase
+    // Insert data into Supabase with the generated UUID
     const { error: dbError } = await supabase.from("kyc_users").insert([
       {
+        uuid: kycUUID,  // Storing the UUID
         name,
         identity_card_url: identityCardURL,
       },
@@ -57,6 +61,9 @@ const KYCPhase1: React.FC = () => {
       setError("Failed to submit. Try again.");
       return;
     }
+
+    // Store the UUID in localStorage for subsequent phases
+    localStorage.setItem("kycUUID", kycUUID);
 
     setSuccess(true);
     setName("");
@@ -99,6 +106,112 @@ const KYCPhase1: React.FC = () => {
 };
 
 export default KYCPhase1;
+
+
+
+
+// **************************************************************************************************
+// "use client";
+
+// import { useState } from "react";
+// import { supabase } from "../../lib/supabaseClient";
+// import { useRouter } from "next/navigation"; // For navigation to the next phase
+// import IsMobile from "../../components/IsMobile";
+// import "../../styles/Kyc.css";
+
+// const KYCPhase1: React.FC = () => {
+//   const [name, setName] = useState("");
+//   const [identityCard, setIdentityCard] = useState<File | null>(null);
+//   const [error, setError] = useState("");
+//   const [success, setSuccess] = useState(false);
+//   const router = useRouter(); // Use Next.js router for navigation
+
+//   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = event.target.files?.[0];
+//     if (file) {
+//       setIdentityCard(file);
+//     }
+//   };
+
+//   const handleSubmit = async (event: React.FormEvent) => {
+//     event.preventDefault();
+//     setError("");
+//     setSuccess(false);
+
+//     if (!name || !identityCard) {
+//       setError("Please fill in all the fields.");
+//       return;
+//     }
+
+//     // Upload file to Supabase storage
+//     let identityCardURL = "";
+//     if (identityCard) {
+//       const { data, error: uploadError } = await supabase.storage
+//         .from("kyc_identity_cards")
+//         .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
+
+//       if (uploadError) {
+//         setError("Failed to upload identity card. Try again.");
+//         return;
+//       }
+
+//       identityCardURL = data?.path || "";
+//     }
+
+//     // Insert data into Supabase
+//     const { error: dbError } = await supabase.from("kyc_users").insert([
+//       {
+//         name,
+//         identity_card_url: identityCardURL,
+//       },
+//     ]);
+
+//     if (dbError) {
+//       setError("Failed to submit. Try again.");
+//       return;
+//     }
+
+//     setSuccess(true);
+//     setName("");
+//     setIdentityCard(null);
+
+//     // Navigate to Phase 2 (Face Capture)
+//     router.push("/kyc/faceCapture");
+//   };
+
+//   return (
+//     <IsMobile>
+//       <div>
+//         <h1>KYC Verification - Phase 1</h1>
+//         {error && <p style={{ color: "red" }}>{error}</p>}
+//         {success && <p style={{ color: "green" }}>Identity details submitted successfully! Proceeding to Face Capture...</p>}
+//         <form onSubmit={handleSubmit}>
+//           <div>
+//             <label>Name</label>
+//             <input
+//               type="text"
+//               value={name}
+//               onChange={(e) => setName(e.target.value)}
+//               required
+//             />
+//           </div>
+//           <div>
+//             <label>Upload Identity Card</label>
+//             <input
+//               type="file"
+//               accept="image/*"
+//               onChange={handleFileChange}
+//               required
+//             />
+//           </div>
+//           <button type="submit">Submit & Continue</button>
+//         </form>
+//       </div>
+//     </IsMobile>
+//   );
+// };
+
+// export default KYCPhase1;
 
 
 

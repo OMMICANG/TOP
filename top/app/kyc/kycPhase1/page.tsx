@@ -5,29 +5,73 @@ import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import IsMobile from "../../components/IsMobile";
 import "../../styles/Kyc.css";
+import Compressor from "compressorjs"; // Import compressorjs
 
 const KYCPhase1: React.FC = () => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState(""); // New state for email
+  const [email, setEmail] = useState("");
   const [identityCard, setIdentityCard] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [uploading, setUploading] = useState(false); // To track upload status
   const router = useRouter(); // Use Next.js router for navigation
 
+  // Email Regex for stricter validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Handle file change with validation for file type and size
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setIdentityCard(file);
+      // Validate file type (image)
+      const allowedTypes = ["image/jpeg", "image/png"];
+      if (!allowedTypes.includes(file.type)) {
+        setError("Invalid file type. Only JPEG and PNG are allowed.");
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      const maxSizeInMB = 5;
+      if (file.size > maxSizeInMB * 1024 * 1024) {
+        setError(`File is too large. Maximum size is ${maxSizeInMB}MB.`);
+        return;
+      }
+
+      // Compress the file before setting it
+      new Compressor(file, {
+        quality: 0.6, // Adjust the quality of compression
+        success: (compressedFile) => {
+          setIdentityCard(compressedFile as File);
+        },
+        error(err) {
+          console.error("Compression failed:", err.message);
+          setError("Failed to compress the image.");
+        },
+      });
     }
   };
 
+  // Handle form submission with validation and sanitization
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
     setSuccess(false);
+    setUploading(true);
 
-    if (!name || !email || !identityCard) {
+    // Simple input sanitization by trimming white spaces
+    const sanitizedEmail = email.trim();
+    const sanitizedName = name.trim();
+
+    // Validate inputs
+    if (!sanitizedName || !sanitizedEmail || !identityCard) {
       setError("Please fill in all the fields.");
+      setUploading(false);
+      return;
+    }
+
+    if (!emailRegex.test(sanitizedEmail)) {
+      setError("Invalid email format.");
+      setUploading(false);
       return;
     }
 
@@ -43,6 +87,7 @@ const KYCPhase1: React.FC = () => {
 
       if (uploadError) {
         setError("Failed to upload identity card. Try again.");
+        setUploading(false);
         return;
       }
 
@@ -53,30 +98,29 @@ const KYCPhase1: React.FC = () => {
     const { error: dbError } = await supabase.from("kyc_users").insert([
       {
         uuid: kycUUID,  // Storing the UUID
-        name,
-        email,  // Storing email in the database
+        name: sanitizedName,
+        email: sanitizedEmail, // Email is now sanitized
         identity_card_url: identityCardURL,
       },
     ]);
 
     if (dbError) {
       setError("Failed to submit. Try again.");
+      setUploading(false);
       return;
     }
 
     // Store the UUID in localStorage for subsequent phases
     localStorage.setItem("kycUUID", kycUUID);
-
     console.log('Stored UUID:', kycUUID); // Log the UUID
-
 
     setSuccess(true);
     setName("");
-    setEmail(""); // Clear email after success
+    setEmail(""); // Reset email field
     setIdentityCard(null);
+    setUploading(false);
 
     console.log('Stored UUID:', kycUUID); // Log the UUID
-
 
     // Navigate to Phase 2 (Face Capture)
     router.push("/kyc/faceCapture");
@@ -99,7 +143,7 @@ const KYCPhase1: React.FC = () => {
             />
           </div>
           <div>
-            <label>Email</label> {/* New email field */}
+            <label>Email</label> {/* Email field */}
             <input
               type="email"
               value={email}
@@ -116,7 +160,9 @@ const KYCPhase1: React.FC = () => {
               required
             />
           </div>
-          <button type="submit">Submit & Continue</button>
+          <button type="submit" disabled={uploading}>
+            {uploading ? "Uploading..." : "Submit & Continue"}
+          </button>
         </form>
       </div>
     </IsMobile>
@@ -124,6 +170,282 @@ const KYCPhase1: React.FC = () => {
 };
 
 export default KYCPhase1;
+
+
+
+// *************************************************************************************
+// "use client";
+
+// import { useState } from "react";
+// import { supabase } from "../../lib/supabaseClient";
+// import { useRouter } from "next/navigation"; // For navigation to the next phase
+// import IsMobile from "../../components/IsMobile";
+// import "../../styles/Kyc.css";
+// import Compressor from "compressorjs"; // Import compressorjs
+
+// const KYCPhase1: React.FC = () => {
+//   const [name, setName] = useState("");
+//   const [email, setEmail] = useState(""); // Added email field
+//   const [identityCard, setIdentityCard] = useState<File | null>(null);
+//   const [error, setError] = useState("");
+//   const [success, setSuccess] = useState(false);
+//   const [uploading, setUploading] = useState(false); // To track upload status
+//   const router = useRouter(); // Use Next.js router for navigation
+
+//   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = event.target.files?.[0];
+//     if (file) {
+//       // Compress the file before setting it
+//       new Compressor(file, {
+//         quality: 0.6, // Adjust the quality of compression
+//         success: (compressedFile) => {
+//           setIdentityCard(compressedFile as File);
+//         },
+//         error(err) {
+//           console.error("Compression failed:", err.message);
+//           setError("Failed to compress the image.");
+//         },
+//       });
+//     }
+//   };
+
+//   const handleSubmit = async (event: React.FormEvent) => {
+//     event.preventDefault();
+//     setError("");
+//     setSuccess(false);
+//     setUploading(true);
+
+//     if (!name || !email || !identityCard) {
+//       setError("Please fill in all the fields.");
+//       setUploading(false);
+//       return;
+//     }
+
+//     // Generate a unique UUID for the KYC process
+//     const kycUUID = crypto.randomUUID();
+
+//     // Upload file to Supabase storage
+//     let identityCardURL = "";
+//     if (identityCard) {
+//       const { data, error: uploadError } = await supabase.storage
+//         .from("kyc_identity_cards")
+//         .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
+
+//       if (uploadError) {
+//         setError("Failed to upload identity card. Try again.");
+//         setUploading(false);
+//         return;
+//       }
+
+//       identityCardURL = data?.path || "";
+//     }
+
+//     // Insert data into Supabase with the generated UUID
+//     const { error: dbError } = await supabase.from("kyc_users").insert([
+//       {
+//         uuid: kycUUID,  // Storing the UUID
+//         name,
+//         email, // Adding email to the table
+//         identity_card_url: identityCardURL,
+//       },
+//     ]);
+
+//     if (dbError) {
+//       setError("Failed to submit. Try again.");
+//       setUploading(false);
+//       return;
+//     }
+
+//     // Store the UUID in localStorage for subsequent phases
+//     localStorage.setItem("kycUUID", kycUUID);
+//     console.log('Stored UUID:', kycUUID); // Log the UUID
+
+//     setSuccess(true);
+//     setName("");
+//     setEmail(""); // Reset email field
+//     setIdentityCard(null);
+//     setUploading(false);
+
+//     console.log('Stored UUID:', kycUUID); // Log the UUID
+
+//     // Navigate to Phase 2 (Face Capture)
+//     router.push("/kyc/faceCapture");
+//   };
+
+//   return (
+//     <IsMobile>
+//       <div>
+//         <h1>KYC Verification - Phase 1</h1>
+//         {error && <p style={{ color: "red" }}>{error}</p>}
+//         {success && <p style={{ color: "green" }}>Identity details submitted successfully! Proceeding to Face Capture...</p>}
+//         <form onSubmit={handleSubmit}>
+//           <div>
+//             <label>Name</label>
+//             <input
+//               type="text"
+//               value={name}
+//               onChange={(e) => setName(e.target.value)}
+//               required
+//             />
+//           </div>
+//           <div>
+//             <label>Email</label> {/* Email field */}
+//             <input
+//               type="email"
+//               value={email}
+//               onChange={(e) => setEmail(e.target.value)}
+//               required
+//             />
+//           </div>
+//           <div>
+//             <label>Upload Identity Card</label>
+//             <input
+//               type="file"
+//               accept="image/*"
+//               onChange={handleFileChange}
+//               required
+//             />
+//           </div>
+//           <button type="submit" disabled={uploading}>
+//             {uploading ? "Uploading..." : "Submit & Continue"}
+//           </button>
+//         </form>
+//       </div>
+//     </IsMobile>
+//   );
+// };
+
+// export default KYCPhase1;
+
+
+
+// ***************************************************************************************************************
+// "use client";
+
+// import { useState } from "react";
+// import { supabase } from "../../lib/supabaseClient";
+// import { useRouter } from "next/navigation"; // For navigation to the next phase
+// import IsMobile from "../../components/IsMobile";
+// import "../../styles/Kyc.css";
+
+// const KYCPhase1: React.FC = () => {
+//   const [name, setName] = useState("");
+//   const [email, setEmail] = useState(""); // New state for email
+//   const [identityCard, setIdentityCard] = useState<File | null>(null);
+//   const [error, setError] = useState("");
+//   const [success, setSuccess] = useState(false);
+//   const router = useRouter(); // Use Next.js router for navigation
+
+//   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = event.target.files?.[0];
+//     if (file) {
+//       setIdentityCard(file);
+//     }
+//   };
+
+//   const handleSubmit = async (event: React.FormEvent) => {
+//     event.preventDefault();
+//     setError("");
+//     setSuccess(false);
+
+//     if (!name || !email || !identityCard) {
+//       setError("Please fill in all the fields.");
+//       return;
+//     }
+
+//     // Generate a unique UUID for the KYC process
+//     const kycUUID = crypto.randomUUID();
+
+//     // Upload file to Supabase storage
+//     let identityCardURL = "";
+//     if (identityCard) {
+//       const { data, error: uploadError } = await supabase.storage
+//         .from("kyc_identity_cards")
+//         .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
+
+//       if (uploadError) {
+//         setError("Failed to upload identity card. Try again.");
+//         return;
+//       }
+
+//       identityCardURL = data?.path || "";
+//     }
+
+//     // Insert data into Supabase with the generated UUID
+//     const { error: dbError } = await supabase.from("kyc_users").insert([
+//       {
+//         uuid: kycUUID,  // Storing the UUID
+//         name,
+//         email,  // Storing email in the database
+//         identity_card_url: identityCardURL,
+//       },
+//     ]);
+
+//     if (dbError) {
+//       setError("Failed to submit. Try again.");
+//       return;
+//     }
+
+//     // Store the UUID in localStorage for subsequent phases
+//     localStorage.setItem("kycUUID", kycUUID);
+
+//     console.log('Stored UUID:', kycUUID); // Log the UUID
+
+
+//     setSuccess(true);
+//     setName("");
+//     setEmail(""); // Clear email after success
+//     setIdentityCard(null);
+
+//     console.log('Stored UUID:', kycUUID); // Log the UUID
+
+
+//     // Navigate to Phase 2 (Face Capture)
+//     router.push("/kyc/faceCapture");
+//   };
+
+//   return (
+//     <IsMobile>
+//       <div>
+//         <h1>KYC Verification - Phase 1</h1>
+//         {error && <p style={{ color: "red" }}>{error}</p>}
+//         {success && <p style={{ color: "green" }}>Identity details submitted successfully! Proceeding to Face Capture...</p>}
+//         <form onSubmit={handleSubmit}>
+//           <div>
+//             <label>Name</label>
+//             <input
+//               type="text"
+//               value={name}
+//               onChange={(e) => setName(e.target.value)}
+//               required
+//             />
+//           </div>
+//           <div>
+//             <label>Email</label> {/* New email field */}
+//             <input
+//               type="email"
+//               value={email}
+//               onChange={(e) => setEmail(e.target.value)}
+//               required
+//             />
+//           </div>
+//           <div>
+//             <label>Upload Identity Card</label>
+//             <input
+//               type="file"
+//               accept="image/*"
+//               onChange={handleFileChange}
+//               required
+//             />
+//           </div>
+//           <button type="submit">Submit & Continue</button>
+//         </form>
+//       </div>
+//     </IsMobile>
+//   );
+// };
+
+// export default KYCPhase1;
 
 
 

@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
-import "../../styles/FaceCapture.css"; // Add this for custom styling
+import "../../styles/FaceCapture.css"; // Custom styling
 
 const FaceCapture: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
@@ -50,7 +50,7 @@ const FaceCapture: React.FC = () => {
 
       // Get the public URL of the uploaded face image
       const publicURL = supabase.storage
-        .from("kyc_face_images")
+        .from("kyc_face_images_storage")
         .getPublicUrl(data.path).data.publicUrl;
 
       if (!publicURL) {
@@ -59,20 +59,22 @@ const FaceCapture: React.FC = () => {
         return;
       }
 
-      // Update user data in Supabase with the face image URL using the UUID
+      // Insert the face image URL and UUID into the new `kyc_face_images` table
       const { error: dbError } = await supabase
-        .from("kyc_users")
-        .update({ face_image_url: publicURL })
-        .eq("uuid", kycUUID); // Ensure we update the correct user row
+        .from("kyc_face_images")
+        .insert({
+          uuid: kycUUID, // Linking the face image to the user's UUID
+          face_image_url: publicURL,
+        });
 
       if (dbError) {
-        setError("Failed to update face image. Please try again.");
+        setError("Failed to save face image. Please try again.");
         setCapturing(false);
         return;
       }
 
       // Navigate to the next phase (video submission)
-      router.push("/kyc/video");
+      router.push("/kyc/kycPhase3");
     }
   };
 
@@ -100,6 +102,223 @@ const FaceCapture: React.FC = () => {
 };
 
 export default FaceCapture;
+
+
+
+// ***************************************************************************************************************
+// "use client";
+
+// import React, { useRef, useState } from "react";
+// import Webcam from "react-webcam";
+// import { supabase } from "../../lib/supabaseClient";
+// // import { useRouter } from "next/navigation";
+// import "../../styles/FaceCapture.css"; // Add this for custom styling
+
+// const FaceCapture: React.FC = () => {
+//   const webcamRef = useRef<Webcam>(null);
+//   const [error, setError] = useState<string | null>(null);
+//   const [capturing, setCapturing] = useState(false);
+//   // const router = useRouter();
+
+//   const capture = async () => {
+//     setError(null);
+
+//     // Retrieve the UUID from localStorage
+//     const kycUUID = localStorage.getItem("kycUUID");
+//     console.log('Stored UUID:', kycUUID); // Log the UUID
+
+
+//     if (!kycUUID) {
+//       setError("Session expired or invalid. Please restart the KYC process.");
+//       return;
+//     }
+
+//     if (webcamRef.current) {
+//       const imageSrc = webcamRef.current.getScreenshot();
+
+//       if (!imageSrc) {
+//         setError("Failed to capture image. Please try again.");
+//         return;
+//       }
+
+//       setCapturing(true);
+
+//       // Convert the image from base64 to a file (Blob)
+//       const base64Response = await fetch(imageSrc);
+//       const blob = await base64Response.blob();
+
+//       // Upload the image to Supabase storage
+//       const { data, error: uploadError } = await supabase.storage
+//         .from("kyc_face_images")
+//         .upload(`faces/${Date.now()}_face.png`, blob);
+
+//       if (uploadError || !data) {
+//         setError("Failed to upload face image. Please try again.");
+//         setCapturing(false);
+//         return;
+//       }
+
+//       // Get the public URL of the uploaded face image
+//       const { publicUrl } = supabase.storage
+//         .from("kyc_face_images")
+//         .getPublicUrl(data.path).data;
+
+//       if (!publicUrl) {
+//         setError("Failed to retrieve public URL of the face image.");
+//         setCapturing(false);
+//         return;
+//       }
+
+//       console.log('Stored UUID:', kycUUID); // Log the UUID
+
+
+
+//       // Update user data in Supabase with the face image URL using the UUID
+//       const { error: dbError } = await supabase
+//         .from("kyc_users")
+//         .insert({ uuid: kycUUID, 'face_image_url': publicUrl })
+//         // .eq("uuid", kycUUID); // Ensure we update the correct user row
+
+//       if (dbError) {
+//         setError("Failed to update face image. Please try again.");
+//         setCapturing(false);
+//         return;
+//       }
+
+//       // Navigate to the next phase (video submission)
+//       // router.push("/kyc/video");
+//     }
+//   };
+
+//   return (
+//     <div className="face-capture-container">
+//       <h1>Face Capture</h1>
+//       {error && <p style={{ color: "red" }}>{error}</p>}
+
+//       <div className="webcam-wrapper">
+//         <div className="circle-wrapper">
+//           <Webcam
+//             audio={false}
+//             ref={webcamRef}
+//             screenshotFormat="image/png"
+//             className="webcam-feed"
+//           />
+//         </div>
+//       </div>
+
+//       <button onClick={capture} disabled={capturing}>
+//         {capturing ? "Processing..." : "Capture and Continue"}
+//       </button>
+//     </div>
+//   );
+// };
+
+// export default FaceCapture;
+
+
+
+// "use client";
+
+// import React, { useRef, useState } from "react";
+// import Webcam from "react-webcam";
+// import { supabase } from "../../lib/supabaseClient";
+// import { useRouter } from "next/navigation";
+// import "../../styles/FaceCapture.css"; // Add this for custom styling
+
+// const FaceCapture: React.FC = () => {
+//   const webcamRef = useRef<Webcam>(null);
+//   const [error, setError] = useState<string | null>(null);
+//   const [capturing, setCapturing] = useState(false);
+//   const router = useRouter();
+
+//   const capture = async () => {
+//     setError(null);
+
+//     // Retrieve the UUID from localStorage
+//     const kycUUID = localStorage.getItem("kycUUID");
+
+//     if (!kycUUID) {
+//       setError("Session expired or invalid. Please restart the KYC process.");
+//       return;
+//     }
+
+//     if (webcamRef.current) {
+//       const imageSrc = webcamRef.current.getScreenshot();
+
+//       if (!imageSrc) {
+//         setError("Failed to capture image. Please try again.");
+//         return;
+//       }
+
+//       setCapturing(true);
+
+//       // Convert the image from base64 to a file (Blob)
+//       const base64Response = await fetch(imageSrc);
+//       const blob = await base64Response.blob();
+
+//       // Upload the image to Supabase storage
+//       const { data, error: uploadError } = await supabase.storage
+//         .from("kyc_face_images")
+//         .upload(`faces/${Date.now()}_face.png`, blob);
+
+//       if (uploadError) {
+//         setError("Failed to upload face image. Please try again.");
+//         setCapturing(false);
+//         return;
+//       }
+
+//       // Get the public URL of the uploaded face image
+//       const publicURL = supabase.storage
+//         .from("kyc_face_images")
+//         .getPublicUrl(data.path).data.publicUrl;
+
+//       if (!publicURL) {
+//         setError("Failed to retrieve public URL of the face image.");
+//         setCapturing(false);
+//         return;
+//       }
+
+//       // Update user data in Supabase with the face image URL using the UUID
+//       const { error: dbError } = await supabase
+//         .from("kyc_users")
+//         .update({ face_image_url: publicURL })
+//         .eq("uuid", kycUUID); // Ensure we update the correct user row
+
+//       if (dbError) {
+//         setError("Failed to update face image. Please try again.");
+//         setCapturing(false);
+//         return;
+//       }
+
+//       // Navigate to the next phase (video submission)
+//       router.push("/kyc/video");
+//     }
+//   };
+
+//   return (
+//     <div className="face-capture-container">
+//       <h1>Face Capture</h1>
+//       {error && <p style={{ color: "red" }}>{error}</p>}
+
+//       <div className="webcam-wrapper">
+//         <div className="circle-wrapper">
+//           <Webcam
+//             audio={false}
+//             ref={webcamRef}
+//             screenshotFormat="image/png"
+//             className="webcam-feed"
+//           />
+//         </div>
+//       </div>
+
+//       <button onClick={capture} disabled={capturing}>
+//         {capturing ? "Processing..." : "Capture and Continue"}
+//       </button>
+//     </div>
+//   );
+// };
+
+// export default FaceCapture;
 
 
 

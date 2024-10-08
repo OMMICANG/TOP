@@ -8,6 +8,7 @@ import "../../styles/Kyc.css";
 
 const KYCPhase1: React.FC = () => {
   const [name, setName] = useState("");
+  const [email, setEmail] = useState(""); // New state for email
   const [identityCard, setIdentityCard] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -25,7 +26,7 @@ const KYCPhase1: React.FC = () => {
     setError("");
     setSuccess(false);
 
-    if (!name || !identityCard) {
+    if (!name || !email || !identityCard) {
       setError("Please fill in all the fields.");
       return;
     }
@@ -53,6 +54,7 @@ const KYCPhase1: React.FC = () => {
       {
         uuid: kycUUID,  // Storing the UUID
         name,
+        email,  // Storing email in the database
         identity_card_url: identityCardURL,
       },
     ]);
@@ -65,9 +67,16 @@ const KYCPhase1: React.FC = () => {
     // Store the UUID in localStorage for subsequent phases
     localStorage.setItem("kycUUID", kycUUID);
 
+    console.log('Stored UUID:', kycUUID); // Log the UUID
+
+
     setSuccess(true);
     setName("");
+    setEmail(""); // Clear email after success
     setIdentityCard(null);
+
+    console.log('Stored UUID:', kycUUID); // Log the UUID
+
 
     // Navigate to Phase 2 (Face Capture)
     router.push("/kyc/faceCapture");
@@ -90,6 +99,15 @@ const KYCPhase1: React.FC = () => {
             />
           </div>
           <div>
+            <label>Email</label> {/* New email field */}
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
             <label>Upload Identity Card</label>
             <input
               type="file"
@@ -106,6 +124,119 @@ const KYCPhase1: React.FC = () => {
 };
 
 export default KYCPhase1;
+
+
+
+
+// *******************************************************************************************************************
+// "use client";
+
+// import { useState } from "react";
+// import { supabase } from "../../lib/supabaseClient";
+// import { useRouter } from "next/navigation"; // For navigation to the next phase
+// import IsMobile from "../../components/IsMobile";
+// import "../../styles/Kyc.css";
+
+// const KYCPhase1: React.FC = () => {
+//   const [name, setName] = useState("");
+//   const [identityCard, setIdentityCard] = useState<File | null>(null);
+//   const [error, setError] = useState("");
+//   const [success, setSuccess] = useState(false);
+//   const router = useRouter(); // Use Next.js router for navigation
+
+//   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = event.target.files?.[0];
+//     if (file) {
+//       setIdentityCard(file);
+//     }
+//   };
+
+//   const handleSubmit = async (event: React.FormEvent) => {
+//     event.preventDefault();
+//     setError("");
+//     setSuccess(false);
+
+//     if (!name || !identityCard) {
+//       setError("Please fill in all the fields.");
+//       return;
+//     }
+
+//     // Generate a unique UUID for the KYC process
+//     const kycUUID = crypto.randomUUID();
+
+//     // Upload file to Supabase storage
+//     let identityCardURL = "";
+//     if (identityCard) {
+//       const { data, error: uploadError } = await supabase.storage
+//         .from("kyc_identity_cards")
+//         .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
+
+//       if (uploadError) {
+//         setError("Failed to upload identity card. Try again.");
+//         return;
+//       }
+
+//       identityCardURL = data?.path || "";
+//     }
+
+//     // Insert data into Supabase with the generated UUID
+//     const { error: dbError } = await supabase.from("kyc_users").insert([
+//       {
+//         uuid: kycUUID,  // Storing the UUID
+//         name,
+//         identity_card_url: identityCardURL,
+//       },
+//     ]);
+
+//     if (dbError) {
+//       setError("Failed to submit. Try again.");
+//       return;
+//     }
+
+//     // Store the UUID in localStorage for subsequent phases
+//     localStorage.setItem("kycUUID", kycUUID);
+
+//     setSuccess(true);
+//     setName("");
+//     setIdentityCard(null);
+
+//     // Navigate to Phase 2 (Face Capture)
+//     router.push("/kyc/faceCapture");
+//   };
+
+//   return (
+//     <IsMobile>
+//       <div>
+//         <h1>KYC Verification - Phase 1</h1>
+//         {error && <p style={{ color: "red" }}>{error}</p>}
+//         {success && <p style={{ color: "green" }}>Identity details submitted successfully! Proceeding to Face Capture...</p>}
+//         <form onSubmit={handleSubmit}>
+//           <div>
+//             <label>Name</label>
+//             <input
+//               type="text"
+//               value={name}
+//               onChange={(e) => setName(e.target.value)}
+//               required
+//             />
+//           </div>
+//           <div>
+//             <label>Upload Identity Card</label>
+//             <input
+//               type="file"
+//               accept="image/*"
+//               onChange={handleFileChange}
+//               required
+//             />
+//           </div>
+//           <button type="submit">Submit & Continue</button>
+//         </form>
+//       </div>
+//     </IsMobile>
+//   );
+// };
+
+// export default KYCPhase1;
 
 
 

@@ -83,7 +83,7 @@ const KYCPhase1: React.FC = () => {
 
     try {
       // Step 1: Verify reCAPTCHA on the server
-      const recaptchaResponse = await fetch("/api", {
+      const recaptchaResponse = await fetch("../../api/recaptcha.ts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

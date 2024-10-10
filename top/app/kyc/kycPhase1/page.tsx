@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import IsMobile from "../../components/IsMobile";
-import ReCAPTCHA from "react-google-recaptcha"; //Using reCAPTCHA V2
+// import { loadReCaptcha, ReCaptcha } from "react-google-recaptcha-v3"; // V3 recaptcha
 import "../../styles/Kyc.css";
 import Compressor from "compressorjs"; // Import compressorjs
 
@@ -17,6 +17,44 @@ const KYCPhase1: React.FC = () => {
   const [uploading, setUploading] = useState(false); // To track upload status
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null); // For CAPTCHA Verification
   const router = useRouter(); // Use Next.js router for navigation
+
+ // Load reCAPTCHA V3 and execute it when the component mounts
+ useEffect(() => {
+  const loadRecaptchaScript = () => {
+    const script = document.createElement("script");
+    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+  };
+
+  const executeRecaptcha = () => {
+    if (window.grecaptcha) {
+      window.grecaptcha.ready(() => {
+        new Promise<void>((resolve, reject) => {
+          window.grecaptcha
+            .execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!, { action: "kycPhase1" })
+            .then((token: string) => {
+              setRecaptchaToken(token);
+              resolve(); // Resolving the promise after setting the token
+            }, (error) => {
+              reject(error); // Rejecting the promise if any error occurs
+            });
+        }).catch((error) => {
+          if (error instanceof Error) {
+            console.error("Error generating reCAPTCHA token:", error.message);
+            setError("Error generating reCAPTCHA token. Please try again.");
+          }
+          });
+      });
+    }
+  };
+
+  loadRecaptchaScript();
+  executeRecaptcha();
+}, []);
+
+
 
   // Email Regex for stricter validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,10 +91,6 @@ const KYCPhase1: React.FC = () => {
     }
   };
 
-  const handleRecaptchaChange = (token: string | null) => {
-    setRecaptchaToken(token); //// Store the reCAPTCHA token for submission
-  };
-
   // Handle form submission with validation and sanitization
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -81,24 +115,22 @@ const KYCPhase1: React.FC = () => {
       return;
     }
 
-    try {
-      // Step 1: Verify reCAPTCHA on the server
-      const recaptchaResponse = await fetch("/api/recaptcha", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token: recaptchaToken }),
-      });
-  
-      const recaptchaData = await recaptchaResponse.json();
-  
-      if (!recaptchaData.success) {
-        setError("reCAPTCHA verification failed. Please try again.");
-        setUploading(false);
-        return;
-      }
+  // Verify reCAPTCHA token before proceeding
+  try {
+    const recaptchaRes = await fetch("/api/recaptcha", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ recaptchaToken }),
+    });
+    const recaptchaData = await recaptchaRes.json();
 
+    if (!recaptchaData.success) {
+      setError("Failed to verify reCAPTCHA. Try again.");
+      setUploading(false);
+      return;
+    }
     // Generate a unique UUID for the KYC process
     const kycUUID = crypto.randomUUID();
 
@@ -189,14 +221,10 @@ const KYCPhase1: React.FC = () => {
               required
             />
           </div>
-
-          <ReCAPTCHA
-            sitekey="6LcHz10qAAAAAOJv16USKdta2hEguNpdKrtsbdNU" // Replace with your Site Key
-            onChange={handleRecaptchaChange}
-          />
           <button type="submit" disabled={uploading}>
             {uploading ? "Uploading..." : "Submit & Continue"}
           </button>
+           {/* <ReCaptcha action="kycPhase1" verifyCallback={setRecaptchaToken} /> */}
         </form>
       </div>
     </IsMobile>

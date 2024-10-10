@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import IsMobile from "../../components/IsMobile";
-import ReCAPTCHA from "react-google-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha"; //Using reCAPTCHA V2
 import "../../styles/Kyc.css";
 import Compressor from "compressorjs"; // Import compressorjs
 
@@ -54,7 +54,7 @@ const KYCPhase1: React.FC = () => {
   };
 
   const handleRecaptchaChange = (token: string | null) => {
-    setRecaptchaToken(token);
+    setRecaptchaToken(token); //// Store the reCAPTCHA token for submission
   };
 
   // Handle form submission with validation and sanitization
@@ -80,6 +80,24 @@ const KYCPhase1: React.FC = () => {
       setUploading(false);
       return;
     }
+
+    try {
+      // Step 1: Verify reCAPTCHA on the server
+      const recaptchaResponse = await fetch("/api/recaptcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: recaptchaToken }),
+      });
+  
+      const recaptchaData = await recaptchaResponse.json();
+  
+      if (!recaptchaData.success) {
+        setError("reCAPTCHA verification failed. Please try again.");
+        setUploading(false);
+        return;
+      }
 
     // Generate a unique UUID for the KYC process
     const kycUUID = crypto.randomUUID();
@@ -130,7 +148,12 @@ const KYCPhase1: React.FC = () => {
 
     // Navigate to Phase 2 (Face Capture)
     router.push("/kyc/faceCapture");
-  };
+  } catch (error) {
+    console.error("Error verifying reCAPTCHA:", error);  // Log the error for debugging
+    setError("An error occurred. Please try again.");
+    setUploading(false);
+  }
+};
 
   return (
     <IsMobile>
@@ -168,7 +191,7 @@ const KYCPhase1: React.FC = () => {
           </div>
 
           <ReCAPTCHA
-            sitekey="6LfNTVsqAAAAAFqh7RAKtRKC1KPIYMemtrqBU1aT" // Replace with your Site Key
+            sitekey="6LeFGF0qAAAAAEcMrdnR0K297baV66s0l57yxilo" // Replace with your Site Key
             onChange={handleRecaptchaChange}
           />
           <button type="submit" disabled={uploading}>

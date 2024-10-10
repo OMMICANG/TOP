@@ -21,7 +21,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
           //   window.Telegram?.WebApp?.expand();
           // }}
         />
-        <script src="https://www.google.com/recaptcha/api.js" async defer/>
+        <Script 
+          src="https://www.google.com/recaptcha/api.js"/>
       </body>
     </html>
   );

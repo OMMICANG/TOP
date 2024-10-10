@@ -4,7 +4,7 @@ import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import IsMobile from "../../components/IsMobile";
-// import ReCAPTCHA from "react-google-recaptcha"; //Using reCAPTCHA V2
+import ReCAPTCHA from "react-google-recaptcha"; //Using reCAPTCHA V2
 import "../../styles/Kyc.css";
 import Compressor from "compressorjs"; // Import compressorjs
 
@@ -15,7 +15,7 @@ const KYCPhase1: React.FC = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [uploading, setUploading] = useState(false); // To track upload status
-  // const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null); // For CAPTCHA Verification
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null); // For CAPTCHA Verification
   const router = useRouter(); // Use Next.js router for navigation
 
   // Email Regex for stricter validation
@@ -53,9 +53,9 @@ const KYCPhase1: React.FC = () => {
     }
   };
 
-  // const handleRecaptchaChange = (token: string | null) => {
-  //   setRecaptchaToken(token); //// Store the reCAPTCHA token for submission
-  // };
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token); //// Store the reCAPTCHA token for submission
+  };
 
   // Handle form submission with validation and sanitization
   const handleSubmit = async (event: React.FormEvent) => {
@@ -69,7 +69,7 @@ const KYCPhase1: React.FC = () => {
     const sanitizedName = name.trim();
 
     // Validate inputs
-    if (!sanitizedName || !sanitizedEmail || !identityCard) { // Add for Recaptcha|| !recaptchaToken
+    if (!sanitizedName || !sanitizedEmail || !identityCard || !recaptchaToken) { // Add for Recaptcha|| !recaptchaToken
       setError("Please fill in all the fields and complete the reCAPTCHA.");
       setUploading(false);
       return;
@@ -81,23 +81,23 @@ const KYCPhase1: React.FC = () => {
       return;
     }
 
-    // try {
-    //   // Step 1: Verify reCAPTCHA on the server
-    //   const recaptchaResponse = await fetch("/api/recaptcha", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({ token: recaptchaToken }),
-    //   });
+    try {
+      // Step 1: Verify reCAPTCHA on the server
+      const recaptchaResponse = await fetch("/api/recaptcha", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: recaptchaToken }),
+      });
   
-    //   const recaptchaData = await recaptchaResponse.json();
+      const recaptchaData = await recaptchaResponse.json();
   
-    //   if (!recaptchaData.success) {
-    //     setError("reCAPTCHA verification failed. Please try again.");
-    //     setUploading(false);
-    //     return;
-    //   }
+      if (!recaptchaData.success) {
+        setError("reCAPTCHA verification failed. Please try again.");
+        setUploading(false);
+        return;
+      }
 
     // Generate a unique UUID for the KYC process
     const kycUUID = crypto.randomUUID();
@@ -148,11 +148,11 @@ const KYCPhase1: React.FC = () => {
 
     // Navigate to Phase 2 (Face Capture)
     router.push("/kyc/faceCapture");
-  // } catch (error) {
-  //   console.error("Error verifying reCAPTCHA:", error);  // Log the error for debugging
-  //   setError("An error occurred. Please try again.");
-  //   setUploading(false);
-  // }
+  } catch (error) {
+    console.error("Error verifying reCAPTCHA:", error);  // Log the error for debugging
+    setError("An error occurred. Please try again.");
+    setUploading(false);
+  }
 };
 
   return (
@@ -190,10 +190,10 @@ const KYCPhase1: React.FC = () => {
             />
           </div>
 
-          {/* <ReCAPTCHA
+          <ReCAPTCHA
             sitekey="6LeFGF0qAAAAAEcMrdnR0K297baV66s0l57yxilo" // Replace with your Site Key
             onChange={handleRecaptchaChange}
-          /> */}
+          />
           <button type="submit" disabled={uploading}>
             {uploading ? "Uploading..." : "Submit & Continue"}
           </button>

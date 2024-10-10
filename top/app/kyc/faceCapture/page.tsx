@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import IsMobile from "../../components/IsMobile";
 import "../../styles/FaceCapture.css"; // Custom styling
 
 const FaceCapture: React.FC = () => {
@@ -79,6 +80,7 @@ const FaceCapture: React.FC = () => {
   };
 
   return (
+    <IsMobile>
     <div className="face-capture-container">
       <h1>Face Capture</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -98,6 +100,7 @@ const FaceCapture: React.FC = () => {
         {capturing ? "Processing..." : "Capture and Continue"}
       </button>
     </div>
+    </IsMobile>
   );
 };
 

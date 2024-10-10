@@ -4,6 +4,7 @@ import { useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import IsMobile from "../../components/IsMobile";
+import ReCAPTCHA from "react-google-recaptcha";
 import "../../styles/Kyc.css";
 import Compressor from "compressorjs"; // Import compressorjs
 
@@ -14,6 +15,7 @@ const KYCPhase1: React.FC = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [uploading, setUploading] = useState(false); // To track upload status
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null); // For CAPTCHA Verification
   const router = useRouter(); // Use Next.js router for navigation
 
   // Email Regex for stricter validation
@@ -51,6 +53,10 @@ const KYCPhase1: React.FC = () => {
     }
   };
 
+  const handleRecaptchaChange = (token: string | null) => {
+    setRecaptchaToken(token);
+  };
+
   // Handle form submission with validation and sanitization
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -63,8 +69,8 @@ const KYCPhase1: React.FC = () => {
     const sanitizedName = name.trim();
 
     // Validate inputs
-    if (!sanitizedName || !sanitizedEmail || !identityCard) {
-      setError("Please fill in all the fields.");
+    if (!sanitizedName || !sanitizedEmail || !identityCard || !recaptchaToken) {
+      setError("Please fill in all the fields and complete the reCAPTCHA.");
       setUploading(false);
       return;
     }
@@ -160,6 +166,11 @@ const KYCPhase1: React.FC = () => {
               required
             />
           </div>
+
+          <ReCAPTCHA
+            sitekey="6LfNTVsqAAAAAFqh7RAKtRKC1KPIYMemtrqBU1aT" // Replace with your Site Key
+            onChange={handleRecaptchaChange}
+          />
           <button type="submit" disabled={uploading}>
             {uploading ? "Uploading..." : "Submit & Continue"}
           </button>

@@ -31,6 +31,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       body: `secret=${secretKey}&response=${token}`,
     });
 
+    if (!response.ok) {
+      throw new Error("Failed to reach Google reCAPTCHA");
+    }
+
     const data = await response.json();
 
     if (data.success) {

@@ -1,61 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
+import ReCAPTCHA from "react-google-recaptcha";
+import { verifyCaptcha } from "../../api/ServerActions";  // Recaptcha Server Path
 import IsMobile from "../../components/IsMobile";
-// import { loadReCaptcha, ReCaptcha } from "react-google-recaptcha-v3"; // V3 recaptcha
 import "../../styles/Kyc.css";
 import Compressor from "compressorjs"; // Import compressorjs
 
-const KYCPhase1: React.FC = () => {
+
+const KYCPhase1 = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [identityCard, setIdentityCard] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [uploading, setUploading] = useState(false); // To track upload status
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null); // For CAPTCHA Verification
   const router = useRouter(); // Use Next.js router for navigation
-
- // Load reCAPTCHA V3 and execute it when the component mounts
- useEffect(() => {
-  const loadRecaptchaScript = () => {
-    const script = document.createElement("script");
-    script.src = `https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`;
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-  };
-
-  const executeRecaptcha = () => {
-    if (window.grecaptcha) {
-      window.grecaptcha.ready(() => {
-        new Promise<void>((resolve, reject) => {
-          window.grecaptcha
-            .execute(process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!, { action: "kycPhase1" })
-            .then((token: string) => {
-              setRecaptchaToken(token);
-              resolve(); // Resolving the promise after setting the token
-            }, (error) => {
-              reject(error); // Rejecting the promise if any error occurs
-            });
-        }).catch((error) => {
-          if (error instanceof Error) {
-            console.error("Error generating reCAPTCHA token:", error.message);
-            setError("Error generating reCAPTCHA token. Please try again.");
-          }
-          });
-      });
+  const recaptchaRef = useRef(null);
+  const [isVerified, setIsverified] = useState<boolean>(false)
+  
+  
+    async function handleCaptchaSubmission(token: string | null) {
+      // Server function to verify captcha
+      await verifyCaptcha(token)
+        .then(() => setIsverified(true))
+        .catch(() => setIsverified(false))
     }
-  };
-
-  loadRecaptchaScript();
-  executeRecaptcha();
-}, []);
-
-
-
+  
+ 
   // Email Regex for stricter validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -103,7 +77,7 @@ const KYCPhase1: React.FC = () => {
     const sanitizedName = name.trim();
 
     // Validate inputs
-    if (!sanitizedName || !sanitizedEmail || !identityCard || !recaptchaToken) { // Add for Recaptcha|| !recaptchaToken
+    if (!sanitizedName || !sanitizedEmail || !identityCard || !isVerified) { 
       setError("Please fill in all the fields and complete the reCAPTCHA.");
       setUploading(false);
       return;
@@ -115,22 +89,6 @@ const KYCPhase1: React.FC = () => {
       return;
     }
 
-  // Verify reCAPTCHA token before proceeding
-  try {
-    const recaptchaRes = await fetch("/api/recaptcha", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ recaptchaToken }),
-    });
-    const recaptchaData = await recaptchaRes.json();
-
-    if (!recaptchaData.success) {
-      setError("Failed to verify reCAPTCHA. Try again.");
-      setUploading(false);
-      return;
-    }
     // Generate a unique UUID for the KYC process
     const kycUUID = crypto.randomUUID();
 
@@ -180,11 +138,6 @@ const KYCPhase1: React.FC = () => {
 
     // Navigate to Phase 2 (Face Capture)
     router.push("/kyc/faceCapture");
-  } catch (error) {
-    console.error("Error verifying reCAPTCHA:", error);  // Log the error for debugging
-    setError("An error occurred. Please try again.");
-    setUploading(false);
-  }
 };
 
   return (
@@ -224,7 +177,13 @@ const KYCPhase1: React.FC = () => {
           <button type="submit" disabled={uploading}>
             {uploading ? "Uploading..." : "Submit & Continue"}
           </button>
-           {/* <ReCaptcha action="kycPhase1" verifyCallback={setRecaptchaToken} /> */}
+
+          {/* reCAPTCHA component */}
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            ref={recaptchaRef}
+            onChange={handleCaptchaSubmission}
+          />
         </form>
       </div>
     </IsMobile>

@@ -1,35 +1,52 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+"use server"
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ success: false, message: "Method Not Allowed" });
-  }
+import axios from "axios"
 
-  const { recaptchaToken } = req.body;
-
-  if (!recaptchaToken) {
-    return res.status(400).json({ success: false, message: "No reCAPTCHA token provided" });
-  }
-
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
-
-  try {
-    const response = await fetch(verificationUrl, {
-      method: "POST",
-    });
-    const data = await response.json();
-
-    if (data.success) {
-      res.status(200).json({ success: true, message: "reCAPTCHA verified successfully." });
-    } else {
-      res.status(400).json({ success: false, message: "reCAPTCHA verification failed." });
-    }
-  } catch (error) {
-    console.error("Error verifying reCAPTCHA:", error);
-    res.status(500).json({ success: false, message: "Server error during reCAPTCHA verification." });
+export async function verifyCaptcha(token: string | null) {
+  const res = await axios.post(
+    `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
+  )
+  if (res.data.success) {
+    return "success!"
+  } else {
+    throw new Error("Failed Captcha")
   }
 }
+
+
+// ************************************************************************************************************************
+// import type { NextApiRequest, NextApiResponse } from "next";
+
+// export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+//   if (req.method !== "POST") {
+//     return res.status(405).json({ success: false, message: "Method Not Allowed" });
+//   }
+
+//   const { recaptchaToken } = req.body;
+
+//   if (!recaptchaToken) {
+//     return res.status(400).json({ success: false, message: "No reCAPTCHA token provided" });
+//   }
+
+//   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+//   const verificationUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
+
+//   try {
+//     const response = await fetch(verificationUrl, {
+//       method: "POST",
+//     });
+//     const data = await response.json();
+
+//     if (data.success) {
+//       res.status(200).json({ success: true, message: "reCAPTCHA verified successfully." });
+//     } else {
+//       res.status(400).json({ success: false, message: "reCAPTCHA verification failed." });
+//     }
+//   } catch (error) {
+//     console.error("Error verifying reCAPTCHA:", error);
+//     res.status(500).json({ success: false, message: "Server error during reCAPTCHA verification." });
+//   }
+// }
 
 
 

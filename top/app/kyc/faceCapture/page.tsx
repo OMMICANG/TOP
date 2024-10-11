@@ -133,8 +133,8 @@ const FaceCapture: React.FC = () => {
             <Image
               src={imagePreview}
               alt="Face Capture Preview"
-              width={200}
-              height={200}
+              width={500}
+              height={500}
             />
           </div>
         )}

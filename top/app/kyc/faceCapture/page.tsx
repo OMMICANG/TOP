@@ -27,6 +27,7 @@ const FaceCapture: React.FC = () => {
       }
 
       setPreviewImage(imageSrc); // Set the captured image for preview
+      setHasPreviewed(false); // Reset preview status after every new capture
     }
   };
 
@@ -38,11 +39,12 @@ const FaceCapture: React.FC = () => {
 
   const handleClosePreview = () => {
     setPreviewImage(null); // Clear the preview image, allowing a new capture
+    setHasPreviewed(false); // Reset the preview status
   };
 
   const submitCapture = async () => {
     if (!hasPreviewed) {
-      setError("You must preview the image before submitting.");
+      setError("Kindly, Preview Image once, before you Submit.");
       return;
     }
 
@@ -98,7 +100,7 @@ const FaceCapture: React.FC = () => {
       }
 
       // Navigate to the next phase (video submission)
-      router.push("/kyc/kycPhase3");
+      router.push("/kyc/kycPhase3"); // Fix: Route to kycPhase3
     }
   };
 
@@ -139,7 +141,7 @@ const FaceCapture: React.FC = () => {
           </div>
         )}
 
-        <button onClick={submitCapture} disabled={capturing || !hasPreviewed}>
+        <button onClick={submitCapture} disabled={capturing}>
           {capturing ? "Processing..." : "Submit & Continue"}
         </button>
       </div>

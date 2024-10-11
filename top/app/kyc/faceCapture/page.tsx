@@ -128,7 +128,7 @@ const FaceCapture: React.FC = () => {
         </button>
 
         {capturedImage && !previewImage && (
-          <p>Image captured successfully! Click `Preview` to view.</p>
+          <p>Image captured successfully! Click Preview to view Captured Image.</p>
         )}
 
         {previewImage && (

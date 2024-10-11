@@ -12,6 +12,7 @@ const FaceCapture: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
   const [error, setError] = useState<string | null>(null);
   const [capturing, setCapturing] = useState(false);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null); // Store the captured image
   const [previewImage, setPreviewImage] = useState<string | null>(null); // For the preview
   const [hasPreviewed, setHasPreviewed] = useState(false); // Track if the user has previewed
   const router = useRouter();
@@ -26,19 +27,20 @@ const FaceCapture: React.FC = () => {
         return;
       }
 
-      setPreviewImage(imageSrc); // Set the captured image for preview
+      setCapturedImage(imageSrc); // Store the captured image but don't preview it yet
       setHasPreviewed(false); // Reset preview status after every new capture
     }
   };
 
   const handlePreview = () => {
-    if (previewImage) {
+    if (capturedImage) {
+      setPreviewImage(capturedImage); // Set the captured image for preview
       setHasPreviewed(true); // Mark the image as previewed
     }
   };
 
   const handleClosePreview = () => {
-    setPreviewImage(null); // Clear the preview image, allowing a new capture
+    setPreviewImage(null); // Clear the preview image
     setHasPreviewed(false); // Reset the preview status
   };
 
@@ -122,8 +124,12 @@ const FaceCapture: React.FC = () => {
         </div>
 
         <button onClick={capture}>
-          {previewImage ? "Retake" : "Capture"}
+          {capturedImage ? "Retake" : "Capture"}
         </button>
+
+        {capturedImage && !previewImage && (
+          <p>Image captured successfully! Click `Preview` to view.</p>
+        )}
 
         {previewImage && (
           <div className="preview-section">
@@ -136,9 +142,12 @@ const FaceCapture: React.FC = () => {
               height={400}
               priority
             />
-            <button onClick={handlePreview}>Preview Image</button>
             <button onClick={handleClosePreview}>Close Preview</button>
           </div>
+        )}
+
+        {capturedImage && (
+          <button onClick={handlePreview}>Preview Image</button>
         )}
 
         <button onClick={submitCapture} disabled={capturing}>
@@ -150,6 +159,7 @@ const FaceCapture: React.FC = () => {
 };
 
 export default FaceCapture;
+
 
 
 

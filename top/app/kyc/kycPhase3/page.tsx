@@ -12,7 +12,8 @@ const VideoCapture: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
   const [isPreviewing, setIsPreviewing] = useState(false);
-  const [countdown, setCountdown] = useState(3);
+  const [timer, setTimer] = useState(0); // Timer for recording session
+  const [showCountdown, setShowCountdown] = useState(3);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const router = useRouter();
@@ -20,7 +21,7 @@ const VideoCapture: React.FC = () => {
   useEffect(() => {
     if (isRecording) {
       const countdownTimer = setInterval(() => {
-        setCountdown((prev) => {
+        setShowCountdown((prev) => {
           if (prev === 1) {
             clearInterval(countdownTimer);
             return 0;
@@ -32,10 +33,27 @@ const VideoCapture: React.FC = () => {
     }
   }, [isRecording]);
 
+  useEffect(() => {
+    if (isRecording && showCountdown === 0) {
+      const interval = setInterval(() => {
+        setTimer((prev) => {
+          if (prev >= 10) {
+            stopRecording(); // Stop recording automatically after 10 seconds
+            return prev;
+          }
+          return prev + 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [isRecording, showCountdown]);
+
   // Function to start video recording with a 3-second timer
   const startRecording = () => {
     setError(null);
-    setCountdown(3);
+    setShowCountdown(3); // Set 3-second countdown
+    setTimer(0); // Reset timer
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       setError("Video recording is not supported in this browser.");
       return;
@@ -43,7 +61,7 @@ const VideoCapture: React.FC = () => {
 
     const countdownBeforeRecording = setTimeout(() => {
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia({ video: true, audio: true }) // Audio/Video Data Media Collection
         .then((stream) => {
           const videoElement = videoRef.current;
           if (videoElement) {
@@ -73,7 +91,7 @@ const VideoCapture: React.FC = () => {
           }, 10000); // 10 seconds timer
         })
         .catch(() => {
-          setError("Failed to access the camera. Please try again.");
+          setError("Failed to access the camerahone and Microp. Please try again.");
         });
     }, 3000); // Start after 3 seconds
 
@@ -167,16 +185,27 @@ const VideoCapture: React.FC = () => {
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         <div className="video-wrapper">
-          {countdown > 0 && <div className="countdown">{countdown}</div>}
+          {showCountdown > 0 && <div className="countdown">{showCountdown}</div>}
           <div className="circle-overlay"></div> {/* Add the circle overlay */}
           <video ref={videoRef} className="video-feed" />
         </div>
 
         {isRecording ? (
-          <button onClick={stopRecording}>Stop Recording</button>
+          <div>
+            <p className="recording-timer">Recording... {timer}/10s</p>
+            <button onClick={stopRecording} disabled={timer >= 10}>
+              Stop Recording
+            </button>
+          </div>
         ) : (
           <button onClick={startRecording}>Start Recording</button>
         )}
+
+        {/* {isRecording ? (
+          <button onClick={stopRecording}>Stop Recording</button>
+        ) : (
+          <button onClick={startRecording}>Start Recording</button>
+        )} */}
 
         {videoBlob && !isRecording && (
           <>

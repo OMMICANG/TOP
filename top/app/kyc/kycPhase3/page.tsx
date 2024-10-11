@@ -4,87 +4,80 @@ import React, { useRef, useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import IsMobile from "../../components/IsMobile";
-import "../../styles/VideoCapture.css"; // Custom styling
+import "../../styles/VideoCapture.css"; // Add this for custom styling
 
 const VideoCapture: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [capturing, setCapturing] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [videoBlob, setVideoBlob] = useState<Blob | null>(null);
-  const [timer, setTimer] = useState(0); // Timer for recording session
-  const [showCountdown, setShowCountdown] = useState(3); // Countdown for recording start
-  const [hasPreviewed, setHasPreviewed] = useState(false); // Track if user has previewed
+  const [isPreviewing, setIsPreviewing] = useState(false);
+  const [countdown, setCountdown] = useState(3);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const router = useRouter();
 
-  // Countdown effect before starting the recording
   useEffect(() => {
-    if (showCountdown > 0 && isRecording) {
-      const countdownInterval = setInterval(() => {
-        setShowCountdown((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(countdownInterval);
-    }
-  }, [showCountdown, isRecording]);
-
-  // Timer effect for 10-second recording
-  useEffect(() => {
-    if (isRecording && showCountdown === 0) {
-      const interval = setInterval(() => {
-        setTimer((prev) => {
-          if (prev >= 10) {
-            stopRecording(); // Stop recording automatically after 10 seconds
-            return prev;
+    if (isRecording) {
+      const countdownTimer = setInterval(() => {
+        setCountdown((prev) => {
+          if (prev === 1) {
+            clearInterval(countdownTimer);
+            return 0;
           }
-          return prev + 1;
+          return prev - 1;
         });
       }, 1000);
-
-      return () => clearInterval(interval);
+      return () => clearInterval(countdownTimer);
     }
-  }, [isRecording, showCountdown]);
+  }, [isRecording]);
 
-  // Function to start video recording
+  // Function to start video recording with a 3-second timer
   const startRecording = () => {
     setError(null);
-    setShowCountdown(3); // Set 3-second countdown
-    setTimer(0); // Reset timer
-    setHasPreviewed(false); // Reset preview status
-
+    setCountdown(3);
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
       setError("Video recording is not supported in this browser.");
       return;
     }
 
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        const videoElement = videoRef.current;
-        if (videoElement) {
-          videoElement.srcObject = stream;
-          videoElement.play();
-        }
+    const countdownBeforeRecording = setTimeout(() => {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          const videoElement = videoRef.current;
+          if (videoElement) {
+            videoElement.srcObject = stream;
+            videoElement.play();
+          }
 
-        mediaRecorderRef.current = new MediaRecorder(stream);
-        const chunks: Blob[] = [];
+          mediaRecorderRef.current = new MediaRecorder(stream);
+          const chunks: Blob[] = [];
 
-        mediaRecorderRef.current.ondataavailable = (event) => {
-          chunks.push(event.data);
-        };
+          mediaRecorderRef.current.ondataavailable = (event) => {
+            chunks.push(event.data);
+          };
 
-        mediaRecorderRef.current.onstop = () => {
-          const videoBlob = new Blob(chunks, { type: "video/webm" });
-          setVideoBlob(videoBlob);
-          stream.getTracks().forEach((track) => track.stop()); // Stop the camera
-        };
+          mediaRecorderRef.current.onstop = () => {
+            const videoBlob = new Blob(chunks, { type: "video/webm" });
+            setVideoBlob(videoBlob);
+            stream.getTracks().forEach((track) => track.stop()); // Stop the camera
+          };
 
-        mediaRecorderRef.current.start();
-        setIsRecording(true);
-      })
-      .catch(() => {
-        setError("Failed to access the camera. Please try again.");
-      });
+          mediaRecorderRef.current.start();
+          setIsRecording(true);
+
+          // Auto-stop after 10 seconds
+          setTimeout(() => {
+            stopRecording();
+          }, 10000); // 10 seconds timer
+        })
+        .catch(() => {
+          setError("Failed to access the camera. Please try again.");
+        });
+    }, 3000); // Start after 3 seconds
+
+    return () => clearTimeout(countdownBeforeRecording);
   };
 
   // Function to stop video recording
@@ -95,26 +88,23 @@ const VideoCapture: React.FC = () => {
     }
   };
 
-  // Function to handle video preview
-  const handlePreview = () => {
+  // Function to preview the recorded video
+  const previewVideo = () => {
     if (videoBlob) {
-      setHasPreviewed(true); // Mark the video as previewed
+      setIsPreviewing(true);
       const videoElement = videoRef.current;
       if (videoElement) {
-        videoElement.src = URL.createObjectURL(videoBlob);
-        videoElement.controls = true;
+        videoElement.srcObject = null; // Detach camera stream
+        videoElement.src = URL.createObjectURL(videoBlob); // Load recorded video
         videoElement.play();
       }
+    } else {
+      setError("No video recorded yet.");
     }
   };
 
   // Function to upload the video
   const submitVideo = async () => {
-    if (!hasPreviewed) {
-      setError("Please preview the video before submitting.");
-      return;
-    }
-
     setError(null);
     setCapturing(true);
 
@@ -177,32 +167,25 @@ const VideoCapture: React.FC = () => {
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         <div className="video-wrapper">
+          {countdown > 0 && <div className="countdown">{countdown}</div>}
+          <div className="circle-overlay"></div> {/* Add the circle overlay */}
           <video ref={videoRef} className="video-feed" />
         </div>
 
-        {showCountdown > 0 && isRecording && (
-          <p className="countdown-timer">
-            Recording starts in {showCountdown}...
-          </p>
-        )}
-
         {isRecording ? (
-          <div>
-            <p className="recording-timer">Recording... {timer}/10s</p>
-            <button onClick={stopRecording} disabled={timer >= 10}>
-              Stop Recording
-            </button>
-          </div>
+          <button onClick={stopRecording}>Stop Recording</button>
         ) : (
           <button onClick={startRecording}>Start Recording</button>
         )}
 
         {videoBlob && !isRecording && (
           <>
-            <button onClick={handlePreview}>Preview Video</button>
-            <button onClick={submitVideo} disabled={capturing}>
-              {capturing ? "Processing..." : "Submit Video"}
-            </button>
+            <button onClick={previewVideo}>Preview Video</button>
+            {isPreviewing && (
+              <button onClick={submitVideo} disabled={capturing}>
+                {capturing ? "Processing..." : "Submit Video"}
+              </button>
+            )}
           </>
         )}
       </div>
@@ -211,6 +194,7 @@ const VideoCapture: React.FC = () => {
 };
 
 export default VideoCapture;
+
 
 
 

@@ -4,109 +4,102 @@ import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
+import Image from "next/image"; // Import the Next.js Image component
 import IsMobile from "../../components/IsMobile";
-import Compressor from "compressorjs";
-import Image from "next/image"; // Import Next.js Image component
 import "../../styles/FaceCapture.css"; // Custom styling
 
 const FaceCapture: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
   const [error, setError] = useState<string | null>(null);
   const [capturing, setCapturing] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null); // For image preview
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null); // To hold the final image Blob for upload
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // For the preview
+  const [hasPreviewed, setHasPreviewed] = useState(false); // Track if the user has previewed
   const router = useRouter();
 
-  // Function to capture image and preview
   const capture = () => {
     setError(null);
 
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
-
       if (!imageSrc) {
         setError("Failed to capture image. Please try again.");
         return;
       }
 
-      // Convert base64 image to Blob for compression
-      fetch(imageSrc)
-        .then((res) => res.blob())
-        .then((blob) => {
-          // Compress the image
-          new Compressor(blob, {
-            quality: 0.7, // Adjust the compression quality to avoid blurriness
-            success: (compressedBlob) => {
-              const previewUrl = URL.createObjectURL(compressedBlob);
-              setImagePreview(previewUrl); // Set the preview URL
-              setImageBlob(compressedBlob); // Store the compressed blob for upload
-            },
-            error(err) {
-              setError("Image compression failed. Please try again.");
-              console.error("Compression Error:", err.message);
-            },
-          });
-        });
+      setPreviewImage(imageSrc); // Set the captured image for preview
     }
   };
 
-  // Function to handle the image upload to Supabase
-  const handleUpload = async () => {
+  const handlePreview = () => {
+    if (previewImage) {
+      setHasPreviewed(true); // Mark the image as previewed
+    }
+  };
+
+  const handleClosePreview = () => {
+    setPreviewImage(null); // Clear the preview image, allowing a new capture
+  };
+
+  const submitCapture = async () => {
+    if (!hasPreviewed) {
+      setError("You must preview the image before submitting.");
+      return;
+    }
+
     setError(null);
     setCapturing(true);
 
+    // Retrieve the UUID from localStorage
     const kycUUID = localStorage.getItem("kycUUID");
     if (!kycUUID) {
       setError("Session expired or invalid. Please restart the KYC process.");
-      setCapturing(false);
       return;
     }
 
-    if (!imageBlob) {
-      setError("No image to upload. Please capture your face.");
-      setCapturing(false);
-      return;
+    if (previewImage) {
+      // Convert the image from base64 to a file (Blob)
+      const base64Response = await fetch(previewImage);
+      const blob = await base64Response.blob();
+
+      // Upload the image to Supabase storage
+      const { data, error: uploadError } = await supabase.storage
+        .from("kyc_face_images")
+        .upload(`faces/${Date.now()}_face.png`, blob);
+
+      if (uploadError) {
+        setError("Failed to upload face image. Please try again.");
+        setCapturing(false);
+        return;
+      }
+
+      // Get the public URL of the uploaded face image
+      const publicURL = supabase.storage
+        .from("kyc_face_images")
+        .getPublicUrl(data.path).data.publicUrl;
+
+      if (!publicURL) {
+        setError("Failed to retrieve public URL of the face image.");
+        setCapturing(false);
+        return;
+      }
+
+      // Insert the face image URL and UUID into the new `kyc_face_images` table
+      const { error: dbError } = await supabase
+        .from("kyc_face_images")
+        .insert({
+          uuid: kycUUID, // Linking the face image to the user's UUID
+          face_image_url: publicURL,
+        });
+
+      if (dbError) {
+        setError("Failed to save face image. Please try again.");
+        setCapturing(false);
+        return;
+      }
+
+      // Navigate to the next phase (video submission)
+      router.push("/kyc/kycPhase3");
     }
-
-    // Upload the compressed image to Supabase
-    const { data, error: uploadError } = await supabase.storage
-      .from("kyc_face_images")
-      .upload(`faces/${Date.now()}_face.png`, imageBlob);
-
-    if (uploadError) {
-      setError("Failed to upload face image. Please try again.");
-      setCapturing(false);
-      return;
-    }
-
-    // Get the public URL of the uploaded image
-    const publicURL = supabase.storage
-      .from("kyc_face_images")
-      .getPublicUrl(data.path).data.publicUrl;
-
-    if (!publicURL) {
-      setError("Failed to retrieve public URL of the face image.");
-      setCapturing(false);
-      return;
-    }
-
-    // Insert face image details into the Supabase database
-    const { error: dbError } = await supabase
-      .from("kyc_face_images")
-      .insert({
-        uuid: kycUUID,
-        face_image_url: publicURL,
-      });
-
-    if (dbError) {
-      setError("Failed to save face image. Please try again.");
-      setCapturing(false);
-      return;
-    }
-
-    setCapturing(false);
-    // Navigate to the next phase
-    router.push("/kyc/kycPhase3");
   };
 
   return (
@@ -126,29 +119,29 @@ const FaceCapture: React.FC = () => {
           </div>
         </div>
 
-        {/* Preview the captured image using Next.js Image component */}
-        {imagePreview && (
-          <div className="image-preview">
-            <h3>Preview:</h3>
+        <button onClick={capture}>
+          {previewImage ? "Retake" : "Capture"}
+        </button>
+
+        {previewImage && (
+          <div className="preview-section">
+            <h3>Preview</h3>
+            {/* Use Next.js Image component for optimized rendering */}
             <Image
-              src={imagePreview}
-              alt="Face Capture Preview"
-              width={500}
-              height={500}
+              src={previewImage}
+              alt="Captured face"
+              width={400} // Set appropriate dimensions
+              height={400}
+              priority
             />
+            <button onClick={handlePreview}>Preview Image</button>
+            <button onClick={handleClosePreview}>Close Preview</button>
           </div>
         )}
 
-        <button onClick={capture} disabled={capturing}>
-          {capturing ? "Processing..." : "Capture"}
+        <button onClick={submitCapture} disabled={capturing || !hasPreviewed}>
+          {capturing ? "Processing..." : "Submit & Continue"}
         </button>
-
-        {/* Button to upload the captured and compressed image */}
-        {imagePreview && (
-          <button onClick={handleUpload} disabled={capturing}>
-            {capturing ? "Uploading..." : "Upload and Continue"}
-          </button>
-        )}
       </div>
     </IsMobile>
   );
@@ -159,8 +152,7 @@ export default FaceCapture;
 
 
 
-
-// ***************************************************************************************************************
+// ********************************************************************
 // "use client";
 
 // import React, { useRef, useState } from "react";

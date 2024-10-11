@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import IsMobile from "../../components/IsMobile";
 import "../../styles/VideoCapture.css"; // Add this for custom styling
-import ffmpeg from '@ffmpeg/ffmpeg'; // Import ffmpeg.js
+import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+ // Use the alternative import syntax
+
+const ffmpeg = FFmpeg.createFFmpeg({ log: true }); // Initialize ffmpeg instance
 
 const VideoCapture: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -15,18 +18,8 @@ const VideoCapture: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const router = useRouter();
-  const [ffmpegLoaded, setFfmpegLoaded] = useState(false);
 
-  // Load ffmpeg
-  useEffect(() => {
-    const loadFfmpeg = async () => {
-      await ffmpeg.load();
-      setFfmpegLoaded(true);
-    };
-    loadFfmpeg();
-  }, []);
-
-  // Function to start video recording with 7-second limit
+  // Function to start video recording
   const startRecording = () => {
     setError(null);
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -57,44 +50,11 @@ const VideoCapture: React.FC = () => {
         };
 
         mediaRecorderRef.current.start();
-
-        // Automatically stop recording after 7 seconds
-        setTimeout(() => {
-          if (mediaRecorderRef.current && isRecording) {
-            mediaRecorderRef.current.stop();
-            setIsRecording(false);
-          }
-        }, 7000);
-
         setIsRecording(true);
       })
       .catch(() => {
         setError("Failed to access the camera. Please try again.");
       });
-  };
-
-  // Function to compress the video using ffmpeg
-  const compressVideo = async (videoBlob: Blob) => {
-    if (!ffmpegLoaded) {
-      setError("Video compression is not available at the moment.");
-      return videoBlob;
-    }
-
-    const reader = new FileReader();
-    reader.readAsArrayBuffer(videoBlob);
-    return new Promise<Blob>((resolve, reject) => {
-      reader.onload = async () => {
-        const arrayBuffer = reader.result as ArrayBuffer;
-        ffmpeg.FS("writeFile", "input.webm", new Uint8Array(arrayBuffer));
-
-        await ffmpeg.run("-i", "input.webm", "-c:v", "libx264", "-crf", "28", "-preset", "fast", "output.mp4");
-        const data = ffmpeg.FS("readFile", "output.mp4");
-
-        const compressedBlob = new Blob([data.buffer], { type: "video/mp4" });
-        resolve(compressedBlob);
-      };
-      reader.onerror = reject;
-    });
   };
 
   // Function to stop video recording
@@ -103,6 +63,34 @@ const VideoCapture: React.FC = () => {
       mediaRecorderRef.current.stop();
       setIsRecording(false);
     }
+  };
+
+  // Compress video using ffmpeg
+  const compressVideo = async (inputBlob: Blob) => {
+    if (!ffmpeg.isLoaded()) {
+      await ffmpeg.load(); // Load ffmpeg
+    }
+
+    // Convert video to a smaller size and format (e.g., MP4)
+    ffmpeg.FS("writeFile", "input.webm", await FFmpeg.fetchFile(inputBlob)); // Write the file to memory
+
+    await ffmpeg.run(
+      "-i",
+      "input.webm",
+      "-vf",
+      "scale=640:360", // Reduce the resolution
+      "-c:v",
+      "libx264",
+      "-crf",
+      "28", // Adjust quality
+      "-preset",
+      "slow",
+      "output.mp4"
+    ); // Compress the video
+
+    const compressedData = ffmpeg.FS("readFile", "output.mp4"); // Read the output
+    const compressedBlob = new Blob([compressedData.buffer], { type: "video/mp4" }); // Convert to Blob
+    return compressedBlob;
   };
 
   // Function to upload the video
@@ -120,59 +108,60 @@ const VideoCapture: React.FC = () => {
     }
 
     if (videoBlob) {
-      // Check if video size is larger than 5MB
-      let processedVideoBlob = videoBlob;
-      if (videoBlob.size > 5 * 1024 * 1024) {
-        // Compress video if it's larger than 5MB
-        processedVideoBlob = await compressVideo(videoBlob);
-      }
+      try {
+        const compressedVideo = await compressVideo(videoBlob); // Compress the video
 
-      // Check again if compressed video size is still larger than 5MB
-      if (processedVideoBlob.size > 5 * 1024 * 1024) {
-        setError("The video is too large, even after compression. Please try recording again.");
+        // Check file size (should be less than 5MB)
+        if (compressedVideo.size > 5 * 1024 * 1024) {
+          setError("Video size exceeds the limit of 5MB.");
+          setCapturing(false);
+          return;
+        }
+
+        // Upload the video to Supabase storage
+        const { data, error: uploadError } = await supabase.storage
+          .from("kyc_videos")
+          .upload(`videos/${Date.now()}_video.mp4`, compressedVideo);
+
+        if (uploadError) {
+          setError("Failed to upload video. Please try again.");
+          setCapturing(false);
+          return;
+        }
+
+        // Get the public URL of the uploaded video
+        const publicURL = supabase.storage
+          .from("kyc_videos")
+          .getPublicUrl(data?.path)
+          .data.publicUrl;
+
+        if (!publicURL) {
+          setError("Failed to retrieve the public URL of the video.");
+          setCapturing(false);
+          return;
+        }
+
+        // Update Supabase with the video URL in the new kyc_videos table
+        const { error: dbError } = await supabase.from("kyc_videos").insert([
+          {
+            uuid: kycUUID,
+            video_url: publicURL,
+          },
+        ]);
+
+        if (dbError) {
+          setError("Failed to submit the video. Please try again.");
+          setCapturing(false);
+          return;
+        }
+
         setCapturing(false);
-        return;
-      }
-
-      // Upload the video to Supabase storage
-      const { data, error: uploadError } = await supabase.storage
-        .from("kyc_videos")
-        .upload(`videos/${Date.now()}_video.mp4`, processedVideoBlob);
-
-      if (uploadError) {
-        setError("Failed to upload video. Please try again.");
+        router.push("/kyc/complete"); // Navigate to the KYC completion page
+      } catch (compressionError) {
+        console.log(compressionError);
+        setError("Error compressing the video. Please try again.");
         setCapturing(false);
-        return;
       }
-
-      // Get the public URL of the uploaded video
-      const publicURL = supabase.storage
-        .from("kyc_videos")
-        .getPublicUrl(data?.path)
-        .data.publicUrl;
-
-      if (!publicURL) {
-        setError("Failed to retrieve the public URL of the video.");
-        setCapturing(false);
-        return;
-      }
-
-      // Update Supabase with the video URL in the new kyc_videos table
-      const { error: dbError } = await supabase.from("kyc_videos").insert([
-        {
-          uuid: kycUUID,
-          video_url: publicURL,
-        },
-      ]);
-
-      if (dbError) {
-        setError("Failed to submit the video. Please try again.");
-        setCapturing(false);
-        return;
-      }
-
-      setCapturing(false);
-      router.push("/kyc/complete"); // Navigate to the KYC completion page
     }
   };
 
@@ -203,6 +192,8 @@ const VideoCapture: React.FC = () => {
 };
 
 export default VideoCapture;
+
+
 
 
 

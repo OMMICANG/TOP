@@ -143,7 +143,7 @@ const KYCPhase1 = () => {
   return (
     <IsMobile>
       <div>
-        <h1>KYC Verification - Phase 1</h1>
+        <h1>KYC Verification</h1>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>Identity details submitted successfully! Proceeding to Face Capture...</p>}
         <form onSubmit={handleSubmit}>

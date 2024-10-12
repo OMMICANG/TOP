@@ -10,6 +10,12 @@ import Script from 'next/script';
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com"/>
+        <link rel="preconnect" href="https://fonts.gstatic.com"/>
+        <link href="https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sixtyfour+Convergence&display=swap" rel="stylesheet"></link>
+      </head>
       <body>
         {children}
         <Script

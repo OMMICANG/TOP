@@ -1,6 +1,139 @@
 /* src/LandingPage.css  */
-
+body {
+    width: 100vw;
+    background-color: #000;
+    margin: 0;
+    padding:0;
+}
 div .landing-page {
+    margin: 0;
+    padding: 0;
+    top: 0;
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+}
+
+.landing-page {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    padding: 20px;
+}
+
+.animated-text {
+    font-family: "Sixtyfour Convergence", sans-serif;
+    font-size: 15px;
+    width: 80vw;
+    height: 5vh;
+    margin-top: 5vh;
+    margin-bottom: 5px;
+    padding: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    /* background-color: white; */
+}
+
+.horizontal-line {
+    width: 50%;
+    border: 0;
+    height: 1px;
+    background: white;
+    margin-bottom: 5px;
+}
+
+
+.animated-block, .animated-block2, .cta-button {
+    font-family: "Anton", serif;
+    text-align: center;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 20px;
+    color: goldenrod;
+    text-transform: uppercase;
+    white-space: pre-wrap;
+    word-spacing: 3px;
+    opacity: 0;
+    animation: scrollUp 2s forwards, animateText 2s steps(30) forwards;
+    animation-delay: 2s;
+}
+
+.animated-block{
+    width: 100vw;
+    padding-bottom: 10px;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 10px;
+    /* background-color: white; */
+}
+
+.animated-block2 {
+    width: 80vw;
+    padding: 10px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #fff;
+    /* background-color: goldenrod; */
+    animation-delay: 20s;
+}
+
+@keyframes scrollUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* CTA Button CSS */
+
+.buttonContainer{
+    display: flex;
+    /* background-color: goldenrod; */
+    width: 80vw;
+    height: 10vh;
+    padding: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+.cta-button {
+    position: relative;
+    padding: 20px 15px 20px 25px;
+    margin-right: 3px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: black;
+    text-transform: uppercase;
+    background-color: white;
+    border: 2px solid goldenrod;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    animation-delay: 22s;
+}
+
+.cta-button:hover {
+    background-color: goldenrod;
+    color: black;
+    transition: 1s ease-in-out;
+}
+
+
+
+
+/* **************************************************************************************************** */
+
+/* div .landing-page {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -37,14 +170,14 @@ div .landing-page {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* text-align: center; */
+    text-align: center;
     align-items: center;
     overflow: hidden;
 }
 
 .animated-block, .animated-block2, .cta-button {
     font-family: "Playfair Display", serif;
-    /* text-align: center; */
+    text-align: center;
     font-optical-sizing: auto;
     font-weight: 700;
     font-style: normal;
@@ -60,7 +193,7 @@ div .landing-page {
 .animated-block2 {
     font-size: 13px;
     margin-top: 0px;
-    /* text-align: center; */
+    text-align: center;
     color: #fff;
     animation-delay: 5s;
 }
@@ -77,7 +210,7 @@ div .landing-page {
 }
 
 /* CTA Button CSS */
-.cta-button {
+/*.cta-button {
     margin-top: 20px;
     padding: 10px 30px;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
@@ -96,4 +229,4 @@ div .landing-page {
     background-color: goldenrod;
     color: black;
     transition: 1s ease-in-out;
-}
+} */

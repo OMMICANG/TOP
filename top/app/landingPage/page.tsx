@@ -3,7 +3,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation'; // Use Next.js's useRouter for navigation
 import '../styles/LandingPage.css'; // Ensure you have this file for custom styles
-import IsMobile from '../components/IsMobile' // mobile-view call
 
 const LandingPage: React.FC = () => {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -33,7 +32,7 @@ const LandingPage: React.FC = () => {
                 }
 
                 iteration += 1 / 3;
-            }, 10);
+            }, 30);
         };
 
         const h1Element = document.querySelector(".animated-text") as HTMLElement;
@@ -50,31 +49,32 @@ const LandingPage: React.FC = () => {
     }, []);
 
     return (
-        <IsMobile>
         <div className="landing-page">
             <h1 className="animated-text" data-value="An App Built For Humanity">An App Built For Humanity</h1>
             <hr className="horizontal-line" />
-            <div className="animated-block-container">
-                <p className="animated-block" data-value={`
-      Ommicang Unite As One.
-      Ommicang Together Strong.
-      The Very Notion Of Light
-      Spawns From The Existence Of
-      Darkness.
-      I was Birth From The Dark.
-      I Become The Light.`}>
+            <p className="animated-block" data-value={`
+Ommicang Unite As One.
+Ommicang Together Strong.
+The Very Notion Of Light
+Spawns From The Existence Of 
+Darkness.
+I was Birth From The Dark.
+I Become The Light.`}>
                     Ommicang Unite As One.
                     Ommicang Together Strong.
-                    The Very Notion Of Light 
-                    Spawns From The Existence Of Darkness.
-                    I was Birth From The Dark.
-                    I Become The Light.
-                </p>
-                <p className="animated-block2" data-value="I Am OMMICANG!!!">I Am OMMICANG!!!</p>
+                    The Very Notion Of Light Spawns From The Existence Of
+                    Darkness
+                    I was Birth From The Dark
+                    I Become The Light
+            </p>
+
+            <p className="animated-block2" data-value="I Am OMMICANG!!!">I Am OMMICANG!!!</p>
+
+            <span className='buttonContainer'>
                 <button className="cta-button" onClick={handleClick}>Be OMMICANG</button>
-            </div>
+                <button className="cta-button" onClick={handleClick}>I Am OMMICANG</button>
+            </span>
         </div>
-        </IsMobile>
     );
 };
 

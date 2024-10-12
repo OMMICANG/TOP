@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Preloader from './preloader/page';
+// import Preloader from './preloader/page';
 import LandingPage from './landingPage/page';
 import IsMobile from './components/IsMobile';
 
@@ -54,7 +54,7 @@ const Home = () => {
   return (
     <IsMobile>
       <div>
-        {loading ? <Preloader /> : <LandingPage />}
+        {loading ? <LandingPage /> : <LandingPage />}
 
       </div>
     </IsMobile>

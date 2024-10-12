@@ -37,12 +37,14 @@ div .landing-page {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    /* text-align: center; */
     align-items: center;
     overflow: hidden;
 }
 
 .animated-block, .animated-block2, .cta-button {
     font-family: "Playfair Display", serif;
+    /* text-align: center; */
     font-optical-sizing: auto;
     font-weight: 700;
     font-style: normal;
@@ -58,6 +60,7 @@ div .landing-page {
 .animated-block2 {
     font-size: 13px;
     margin-top: 0px;
+    /* text-align: center; */
     color: #fff;
     animation-delay: 5s;
 }

@@ -54,7 +54,7 @@ body {
 }
 
 
-.animated-block, .animated-block2, .cta-button {
+.animated-block, .animated-block2, .cta-button, .swiper-container {
     font-family: "Anton", serif;
     text-align: center;
     font-optical-sizing: auto;

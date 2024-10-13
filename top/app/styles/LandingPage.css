@@ -1,11 +1,12 @@
 /* src/LandingPage.css  */
+
 body {
     width: 100vw;
     background-color: #000;
     margin: 0;
     padding:0;
 }
-div .landing-page {
+.landing-page {
     margin: 0;
     padding: 0;
     top: 0;
@@ -27,16 +28,21 @@ div .landing-page {
 }
 
 .animated-text {
+    display: flex;
+    align-items:center ;
+    justify-content: center;
     font-family: "Sixtyfour Convergence", sans-serif;
     font-size: 15px;
     width: 80vw;
     height: 5vh;
-    margin-top: 5vh;
-    margin-bottom: 5px;
+    margin-top: 2vh;
+    margin-bottom: 0;
     padding: 5px;
     text-align: center;
     text-transform: uppercase;
+    animation-delay: 2s;
     /* background-color: white; */
+    /* border: 2px solid white; */
 }
 
 .horizontal-line {
@@ -44,7 +50,7 @@ div .landing-page {
     border: 0;
     height: 1px;
     background: white;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 
@@ -61,16 +67,20 @@ div .landing-page {
     word-spacing: 3px;
     opacity: 0;
     animation: scrollUp 2s forwards, animateText 2s steps(30) forwards;
-    animation-delay: 2s;
+    animation-delay: 4s;
 }
 
 .animated-block{
-    width: 100vw;
+    display: flex;
+    width: 80vw;
     padding-bottom: 10px;
+    justify-content: center;
+    justify-items: flex-start;
     text-align: center;
     margin-top: 0;
     margin-bottom: 10px;
     /* background-color: white; */
+    /* border: 2px solid white; */
 }
 
 .animated-block2 {
@@ -95,21 +105,50 @@ div .landing-page {
     }
 }
 
+.swipe-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8); /* Darken overlay */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
 /* CTA Button CSS */
 
-.buttonContainer{
+.cta-wrapper{
     display: flex;
-    /* background-color: goldenrod; */
-    width: 80vw;
-    height: 10vh;
-    padding: 10px;
-    justify-content: space-between;
+    flex-direction: row;
+    /* border: 2px solid goldenrod; */
+    left: 0;
+    margin-bottom: 0;
+    width: 90vw;
+    /* height: 10vh; */
+    padding: 5px;
+    justify-content: flex-start;
     align-items: center;
 }
 .cta-button {
     position: relative;
-    padding: 20px 15px 20px 25px;
-    margin-right: 3px;
+    padding: 15px;
+    margin-top: 5px;
+    /* margin-right: 3px; */
+    text-align: start;
     font-weight: 700;
     font-size: 1rem;
     color: black;
@@ -117,9 +156,14 @@ div .landing-page {
     background-color: white;
     border: 2px solid goldenrod;
     border-radius: 5px;
-    cursor: pointer;
+    cursor: grab;
     transition: background-color 0.3s, color 0.3s;
     animation-delay: 22s;
+}
+
+.button2{
+    position: absolute;
+    left: 60vw;
 }
 
 .cta-button:hover {
@@ -128,6 +172,57 @@ div .landing-page {
     transition: 1s ease-in-out;
 }
 
+.swiper-container{
+    display: flex;
+    flex-direction: row;
+    padding-right: 10px;
+    width: 90vw;
+    /* border: 2px solid white; */
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 0;
+}
+  
+  /* Hand Swipe Left Icon */
+.PiHandSwipeLeftBold {
+    position: absolute;
+    left: 85%;
+    font-size: 30px;
+    animation: swipeLeft 1.5s infinite ease-in-out; /* Continuous left swipe animation */
+  }
+  
+  /* Hand Swipe Right Icon */
+.PiHandSwipeRightBold {
+    margin-left: 5px;
+    font-size: 30px;
+    animation: swipeRight 1.5s infinite ease-in-out; /* Continuous right swipe animation */
+  }
+  
+/* Keyframes for left swipe animation */
+@keyframes swipeLeft {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(-10px); /* Move left */
+    }
+    100% {
+      transform: translateX(0); /* Return to original position */
+    }
+  }
+  
+  /* Keyframes for right swipe animation */
+  @keyframes swipeRight {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(10px); /* Move right */
+    }
+    100% {
+      transform: translateX(0); /* Return to original position */
+    }
+  }
 
 
 

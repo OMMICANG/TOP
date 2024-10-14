@@ -285,3 +285,20 @@
     opacity: 0;
   }
 }
+
+.play-music-button {
+  display: flex;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin-top: 10px;
+  margin-right: 10px;
+  justify-content: flex-start;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}

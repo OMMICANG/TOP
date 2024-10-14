@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Preloader from './preloader/page';
-// import LandingPage from './landingPage/page';
+import LandingPage from './landingPage/page';
 import IsMobile from './components/IsMobile';
 
 // Define the type for the window object with Telegram
@@ -54,7 +54,7 @@ const Home = () => {
   return (
     <IsMobile>
       <div>
-        {loading ? <Preloader /> : <Preloader />}
+        {loading ? <Preloader /> : <LandingPage />}
 
       </div>
     </IsMobile>

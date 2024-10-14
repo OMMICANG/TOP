@@ -181,23 +181,39 @@ const VideoCapture: React.FC = () => {
   return (
     <IsMobile>
       <div className="video-capture-container">
-        <h1>Video Capture</h1>
-        {error && <p style={{ color: "red" }}>{error}</p>}
 
+      <fieldset>
+          <legend>video recording</legend>
+          <ul>
+            <li>center your face within the circle</li>
+            <li>Start Recording and say the words below:</li>
+            <li>hi, i am (your full name). | i am ommicang</li>
+            <li>preview video and do not close preview || submit and continue</li>
+          </ul>
+        </fieldset>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="webcam-wrapper">
         <div className="video-wrapper">
           {showCountdown > 0 && <div className="countdown">{showCountdown}</div>}
           <div className="circle-overlay"></div> {/* Add the circle overlay */}
           <video ref={videoRef} className="video-feed" />
         </div>
+        </div>
 
         {isRecording ? (
           <div>
             <p className="recording-timer">Recording... {timer}/10s</p>
+
+            <span className="buttonContainer">
+
             <button onClick={stopRecording} disabled={timer >= 10}>
               Stop Recording
             </button>
+
+            </span>
           </div>
-        ) : (
+        ) : (          
           <button onClick={startRecording}>Start Recording</button>
         )}
 
@@ -214,9 +230,11 @@ const VideoCapture: React.FC = () => {
               <button onClick={submitVideo} disabled={capturing}>
                 {capturing ? "Processing..." : "Submit Video"}
               </button>
+
             )}
           </>
         )}
+
       </div>
     </IsMobile>
   );

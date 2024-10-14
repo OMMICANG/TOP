@@ -109,11 +109,17 @@ const FaceCapture: React.FC = () => {
   return (
     <IsMobile>
       <div className="face-capture-container">
-        <div className="header">
-        <h1>face capture</h1>
-        </div>
-        
-      
+
+        <fieldset>
+          <legend>face capture</legend>
+          <ul>
+            <li>center your face within the circle</li>
+            <li>smile for the camera</li>
+            <li>capture</li>
+            <li>preview and do not close preview || submit and continue</li>
+          </ul>
+        </fieldset>
+
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         <div className="webcam-wrapper">

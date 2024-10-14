@@ -10,22 +10,35 @@ body{
   display: flex;
   font-family: "Anton";
   flex-direction: column;
+  align-items: center;
   text-align: center;
+  text-transform: uppercase;
   }
 
-  .header{
+  fieldset{
     display: flex;
-    width: 50vw;
-    justify-content: center;
-    align-self: center;
-    padding: 2px;
-    text-transform: uppercase;
-    border: 2px ridge;
+    width: 80vw;
+    height: 15vh;
+    margin-top: 2vh;
+    margin-bottom: 10px;
   }
 
-  .header>h1{
+  legend{
+    font-size: 20px;
     padding: 0;
+    margin: 0;
     color: goldenrod;
+  }
+
+  ul{
+    position: relative;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+  }
+
+  li{
+  font-size: 10px;
   }
   
   .webcam-wrapper {
@@ -35,7 +48,6 @@ body{
     position: relative;
     padding: 5px;
     margin-bottom: 10px;
-    border: 2px solid white;
   }
   
   .circle-wrapper {

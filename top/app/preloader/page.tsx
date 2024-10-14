@@ -12,8 +12,9 @@ import '../styles/Preloader.css' // Make sure to create this CSS file for stylin
 const Preloader = () => {
 
         const audioRef = useRef<HTMLAudioElement | null>(null);
-        const [musicPlaying, setMusicPlaying] = useState(false);
+        const [musicPlaying, setMusicPlaying] = useState(false); // To track if the music is playing
     
+         // Function to handle music play
         const handlePlayMusic = () => {
             if (audioRef.current) {
                 audioRef.current.play();
@@ -42,12 +43,14 @@ const Preloader = () => {
             </div>
             <h1  id='h1'>BY OMMICANG | FOR HUMANITY</h1>
 
+             {/* Show button only if music isn't playing yet */}
             {!musicPlaying && (
                 <button onClick={handlePlayMusic} className="play-music-button">
                     Enable Background Music
                 </button>
             )}
 
+            {/* Audio element with looping background music */}
             <audio ref={audioRef} loop>
                 <source src="/music/Skott_-_Overcome__Official_Lyric_Video_256k-1.mp3" type="audio/mpeg" />
                 Your browser does not support the audio element.

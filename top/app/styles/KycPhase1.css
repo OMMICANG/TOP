@@ -1,0 +1,111 @@
+body {
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    color: white;
+    background-color: #000;
+
+}
+
+.circleUser{
+  font-size: 5rem;
+  margin-bottom: 0;
+}
+
+.kycPhase1Container {
+    font-family: "Anton";
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* text-align: center; */
+    padding: 20px;
+  }
+  
+  legend{
+    font-family: "Sixtyfour Convergence", sans-serif;
+    font-size: 10px;
+    margin-bottom: 15px;
+    color: goldenrod;
+    border-color: goldenrod;
+    text-align: center;
+  }
+  .name{
+    padding: 5px;
+    margin-bottom: 15px;
+    margin-right: 10px;
+    border: 2px outset goldenrod;
+    border-radius: 5px;
+    border-right: hidden;
+  }
+
+  .name>label{
+    margin-right: 10px;
+  }
+
+  .email{
+    padding: 5px;
+    margin-bottom: 15px;
+    border: 2px outset goldenrod;
+    border-radius: 5px;
+    border-right: hidden;
+  }
+
+  .email>label{
+    margin-right: 8px;
+  }
+
+  .country{
+    padding: 5px;
+    margin-bottom: 15px;
+    border: 2px outset goldenrod;
+    border-radius: 5px;
+    border-right: hidden;
+  }
+
+  .country>label{
+    margin-right: 8px;
+  }
+
+
+  .upload{
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    padding: 5px;
+    margin-bottom: 15px;
+    border: 2px outset goldenrod;
+    border-radius: 5px;
+    border-right: hidden;
+  }
+
+  .buttonContainer{
+    display: flex;
+    justify-content: flex-end;
+    padding: 2px;
+    width: 90vw;
+    margin-top: 5px;
+  }
+
+  button{
+    font-family: "Anton";
+    font-size:12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    background-color: goldenrod;
+  }
+  
+  .recaptcha{
+    display: flex;
+    justify-content: flex-end;
+    padding: 2px;
+    width: 90vw;
+  }
+  
+  
+  
+  
+  
+  

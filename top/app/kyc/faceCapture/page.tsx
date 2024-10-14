@@ -109,7 +109,11 @@ const FaceCapture: React.FC = () => {
   return (
     <IsMobile>
       <div className="face-capture-container">
-        <h1>Face Capture</h1>
+        <div className="header">
+        <h1>face capture</h1>
+        </div>
+        
+      
         {error && <p style={{ color: "red" }}>{error}</p>}
 
         <div className="webcam-wrapper">
@@ -123,7 +127,9 @@ const FaceCapture: React.FC = () => {
           </div>
         </div>
 
-        <button onClick={capture}>
+        <span className="buttonContainer">
+
+        <button className="captureBtn" onClick={capture}>
           {capturedImage ? "Retake" : "Capture"}
         </button>
 
@@ -153,6 +159,8 @@ const FaceCapture: React.FC = () => {
         <button onClick={submitCapture} disabled={capturing}>
           {capturing ? "Processing..." : "Submit & Continue"}
         </button>
+
+        </span>
       </div>
     </IsMobile>
   );

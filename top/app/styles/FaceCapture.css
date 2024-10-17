@@ -8,7 +8,7 @@ body{
 
 .face-capture-container {
   display: flex;
-  font-family: "Anton";
+  font-family: "Anton", serif;
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -24,10 +24,13 @@ body{
   }
 
   legend{
-    font-size: 20px;
-    padding: 0;
+    font-family: "Sixtyfour Convergence", sans-serif;
+    font-size: 10px;
     margin: 0;
+    padding: 0;
     color: goldenrod;
+    border-color: goldenrod;
+    text-align: center;
   }
 
   ul{

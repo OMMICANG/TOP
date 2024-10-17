@@ -10,16 +10,23 @@ import IsMobile from "../../components/IsMobile";
 import "../../styles/KycPhase1.css";
 import Compressor from "compressorjs"; // Import compressorjs
 
-// Define a list of countries for the dropdown
-const countries = [
- "Nigeria", "United Kingdom", 
-  // Add more countries as needed
-];
+// Define the type for identity options
+type IdentityOptionsType = {
+  [key: string]: string[]; // This allows dynamic string keys with values as string arrays
+};
 
+// Define a list of countries and their respective identity card types
+const identityOptions: IdentityOptionsType = {
+  Nigeria: ["NIN"],
+  "United Kingdom": ["Passport"],
+  // Add more countries and their respective IDs as needed
+};
 const KYCPhase1 = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [country, setCountry] = useState(""); // New state for selected country
+  const [identityType, setIdentityType] = useState(""); // State for selected identity type
+  const [identityCardNumber, setIdentityCardNumber] = useState(""); // State for identity card number input
   const [identityCard, setIdentityCard] = useState<File | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -82,7 +89,7 @@ const KYCPhase1 = () => {
     const sanitizedName = name.trim();
 
     // Validate inputs
-    if (!sanitizedName || !sanitizedEmail || !country || !identityCard || !isVerified) { 
+    if (!sanitizedName || !sanitizedEmail || !country || !identityType || !identityCardNumber || !identityCard || !isVerified) { 
       setError("Please fill in all the fields and complete the reCAPTCHA.");
       setUploading(false);
       return;
@@ -120,6 +127,8 @@ const KYCPhase1 = () => {
         name: sanitizedName,
         email: sanitizedEmail,
         country,  // Store selected country
+        identity_type: identityType, // Store the selected identity type
+        identity_card_number: identityCardNumber, // Store the ID card number
         identity_card_url: identityCardURL,
       },
     ]);
@@ -137,11 +146,19 @@ const KYCPhase1 = () => {
     setName("");
     setEmail("");
     setCountry(""); // Reset country field
+    setIdentityType("");
+    setIdentityCardNumber("");
     setIdentityCard(null);
     setUploading(false);
 
     // Navigate to Phase 2 (Face Capture)
     router.push("/kyc/faceCapture");
+  };
+
+  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setCountry(e.target.value);
+    setIdentityType(""); // Reset identity type when country changes
+    setIdentityCardNumber(""); // Reset ID card number when country changes
   };
 
   return (
@@ -179,6 +196,47 @@ const KYCPhase1 = () => {
 
             <div className="country">
               <label>Country:</label>
+              <select value={country} onChange={handleCountryChange} required>
+                <option value="">Select Country</option>
+                {Object.keys(identityOptions).map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {country && (
+              <>
+                <div className="identityType">
+                  <label>Identity Type:</label>
+                  <select value={identityType} onChange={(e) => setIdentityType(e.target.value)} required>
+                    <option value="">Select Identity Type</option>
+                    {identityOptions[country]?.map((type: string) => (
+                      <option key={type} value={type}>
+                        {type}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="idNumber">
+                  <label>{identityType} ID Number:</label>
+                  <input
+                    type="text"
+                    value={identityCardNumber}
+                    onChange={(e) => setIdentityCardNumber(e.target.value)}
+                    required
+                    placeholder={`Enter your ${identityType} number`}
+                  />
+                </div>
+              </>
+            )}
+
+
+
+            {/* <div className="country">
+              <label>Country:</label>
               <select value={country} onChange={(e) => setCountry(e.target.value)} required>
                 <option value="">Select Country</option>
                 {countries.map((country) => (
@@ -187,7 +245,7 @@ const KYCPhase1 = () => {
                   </option>
                 ))}
               </select>
-            </div>
+            </div> */}
 
             <span className="upload">
               <label>ID:</label>

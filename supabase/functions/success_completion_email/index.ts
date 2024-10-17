@@ -1,17 +1,29 @@
 import { serve } from "https://deno.land/x/sift@0.6.0/mod.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
-import { sendEmail } from "./utils/sendEmail.ts"; // ensure this utility exists
+import { createClient } from 'jsr:@supabase/supabase-js@2'; // Use the new import link
+import { sendEmail } from "./utils/sendEmail.ts";
 
-// Fetch environment variables
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    // Handle preflight request for CORS
+    return new Response(null, {
+      status: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "https://top-orcin.vercel.app",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Access-Control-Max-Age": "86400",
+      },
+    });
+  }
+
   try {
     const { kycUUID } = await req.json();
 
-    // Fetch user data from the 'kyc_users' table based on the provided UUID
+    // Fetch user data based on the UUID
     const { data: userData, error } = await supabase
       .from("kyc_users")
       .select("name, email, country, identity_type, identity_card_number")
@@ -22,7 +34,7 @@ serve(async (req) => {
       return new Response("Error fetching user data", { status: 400 });
     }
 
-    // Prepare email content
+    // Prepare the email content
     const emailContent = `
       Hi ${userData.name},
       Your KYC process has been successfully completed. Below are your details:
@@ -33,18 +45,25 @@ serve(async (req) => {
       - Identity Card Number: ${userData.identity_card_number}
     `;
 
-    // Send email using the sendEmail utility function
+    // Send the email
     const emailResponse = await sendEmail(userData.email, "KYC Completion", emailContent);
-    
-    // Check if the email was sent successfully
     if (!emailResponse.ok) {
       return new Response("Failed to send email", { status: 500 });
     }
 
-    return new Response("Email sent successfully", { status: 200 });
+    return new Response("Email sent successfully", {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "https://top-orcin.vercel.app",
+      },
+    });
   } catch (error) {
-    console.error("Error occurred:", error);
-    return new Response("Failed to send email", { status: 500 });
+    return new Response("Failed to send email", {
+      status: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "https://top-orcin.vercel.app",
+      },
+    });
   }
 });
 

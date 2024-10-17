@@ -175,7 +175,7 @@ const VideoCapture: React.FC = () => {
 
          // Call the Supabase Edge function to send the KYC completion email
     const { error: emailError } = await supabase.functions.invoke(
-      "success_completion_email",
+      "success_email",
       {
         body: { kycUUID }, // Pass UUID to the function
       }

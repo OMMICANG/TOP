@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import IsMobile from "../../components/IsMobile";
+import { sendEmail } from "../../lib/sendEmail"; // Import the server action
 import "../../styles/VideoCapture.css"; // Add this for custom styling
 
 const VideoCapture: React.FC = () => {
@@ -123,7 +124,7 @@ const VideoCapture: React.FC = () => {
     }
   };
 
-  // Function to upload the video
+  // Function to upload the video and send the email
   const submitVideo = async () => {
     setError(null);
     setCapturing(true);
@@ -175,21 +176,9 @@ const VideoCapture: React.FC = () => {
         return;
       }
 
-        // Call the backend API to trigger the email
-    try {
-      const response = await fetch("/api/sendEmail", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ kycUUID }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to send KYC completion email.");
-      }
-
-      setCapturing(false);
+       // Trigger the server action to send the KYC completion email
+       try {
+        await sendEmail(kycUUID); // Call the server action with the UUID
       router.push("/kyc/success"); // Navigate to the KYC completion page
     }
   catch (emailError) {

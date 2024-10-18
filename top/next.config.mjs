@@ -3,9 +3,7 @@ const nextConfig = {
     experimental: {
         serverActions: true,
       },
-    };
 
-    module.exports = {
       async headers() {
         return [
           {
@@ -20,6 +18,8 @@ const nextConfig = {
           }
         ]
       }
+
     };
+
 
 export default nextConfig;

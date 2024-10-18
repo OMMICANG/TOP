@@ -1,5 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from "next";
+"use server";
 
+import type { NextApiRequest, NextApiResponse } from "next";
 // Supabase client setup
 import { createClient } from "@supabase/supabase-js";
 

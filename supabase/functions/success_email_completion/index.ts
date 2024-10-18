@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { createClient } from 'jsr:@supabase/supabase-js@2'; // Use the new import link
-import { sendEmail } from './utils/sendEmail.ts'; // Import your sendEmail utility
+import { sendEmail } from './utils/sendEmail.js'; // Import your sendEmail utility
 
 // Initialize Supabase Client
 const supabase = createClient(

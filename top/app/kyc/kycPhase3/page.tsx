@@ -178,7 +178,7 @@ const VideoCapture: React.FC = () => {
         // Call the backend API to trigger the email
     try {
       const response = await fetch("/api/sendEmail", {
-        method: "POST",
+        method: "GET",
         headers: {
           "Content-Type": "application/json",
         },

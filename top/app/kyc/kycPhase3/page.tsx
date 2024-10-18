@@ -175,22 +175,28 @@ const VideoCapture: React.FC = () => {
         return;
       }
 
-         // Call the Supabase Edge function to send the KYC completion email
-    const { error: emailError } = await supabase.functions.invoke(
-      "success_email",
-      {
-        body: { kycUUID }, // Pass UUID to the function
-      }
-    );
+        // Call the backend API to trigger the email
+    try {
+      const response = await fetch("/api/sendEmail", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ kycUUID }),
+      });
 
-    if (emailError) {
-      setError("Failed to send KYC completion email. Please try again.");
-      setCapturing(false);
-      return;
-    }
+      if (!response.ok) {
+        throw new Error("Failed to send KYC completion email.");
+      }
 
       setCapturing(false);
       router.push("/kyc/success"); // Navigate to the KYC completion page
+    }
+  catch (emailError) {
+    setError("Failed to send KYC completion email. Please try again.");
+    setCapturing(false);
+    console.log(emailError)
+     }
     }
   };
 

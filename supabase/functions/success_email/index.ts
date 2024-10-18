@@ -2,7 +2,7 @@ import { serve } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // Supabase project URL and service role key
-const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+const supabaseUrl = Deno.env.get("NEXT_PUBLIC_SUPABASE_URL")!;
 const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
@@ -31,7 +31,7 @@ serve(async (req) => {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "https://top-orcin.vercel.app/",  // Allow all origins for testing, you can specify your frontend URL instead
+        "Access-Control-Allow-Origin": "https://top-orcin.vercel.app",  // Allow all origins for testing, you can specify your frontend URL instead
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
       },
@@ -40,7 +40,7 @@ serve(async (req) => {
     return new Response(`Error: ${err.message}`, {
       status: 500,
       headers: {
-        "Access-Control-Allow-Origin": "*",  // CORS header
+        "Access-Control-Allow-Origin": "https://top-orcin.vercel.app",  // CORS header
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
       },

@@ -31,7 +31,7 @@ serve(async (req) => {
       status: 200,
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "no-cors",  // Allow all origins for testing, you can specify your frontend URL instead
+        "Access-Control-Allow-Origin": "n",  // Allow all origins for testing, you can specify your frontend URL instead
         "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
       },

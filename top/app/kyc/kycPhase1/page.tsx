@@ -5,7 +5,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import ReCAPTCHA from "react-google-recaptcha";
 import { FaCircleUser } from "react-icons/fa6";
-import { verifyCaptcha } from "../../api/ServerActions";  // Recaptcha Server Path
+import { verifyCaptcha } from "../../pages/api/ServerActions";  // Recaptcha Server Path
 import IsMobile from "../../components/IsMobile";
 import "../../styles/KycPhase1.css";
 import Compressor from "compressorjs"; // Import compressorjs

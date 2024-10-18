@@ -43,6 +43,26 @@ serve(async (req) => {
     // Send the email via SendGrid
     await sgMail.send(msg);
 
+    return new Response("Success email sent", {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "https://top-orcin.vercel.app/",  // Allow all origins for testing, you can specify your frontend URL instead
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  } catch (err) {
+    return new Response(`Error: ${err.message}`, {
+      status: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",  // CORS header
+        "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+      },
+    });
+  }
+
     return new Response(
       JSON.stringify({ message: 'Email sent successfully.' }),
       { status: 200 }

@@ -18,6 +18,8 @@ const VideoCapture: React.FC = () => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const router = useRouter();
 
+
+  //  Is Recording Effect
   useEffect(() => {
     if (isRecording) {
       const countdownTimer = setInterval(() => {

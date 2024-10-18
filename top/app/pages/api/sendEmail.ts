@@ -24,7 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       return res.status(200).json({ message: "Success email sent", data });
     } catch (err) {
-      return res.status(500).json({ message: "Internal server error", error: err.message });
+      // Type guard to check if 'err' is an instance of Error and has a 'message'
+      if (err instanceof Error) {
+        return res.status(500).json({ message: "Internal server error", error: err.message });
+      }
+      // If the error is not of type 'Error', handle it in a generic way
+      return res.status(500).json({ message: "Internal server error", error: String(err) });
     }
   } else {
     res.setHeader("Allow", ["POST"]);

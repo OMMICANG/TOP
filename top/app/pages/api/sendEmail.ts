@@ -34,6 +34,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   } else {
     res.setHeader("Allow", ["POST"]);
+    res.setHeader("Access-Control-Allow-Origin", "https://top-orcin.vercel.app");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 }

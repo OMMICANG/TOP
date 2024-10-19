@@ -1,11 +1,11 @@
 
 import { serve } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import sgMail from 'https://esm.sh/@sendgrid/mail@7.2.1';
 
 // Supabase project URL and service role key
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Initialize SendGrid with API key
 sgMail.setApiKey(Deno.env.get('SENDGRID_API_KEY') ?? '');

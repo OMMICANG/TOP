@@ -1,10 +1,11 @@
+
 import { serve } from "https://deno.land/x/sift@0.6.0/mod.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 // Supabase project URL and service role key
-const supabaseUrl = Deno.env.get("NEXT_PUBLIC_SUPABASE_URL")!;
-const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 serve(async (req) => {
   try {

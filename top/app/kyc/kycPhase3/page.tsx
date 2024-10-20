@@ -178,7 +178,7 @@ const VideoCapture: React.FC = () => {
 
        // Trigger the server action to send the KYC completion email
        try {
-        await sendEmail(kycUUID); // Call the server action with the UUID
+        // await sendEmail(kycUUID); // Call the server action with the UUID
       router.push("/kyc/success"); // Navigate to the KYC completion page
     }
   catch (emailError) {

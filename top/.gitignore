@@ -15,6 +15,7 @@
 
 # production
 /build
+/app/send_email_edge
 
 # misc
 .DS_Store

@@ -1,12 +1,12 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { supabase } from "../lib/supabaseClient.ts";
+import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import ReCAPTCHA from "react-google-recaptcha";
 import { FaCircleUser } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
-import { verifyCaptcha } from "../pages/api/ServerActions.ts";  // Recaptcha Server Path
+import { verifyCaptcha } from "../pages/api/ServerActions";  // Recaptcha Server Path
 import IsMobile from "../components/IsMobile";
 import "../styles/Login.css";
 

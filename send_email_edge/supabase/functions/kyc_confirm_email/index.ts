@@ -26,7 +26,7 @@ serve(async (req: Request) => {
         subject: "THE OMMICANG CIRCLE - KYC EMAIL CONFIRMATION",
         html: ` 
       <div style=" margin: 0; padding: 0; display: flex; justify-self: center; justify-content: center;
-       align-items: center; width: 85vw; height: auto; background-color: #a7a7a7; border: 10px ridge goldenrod;">
+       align-items: center; width: 85vw; height: auto; color: white; background-color: #a7a7a7; border: 10px ridge goldenrod;">
 
         <div style=" width: 90%; margin: 5px; padding-left: 20px; align-content: flex-start;
             word-wrap: break-word; background-color: #000; color: #fff;">
@@ -35,7 +35,7 @@ serve(async (req: Request) => {
               font-weight: 700;">
 
               <img src="https://top-orcin.vercel.app/images/OMMICANG_New_Logo.jpg" alt="Logo" style="width: 75px; height: 75px;
-              margin-left: -15px; " />
+              margin-left: -20px; " />
               <h1 style="font-size: 22px; color: goldenrod; text-transform: uppercase;">the ommicang circle</h1>
 
             </div>

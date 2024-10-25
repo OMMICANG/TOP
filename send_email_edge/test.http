@@ -1,4 +1,0 @@
-curl --request POST 'https://pkmyqbttmqoipqyuqtmg.supabase.co/functions/v1/kyc_Confirm_email' \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBrbXlxYnR0bXFvaXBxeXVxdG1nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjgwMzc1NDYsImV4cCI6MjA0MzYxMzU0Nn0.49gy0MXgVliVBerZAMg9ygiwPCZEKp1mfGFdtgJY188' \
-  --header 'Content-Type: application/json' \
-  --data '{"email":"no-reply@theommicangproject.online", "name":"Test person", "body":"This is a test email"}'

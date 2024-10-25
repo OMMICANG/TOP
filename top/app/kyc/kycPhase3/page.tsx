@@ -4,7 +4,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import IsMobile from "../../components/IsMobile";
-// import { sendEmail } from "../../lib/sendEmail"; // Import the server action
 import "../../styles/VideoCapture.css"; // Add this for custom styling
 
 const VideoCapture: React.FC = () => {

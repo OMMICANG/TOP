@@ -33,11 +33,11 @@ const Success: React.FC = () => {
 
         const h1Element = document.querySelector(".animated-text") as HTMLElement;
         const blockElement = document.querySelector(".animated-block") as HTMLElement;
-        const p2Element = document.querySelector(".animated-block2") as HTMLElement;
+        // const p2Element = document.querySelector(".animated-block2") as HTMLElement;
 
         animateText(h1Element);
         animateText(blockElement);
-        animateText(p2Element);
+        // animateText(p2Element);
 
         return () => {
             clearInterval(animateText as unknown as number); // This line clears the interval

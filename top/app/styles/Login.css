@@ -1,0 +1,114 @@
+body {
+    margin: 0;
+    padding: 0;
+    flex-direction: column;
+    color: white;
+    background-color: #000;
+
+}
+
+.circleUser{
+  font-size: 5rem;
+  margin-bottom: 0;
+}
+
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    font-family: "Anton";
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-transform: uppercase;
+  }
+  
+  legend{
+    font-family: "Sixtyfour Convergence", sans-serif;
+    font-size: 10px;
+    margin-bottom: 10px;
+    color: goldenrod;
+    border-color: goldenrod;
+    text-align: center;
+  }
+
+  .email{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 2px outset goldenrod;
+    border-radius: 5px;
+    border-right: hidden;
+  }
+
+  .email>label{
+    margin-right: 8px;
+  }
+
+  .buttonContainer{
+    display: flex;
+    justify-content: flex-end;
+    padding: 2px;
+    width: 90vw;
+    margin-bottom: 5px;
+  }
+
+  button{
+    font-family: "Anton";
+    font-size:12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    border: 2px ridge  goldenrod;
+    background-color: transparent;
+  }
+  
+  
+
+  .recaptcha{
+    display: flex;
+    justify-content: flex-end;
+    padding: 2px;
+    width: 90vw;
+  }
+  
+  
+  .mdEmail{
+    /* position: absolute; */
+    margin-left: -20px;
+    color: #000;
+  }
+
+  input[type=checkbox]{
+    accent-color: goldenrod;
+  }
+
+  .checkbox{
+    display: flex;
+    align-items: center;
+    padding: 5px;
+  }
+
+  .checkbox>span{
+    font-size: 12px;
+  }
+
+
+  .register{
+    display: flex;
+    justify-self: center;
+    padding: 5px;
+  }
+
+  .register>a{
+    color: goldenrod;
+    text-decoration: none;
+  }
+  
+  
+  
+  

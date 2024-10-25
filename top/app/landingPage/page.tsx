@@ -112,8 +112,8 @@ I Become The Light.`}>
             <p className="animated-block2" data-value="I Am OMMICANG!!!">I Am OMMICANG!!!</p>
 
             <div className="cta-wrapper">
-                    <span className="cta-button">Be OMMICANG</span>
-                    <span className="cta-button button2">I&apos;m OMMICANG</span>
+                    <span className="cta-button">I&apos;m OMMICANG</span>
+                    <span className="cta-button button2">Be OMMICANG</span>
             </div>
 
             <div className="swiper-container">

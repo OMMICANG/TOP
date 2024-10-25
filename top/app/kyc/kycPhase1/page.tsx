@@ -139,6 +139,7 @@ const KYCPhase1 = () => {
       return;
     }
 
+
     // Store the UUID in localStorage for subsequent phases
     localStorage.setItem("kycUUID", kycUUID);
 

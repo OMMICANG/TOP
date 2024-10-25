@@ -39,10 +39,10 @@ const FaceCapture: React.FC = () => {
     }
   };
 
-  const handleClosePreview = () => {
-    setPreviewImage(null); // Clear the preview image
-    setHasPreviewed(false); // Reset the preview status
-  };
+  // const handleClosePreview = () => {
+  //   setPreviewImage(null); // Clear the preview image
+  //   setHasPreviewed(false); // Reset the preview status
+  // };
 
   const submitCapture = async () => {
     if (!hasPreviewed) {
@@ -113,10 +113,10 @@ const FaceCapture: React.FC = () => {
         <fieldset>
           <legend>face capture</legend>
           <ul>
-            <li>center your face within the circle</li>
+            <li>center your face within the circle | No Facial Accessories</li>
             <li>smile for the camera</li>
             <li>capture</li>
-            <li>preview and do not close preview || submit and continue</li>
+            <li>previe || submit and continue</li>
           </ul>
         </fieldset>
 
@@ -154,7 +154,7 @@ const FaceCapture: React.FC = () => {
               height={400}
               priority
             />
-            <button onClick={handleClosePreview}>Close Preview</button>
+            {/* <button onClick={handleClosePreview}>Close Preview</button> */}
           </div>
         )}
 

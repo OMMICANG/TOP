@@ -130,7 +130,7 @@ I Become The Light.`}>
 
               {/* Background music */}
         <audio id="background-music" autoPlay loop>
-            <source src="/music/Eminem-Houdini-(Bazenation.com).mp3" type="audio/mpeg" />
+            <source src="/music/TOP_HD 720p_MEDIUM_FR30.mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
         </audio>
 

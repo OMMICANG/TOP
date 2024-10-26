@@ -52,7 +52,7 @@ const Preloader = () => {
 
             {/* Audio element with looping background music */}
             <audio ref={audioRef} loop>
-                <source src="/music/Skott_-_Overcome__Official_Lyric_Video_256k-1.mp3" type="audio/mpeg" />
+                <source src="/music/Preloader_HD 720p_MEDIUM_FR30.mp3" type="audio/mpeg" />
                 Your browser does not support the audio element.
             </audio>
 

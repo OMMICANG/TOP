@@ -5,7 +5,7 @@ const AudioContext = createContext<HTMLAudioElement | null>(null);
 
 export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const audioRef = useRef<HTMLAudioElement>(new Audio('/music/TOP_HD 720p_MEDIUM_FR30.mp3'));
-  audioRef.current.loop = true;
+  audioRef.current.loop = false;
 
   return (
     <AudioContext.Provider value={audioRef.current}>

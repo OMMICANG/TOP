@@ -32,7 +32,7 @@ const Home = () => {
       // Simulate a loading delay for demonstration purposes
       setTimeout(() => {
         setLoading(false);
-      }, 5000); // Adjust the delay as needed
+      }, 15000); // Adjust the delay as needed
     };
 
     const checkTelegramSDK = () => {

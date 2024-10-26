@@ -1,33 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+// AudioContext.tsx
+import React, { createContext, useContext, useRef } from 'react';
 
-interface BackgroundMusicProps {
-    musicSrc: string; // The path to the music file
-}
+const AudioContext = createContext<HTMLAudioElement | null>(null);
 
-const BackgroundMusic: React.FC<BackgroundMusicProps> = ({ musicSrc }) => {
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const audioRef = useRef<HTMLAudioElement>(new Audio('/music/TOP_HD 720p_MEDIUM_FR30.mp3'));
+  audioRef.current.loop = true;
 
-    useEffect(() => {
-        // Show a confirm dialog asking the user if they want to enable background music
-        const allowMusic = window.confirm("Do you want to enable background music?");
-        
-        if (allowMusic && audioRef.current) {
-            audioRef.current.play()
-                .then(() => {
-                    console.log("Audio playback started after user interaction.");
-                })
-                .catch((error) => {
-                    console.error("Error playing audio:", error);
-                });
-        }
-    }, []);
-
-    return (
-        <audio ref={audioRef} loop>
-            <source src={musicSrc} type="audio/mpeg" />
-            Your browser does not support the audio element.
-        </audio>
-    );
+  return (
+    <AudioContext.Provider value={audioRef.current}>
+      {children}
+    </AudioContext.Provider>
+  );
 };
 
-export default BackgroundMusic;
+export const useAudio = () => useContext(AudioContext);

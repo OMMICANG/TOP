@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Preloader from './preloader/page';
 import LandingPage from './landingPage/page';
+import { AudioProvider } from './components/BackgroundMusic'
 import IsMobile from './components/IsMobile';
 
 // Define the type for the window object with Telegram
@@ -53,10 +54,12 @@ const Home = () => {
 
   return (
     <IsMobile>
-      <div>
-        {loading ? <Preloader /> : <LandingPage />}
+      <AudioProvider>
+        <div>
+          {loading ? <Preloader /> : <LandingPage />}
 
-      </div>
+        </div>
+      </AudioProvider>
     </IsMobile>
   );
 };

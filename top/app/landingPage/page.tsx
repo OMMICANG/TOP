@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation"; // Use Next.js's useRouter for navigation
 import { PiHandSwipeLeftBold } from "react-icons/pi";
 import { PiHandSwipeRightBold } from "react-icons/pi";
+import { useAudio } from '../components/BackgroundMusic'
 import "../styles/LandingPage.css"; // Ensure you have this file for custom styles
 
 const LandingPage: React.FC = () => {
@@ -11,6 +12,13 @@ const LandingPage: React.FC = () => {
     const router = useRouter(); // Use router instead of navigate
     const [showOverlay, setShowOverlay] = useState(false); // State for overlay
     const overlayRef = useRef<HTMLDivElement | null>(null); // Reference to overlay
+    const audio = useAudio();
+
+    useEffect(() => {
+        if (audio) {
+          audio.play().catch(console.error); // Ensure play resumes if enabled in preloader
+        }
+      }, [audio]);
 
     const handleSwipe = (direction: string) => {
         setShowOverlay(true); // Show overlay on swipe
@@ -129,10 +137,10 @@ I Become The Light.`}>
             )}
 
               {/* Background music */}
-        <audio id="background-music" autoPlay loop>
+        {/* <audio id="background-music" autoPlay loop>
             <source src="/music/TOP_HD 720p_MEDIUM_FR30.mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
-        </audio>
+        </audio> */}
 
 
             

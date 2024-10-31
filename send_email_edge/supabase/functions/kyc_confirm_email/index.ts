@@ -21,7 +21,7 @@ serve(async (req: Request) => {
       };
 
       const emailData = {
-        from: "no-reply@theommicangproject.online",  // Use a verified email
+        from: "no-reply@theommicangcircle.site",  // Use a verified email
         to: email,
         subject: "THE OMMICANG CIRCLE - KYC EMAIL CONFIRMATION",
         html: ` 

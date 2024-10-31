@@ -235,19 +235,6 @@ const KYCPhase1 = () => {
             )}
 
 
-
-            {/* <div className="country">
-              <label>Country:</label>
-              <select value={country} onChange={(e) => setCountry(e.target.value)} required>
-                <option value="">Select Country</option>
-                {countries.map((country) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
-            </div> */}
-
             <span className="upload">
               <label>ID:</label>
               <input

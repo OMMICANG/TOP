@@ -1,0 +1,83 @@
+/* kycAdmin styles.css */
+
+body {
+    width: 100vw;
+    margin: 0;
+    padding:0;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #000;
+   
+}
+
+.kyc_admin_page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-transform: uppercase;
+}
+
+.topHeader{
+    color: goldenrod;
+}
+
+fieldset{
+    display: flex;
+    width: 80vw;
+    height: 15vh;
+    margin-top: 2vh;
+    margin-bottom: 10px;
+  }
+
+  legend{
+    font-family: "Sixtyfour Convergence", sans-serif;
+    font-size: 10px;
+    padding: 0;
+    color: goldenrod;
+    border-color: goldenrod;
+    text-align: center;
+  }
+
+  ul{
+    position: relative;
+    align-items: center;
+    text-align: left;
+    margin-left: 5px;
+    padding: 0;
+  }
+
+  li{
+  font-size: 10px;
+  font-family: "Anton", serif;
+  
+  }
+
+  .userDataBlock{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 85vw;
+    height: 10vh;
+    border: 2px ridge white;
+    border-radius: 5px;
+  }
+
+  .entries{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-size: 10px;
+    margin-bottom: 10px;
+    
+  }
+
+  .buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-size: 20px;
+  }
+
+  .entries>span{
+    border: 2px solid goldenrod;
+  }

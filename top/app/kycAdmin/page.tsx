@@ -10,7 +10,7 @@ interface KYCUser {
   email: string;
   identity_card_number: string;
   identity_card_url: string; // Add identity card URL field
-  face_image_url: string | NULL; // Null initially, until we fetch from the second query
+  face_image_url: string | null; // Null initially, until we fetch from the second query
 }
 
 export default function KYCAdminPage() {

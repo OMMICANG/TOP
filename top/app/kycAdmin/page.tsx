@@ -83,8 +83,8 @@ export default function KYCAdminPage() {
                 <p>No identity card available</p>
               )}
 
-              {user.faceImageUrl ? (
-                <img src={user.faceImageUrl} alt={`Face Capture ${index + 1}`} className="face-image" />
+              {user.face_image_url ? (
+                <img src={user.face_image_url} alt={`Face Capture ${index + 1}`} className="face-image" />
               ) : (
                 <p>No face image available</p>
               )}

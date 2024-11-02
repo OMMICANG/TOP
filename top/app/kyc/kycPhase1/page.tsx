@@ -106,6 +106,7 @@ const KYCPhase1 = () => {
 
     // Upload file to Supabase storage
     let identityCardURL = "";
+
     if (identityCard) {
       const { data, error: uploadError } = await supabase.storage
         .from("kyc_identity_cards")
@@ -117,7 +118,10 @@ const KYCPhase1 = () => {
         return;
       }
 
-      identityCardURL = data?.path || "";
+      identityCardURL = supabase.storage
+      .from("kyc_identity_cards")
+      .getPublicUrl(data?.path)
+      .data.publicUrl; //data?.path || "";
     }
 
     // Insert data into Supabase with the generated UUID

@@ -187,7 +187,14 @@ export default function KYCAdminPage() {
                   </button>
                   <button
                     className="identity-card-button"
-                    onClick={() => setExpandedContent({ type: "image", url: user.identity_card_url })}
+                    // onClick={() => setExpandedContent({ type: "image", url: user.identity_card_url })}
+                    onClick={() => {if (user.identity_card_url) {
+                      setExpandedContent({ type: "image", url: user.identity_card_url });
+                    } else {
+                      console.error("Face image URL is null.");
+                    }
+                  }
+                }
                   >
                     ID CARD<IoMdArrowDropdown />
                   </button>
@@ -205,7 +212,14 @@ export default function KYCAdminPage() {
                   </button>
                   <button
                     className="video-button"
-                    onClick={() => setExpandedContent({ type: "video", url: user.video_url })}
+                    // onClick={() => setExpandedContent({ type: "video", url: user.video_url })}
+                    onClick={() => {if (user.video_url) {
+                      setExpandedContent({ type: "video", url: user.video_card_url });
+                    } else {
+                      console.error("Video URL is null.");
+                    }
+                  }
+                }
                   >
                     VIDEO<IoMdArrowDropdown />
                   </button>

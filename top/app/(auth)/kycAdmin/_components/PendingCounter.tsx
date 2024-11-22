@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "../../../lib/supabaseClient";
 
 export default function PendingCounter() {
-  const [pendingCount, setPendingCount] = useState<number | null>(null);
+  const [pendingCount, setPendingCount] = useState<number>(0);
 
    // Fetch initial count
   useEffect(() => {

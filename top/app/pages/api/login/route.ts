@@ -1,5 +1,4 @@
 import type { NextRequest, NextResponse } from "next/server";
-import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { supabase } from "../../../lib/supabaseClient"; // Ensure this points to your client setup
 

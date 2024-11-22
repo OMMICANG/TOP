@@ -2,7 +2,7 @@
 
 // import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 // import { cookies } from "next/headers";
-import{supabase} from "../../../lib/supabaseClient"
+import {supabase} from "../../../lib/supabaseClient"
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 
@@ -41,11 +41,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Retrieve public URL
-    const { data: publicUrlData, error: publicUrlError } = supabase.storage
+    const { data: publicUrlData } = supabase.storage
     .from("kyc_identity_cards")
     .getPublicUrl(data.path);
   
-  if (publicUrlError) {
+  if (!publicUrlData) {
+    throw new Error("Failed to retrieve public URL");
     return NextResponse.json({ success: false, error: "Failed to generate public URL for identity card" });
   }
   

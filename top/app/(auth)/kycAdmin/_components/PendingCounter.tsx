@@ -29,7 +29,7 @@ export default function PendingCounter() {
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'kyc_users' },
         () => {
-          setPendingCount((prevCount) => prevCount + 1); // Increment count on new row
+          setPendingCount((prevCount) => (prevCount || 0) + 1); // Increment count on new row
           
         }
       )

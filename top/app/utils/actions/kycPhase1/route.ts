@@ -3,8 +3,7 @@
 // import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 // import { cookies } from "next/headers";
 import{supabase} from "../../../lib/supabaseClient"
-import type { NextRequest, NextResponse } from "next/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 
 export async function POST(request: NextRequest) {

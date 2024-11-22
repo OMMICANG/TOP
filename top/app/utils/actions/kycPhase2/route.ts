@@ -26,11 +26,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Retrieve public URL
-    const { data: publicUrlData, error: publicUrlError } = supabase.storage
+    const { data: publicUrlData } = supabase.storage
       .from("kyc_face_images")
       .getPublicUrl(data.path);
 
-    if (publicUrlError) {
+    if (!publicUrlData) {
+      throw new Error("Failed to retrieve public URL");
       return NextResponse.json({ error: "Failed to retrieve public URL for face image." }, { status: 500 });
     }
 

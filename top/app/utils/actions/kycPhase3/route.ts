@@ -22,11 +22,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Failed to upload video. Please try again." }, { status: 500 });
     }
 
-    const { data: publicUrlData, error: publicUrlError } = supabase.storage
+    const { data: publicUrlData } = supabase.storage
       .from("kyc_videos")
       .getPublicUrl(data.path);
 
-    if (publicUrlError || !publicUrlData?.publicUrl) {
+    if (!publicUrlData?.publicUrl) {
+      throw new Error("Failed to retrieve public URL");
       return NextResponse.json({ error: "Failed to retrieve the public URL of the video." }, { status: 500 });
     }
 

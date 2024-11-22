@@ -2,11 +2,12 @@
 
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
-import { supabase } from "../../lib/supabaseClient";
+// import { supabase } from "../../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
 import Image from "next/image"; // Import the Next.js Image component
-import IsMobile from "../../components/IsMobile";
-import "../../styles/FaceCapture.css"; // Custom styling
+import Cookies from "js-cookie";
+import IsMobile from "../../../components/IsMobile";
+import "../../../styles/FaceCapture.css"; // Custom styling
 
 const FaceCapture: React.FC = () => {
   const webcamRef = useRef<Webcam>(null);
@@ -54,57 +55,81 @@ const FaceCapture: React.FC = () => {
     setCapturing(true);
 
     // Retrieve the UUID from localStorage
-    const kycUUID = localStorage.getItem("kycUUID");
+    const kycUUID = Cookies.get("kycUUID");
     if (!kycUUID) {
       setError("Session expired or invalid. Please restart the KYC process.");
       return;
     }
 
     if (previewImage) {
+      try {
       // Convert the image from base64 to a file (Blob)
       const base64Response = await fetch(previewImage);
       const blob = await base64Response.blob();
 
-      // Upload the image to Supabase storage
-      const { data, error: uploadError } = await supabase.storage
-        .from("kyc_face_images")
-        .upload(`faces/${Date.now()}_face.png`, blob);
+      // // Upload the image to Supabase storage
+      // const { data, error: uploadError } = await supabase.storage
+      //   .from("kyc_face_images")
+      //   .upload(`faces/${Date.now()}_face.png`, blob);
 
-      if (uploadError) {
-        setError("Failed to upload face image. Please try again.");
-        setCapturing(false);
-        return;
-      }
+      // if (uploadError) {
+      //   setError("Failed to upload face image. Please try again.");
+      //   setCapturing(false);
+      //   return;
+      // }
 
-      // Get the public URL of the uploaded face image
-      const publicURL = supabase.storage
-        .from("kyc_face_images")
-        .getPublicUrl(data.path).data.publicUrl;
+      // // Get the public URL of the uploaded face image
+      // const publicURL = supabase.storage
+      //   .from("kyc_face_images")
+      //   .getPublicUrl(data.path).data.publicUrl;
 
-      if (!publicURL) {
-        setError("Failed to retrieve public URL of the face image.");
-        setCapturing(false);
-        return;
-      }
+      // if (!publicURL) {
+      //   setError("Failed to retrieve public URL of the face image.");
+      //   setCapturing(false);
+      //   return;
+      // }
 
-      // Insert the face image URL and UUID into the new `kyc_face_images` table
-      const { error: dbError } = await supabase
-        .from("kyc_face_images")
-        .insert({
-          uuid: kycUUID, // Linking the face image to the user's UUID
-          face_image_url: publicURL,
+      // // Insert the face image URL and UUID into the new `kyc_face_images` table
+      // const { error: dbError } = await supabase
+      //   .from("kyc_face_images")
+      //   .insert({
+      //     uuid: kycUUID, // Linking the face image to the user's UUID
+      //     face_image_url: publicURL,
+      //   });
+
+      // if (dbError) {
+      //   setError("Failed to save face image. Please try again.");
+      //   setCapturing(false);
+      //   return;
+      // }
+
+      // Receive Api Response
+      const formData = new FormData();
+        formData.append("kycUUID", kycUUID);
+        formData.append("faceImage", blob);
+
+        const response = await fetch("/utils/actions/kycPhase2/", {
+          method: "POST",
+          body: formData,
         });
 
-      if (dbError) {
-        setError("Failed to save face image. Please try again.");
-        setCapturing(false);
-        return;
-      }
+        const result = await response.json();
+        if (!response.ok) {
+          setError(result.error || "Failed to submit face image. Try again.");
+          setCapturing(false);
+          return;
+        }
+
 
       // Navigate to the next phase (video submission)
       router.push("/kyc/kycPhase3"); // Fix: Route to kycPhase3
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred. Try again.");
+      setCapturing(false);
     }
-  };
+  }
+};
 
   return (
     <IsMobile>

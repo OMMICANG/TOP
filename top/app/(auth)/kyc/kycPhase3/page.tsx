@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useRef, useState, useEffect } from "react";
-import { supabase } from "../../lib/supabaseClient";
+// import { supabase } from "../../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
-import IsMobile from "../../components/IsMobile";
-import "../../styles/VideoCapture.css"; // Add this for custom styling
+import {kycPhase3} from "../../../utils/actions/kycPhase3/route.ts"
+import Cookies from "js-cookie";
+import IsMobile from "../../../components/IsMobile";
+import "../../../styles/VideoCapture.css"; // Add this for custom styling
 
 const VideoCapture: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
@@ -129,7 +131,7 @@ const VideoCapture: React.FC = () => {
     setCapturing(true);
 
     // Retrieve the UUID from localStorage
-    const kycUUID = localStorage.getItem("kycUUID");
+    const kycUUID = Cookies.get("kycUUID");
 
     if (!kycUUID) {
       setError("Session expired or invalid. Please restart the KYC process.");
@@ -138,43 +140,49 @@ const VideoCapture: React.FC = () => {
     }
 
     if (videoBlob) {
-      // Upload the video to Supabase storage
-      const { data, error: uploadError } = await supabase.storage
-        .from("kyc_videos")
-        .upload(`videos/${Date.now()}_video.webm`, videoBlob);
+      // // Upload the video to Supabase storage
+      // const { data, error: uploadError } = await supabase.storage
+      //   .from("kyc_videos")
+      //   .upload(`videos/${Date.now()}_video.webm`, videoBlob);
 
-      if (uploadError) {
-        setError("Failed to upload video. Please try again.");
+      // if (uploadError) {
+      //   setError("Failed to upload video. Please try again.");
+      //   setCapturing(false);
+      //   return;
+      // }
+
+      // // Get the public URL of the uploaded video
+      // const publicURL = supabase.storage
+      //   .from("kyc_videos")
+      //   .getPublicUrl(data?.path)
+      //   .data.publicUrl;
+
+      // if (!publicURL) {
+      //   setError("Failed to retrieve the public URL of the video.");
+      //   setCapturing(false);
+      //   return;
+      // }
+
+      // // Update Supabase with the video URL in the new kyc_videos table
+      // const { error: dbError } = await supabase.from("kyc_videos").insert([
+      //   {
+      //     uuid: kycUUID,
+      //     video_url: publicURL,
+      //   },
+      // ]);
+
+      // if (dbError) {
+      //   setError("Failed to submit the video. Please try again.");
+      //   setCapturing(false);
+      //   return;
+      // }
+      const response = await kycPhase3(kycUUID, videoBlob);
+
+      if (response.error) {
+        setError(response.error);
         setCapturing(false);
         return;
       }
-
-      // Get the public URL of the uploaded video
-      const publicURL = supabase.storage
-        .from("kyc_videos")
-        .getPublicUrl(data?.path)
-        .data.publicUrl;
-
-      if (!publicURL) {
-        setError("Failed to retrieve the public URL of the video.");
-        setCapturing(false);
-        return;
-      }
-
-      // Update Supabase with the video URL in the new kyc_videos table
-      const { error: dbError } = await supabase.from("kyc_videos").insert([
-        {
-          uuid: kycUUID,
-          video_url: publicURL,
-        },
-      ]);
-
-      if (dbError) {
-        setError("Failed to submit the video. Please try again.");
-        setCapturing(false);
-        return;
-      }
-
   
         
       router.push("/kyc/success"); // Navigate to the KYC completion page

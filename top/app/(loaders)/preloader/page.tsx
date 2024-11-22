@@ -5,7 +5,7 @@
 
 import React, {useRef, useState} from 'react';
 // import BackgroundMusic from '../components/BackgroundMusic'; // Import the reusable component
-import '../styles/Preloader.css' // Make sure to create this CSS file for styling
+import '../../styles/Preloader.css' // Make sure to create this CSS file for styling
 
 
 

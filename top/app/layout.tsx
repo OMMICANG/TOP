@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 
 export const metadata = {
-  title: 'THE OMMICANG PROJECT',
+  title: 'THE OMMICANG CIRCLE',
   description: 'BY OMMICANG | FOR HUMANITY',
 }
 

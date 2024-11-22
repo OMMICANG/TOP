@@ -5,9 +5,22 @@ body {
     margin: 0;
     padding:0;
     box-sizing: border-box;
-    background-color: #fff;
-    color: #000;
+    background-color: #a7a7a7;
+    color: #fff;
    
+}
+
+.overlay {
+  /* position: absolute; */
+  /* top: 0; */
+  /* left: 0; */
+  width: 100vw;
+  height: auto;
+  background-color: rgba(0, 0, 0, 0.8); /* Darken overlay */
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  z-index: 1;
 }
 
 .kyc_admin_page {
@@ -15,6 +28,16 @@ body {
     flex-direction: column;
     align-items: center;
     text-transform: uppercase;
+}
+
+.fixed{
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  background-color: rgb(35, 35, 35); /* Darken overlay */
+  z-index: 99;
 }
 
 .topHeader{
@@ -52,47 +75,126 @@ fieldset{
   
   }
 
-  .userDataBlock{
+  .counter{
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 85vw;
-    height: 10vh;
-    border: 2px ridge white;
-    border-radius: 5px;
+    font-family: "Anton", sans-serif;
+    padding: 5px;
+    margin-left: 60vw;
+    margin-bottom: 5px;
+    color: goldenrod;
+    border: 2px ridge #a7a7a7;
   }
 
-  .entries{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    font-size: 10px;
-    margin-bottom: 10px;
-    
-  }
 
-  .buttons{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    font-size: 20px;
-  }
-
-  .entries>span{
-    border: 2px solid goldenrod;
-  }
 
 /* Inside KycAdmin.css */
-.face-image-card img {
-  max-width: 200px;
-  max-height: 200px;
-  display: block;
-}
-.face-image {
+
+.face-image-grid{
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: 10px;
-  border: 1px solid #ddd;
-  padding: 10px;
+  width: 90vw;
+  margin-top: 40vh;
+  align-content: space-evenly;
+
 }
+
+.face-image-card{
+  margin-top: 15px;
+  padding: 10px;
+  border: 2px solid #a7a7a7;
+  border-radius: 10px;
+}
+
+
+.emailButton{
+  width:50px;
+  overflow: hidden;
+}
+
+
+button{
+  font-family: "Anton", serif;
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 5px;
+}
+
+.submit{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-content: space-evenly;
+  justify-content: center;
+  margin-top: 5px;
+  border: 2px solid #a7a7a7;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.decline{
+  display: flex;
+  font-size: 55px;
+  margin-right: 30px;
+  color: goldenrod;
+}
+
+.approve{
+  display: flex;
+  font-size: 50px;
+  margin-left: 30px;
+  color: green;
+}
+
+.delete{
+  display: flex;
+  font-size: 55px;
+  color: red;
+}
+
+
+.expandOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.overlay-content {
+  position: relative;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  max-width: 90%;
+  max-height: 80%;
+}
+
+.expanded-image, .expanded-video {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.idExpand{
+  font-size: 15px;
+  padding: 10px;
+  margin-right: 70px;
+  border: 2px solid black;
+  color:#000;
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+

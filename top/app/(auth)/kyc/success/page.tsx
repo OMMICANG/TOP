@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import "../../styles/Success.css"; // Ensure you have this file for custom styles
+import "../../../styles/Success.css"; // Ensure you have this file for custom styles
 
 const Success: React.FC = () => {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -73,10 +73,10 @@ I am OMMICANG`}>
 
 
               {/* Background music */}
-        <audio id="background-music" autoPlay loop>
+        {/* <audio id="background-music" autoPlay loop>
             <source src="/music/Eminem-Houdini-(Bazenation.com).mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
-        </audio>
+        </audio> */}
 
         </div>
         </div>

@@ -1,13 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
+// import { supabase } from "../../../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import ReCAPTCHA from "react-google-recaptcha";
 import { FaCircleUser } from "react-icons/fa6";
-import { verifyCaptcha } from "../../pages/api/ServerActions";  // Recaptcha Server Path
-import IsMobile from "../../components/IsMobile";
-import "../../styles/KycPhase1.css";
+import { verifyCaptcha } from "../../../pages/api/ServerActions";  // Recaptcha Server Path
+import Cookies from "js-cookie";
+import IsMobile from "../../../components/IsMobile";
+import "../../../styles/KycPhase1.css";
 import Compressor from "compressorjs"; // Import compressorjs
 
 // Define the type for identity options
@@ -17,7 +18,7 @@ type IdentityOptionsType = {
 
 // Define a list of countries and their respective identity card types
 const identityOptions: IdentityOptionsType = {
-  Nigeria: ["NIN"],
+  "Nigeria": ["NIN"],
   "United Kingdom": ["Passport"],
   // Add more countries and their respective IDs as needed
 };
@@ -101,51 +102,75 @@ const KYCPhase1 = () => {
       return;
     }
 
+    // Server Action Event From Here
+    const formData = new FormData();
+    formData.append("name", sanitizedName);
+    formData.append("email", sanitizedEmail);
+    formData.append("country", country);
+    formData.append("identityType", identityType);
+    formData.append("identityCardNumber", identityCardNumber);
+    formData.append("identityCard", identityCard!);
+
+    try {
+      const response = await fetch("/utils/actions/kycPhase1/", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Unknown error occurred");
+
+        // Extract `kycUUID` from the result
+        const { kycUUID } = result; // Adjust here
+        console.log("Server Response:", result);
+        if (!kycUUID) throw new Error("kycUUID not returned by server");
+
     // Generate a unique UUID for the KYC process
-    const kycUUID = crypto.randomUUID();
+    // const kycUUID = crypto.randomUUID();
 
-    // Upload file to Supabase storage
-    let identityCardURL = "";
+    // // Upload file to Supabase storage
+    // let identityCardURL = "";
 
-    if (identityCard) {
-      const { data, error: uploadError } = await supabase.storage
-        .from("kyc_identity_cards")
-        .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
+    // if (identityCard) {
+    //   const { data, error: uploadError } = await supabase.storage
+    //     .from("kyc_identity_cards")
+    //     .upload(`identity-cards/${Date.now()}_${identityCard.name}`, identityCard);
 
-      if (uploadError) {
-        setError("Failed to upload identity card. Try again.");
-        setUploading(false);
-        return;
-      }
+    //   if (uploadError) {
+    //     setError("Failed to upload identity card. Try again.");
+    //     setUploading(false);
+    //     return;
+    //   }
 
-      identityCardURL = supabase.storage
-      .from("kyc_identity_cards")
-      .getPublicUrl(data?.path)
-      .data.publicUrl; //data?.path || "";
-    }
+    //   identityCardURL = supabase.storage
+    //   .from("kyc_identity_cards")
+    //   .getPublicUrl(data?.path)
+    //   .data.publicUrl; //data?.path || "";
+    // }
 
-    // Insert data into Supabase with the generated UUID
-    const { error: dbError } = await supabase.from("kyc_users").insert([
-      {
-        uuid: kycUUID,  // Storing the UUID
-        name: sanitizedName,
-        email: sanitizedEmail,
-        country,  // Store selected country
-        identity_type: identityType, // Store the selected identity type
-        identity_card_number: identityCardNumber, // Store the ID card number
-        identity_card_url: identityCardURL,
-      },
-    ]);
+    // // Insert data into Supabase with the generated UUID
+    // const { error: dbError } = await supabase.from("kyc_users").insert([
+    //   {
+    //     uuid: kycUUID,  // Storing the UUID
+    //     name: sanitizedName,
+    //     email: sanitizedEmail,
+    //     country,  // Store selected country
+    //     identity_type: identityType, // Store the selected identity type
+    //     identity_card_number: identityCardNumber, // Store the ID card number
+    //     identity_card_url: identityCardURL,
+    //   },
+    // ]);
 
-    if (dbError) {
-      setError("Failed to submit. Try again.");
-      setUploading(false);
-      return;
-    }
+    // if (dbError) {
+    //   setError("Failed to submit. Try again.");
+    //   setUploading(false);
+    //   return;
+    // }
 
 
     // Store the UUID in localStorage for subsequent phases
-    localStorage.setItem("kycUUID", kycUUID);
+    
+    Cookies.set("kycUUID", kycUUID);
 
     setSuccess(true);
     setName("");
@@ -158,7 +183,19 @@ const KYCPhase1 = () => {
 
     // Navigate to Phase 2 (Face Capture)
     router.push("/kyc/faceCapture");
-  };
+
+  } catch (error) {
+    setError(error.message);
+  } finally {
+    setName("");
+    setEmail("");
+    setCountry(""); // Reset country field
+    setIdentityType("");
+    setIdentityCardNumber("");
+    setIdentityCard(null);
+    setUploading(false);
+  }
+};
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setCountry(e.target.value);
@@ -184,7 +221,7 @@ const KYCPhase1 = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                placeholder="Enter Name"
+                placeholder="Enter Full Name"
               />
             </div>
 

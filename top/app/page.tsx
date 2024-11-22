@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Preloader from './preloader/page';
-import LandingPage from './landingPage/page';
+import Preloader from './(loaders)/preloader/page';
+import LandingPage from './(loaders)/landingPage/page';
 import { AudioProvider } from './components/BackgroundMusic'
 import IsMobile from './components/IsMobile';
 

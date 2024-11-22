@@ -4,7 +4,15 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
 const HomePage = () => {
-  const [userData, setUserData] = useState(null);
+
+  interface userData {
+    name: string;
+    email: string;
+    country: string;
+    uuid: string;
+  }
+
+  const [userData, setUserData] = useState<userData | null>(null);
 
   useEffect(() => {
     // Retrieve cookie data

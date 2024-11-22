@@ -16,7 +16,7 @@ export default function PendingCounter() {
       if (error) {
         console.error("Error fetching pending count:", error);
       } else {
-        setPendingCount(count);
+        setPendingCount(count ?? 0);
       }
     };
 

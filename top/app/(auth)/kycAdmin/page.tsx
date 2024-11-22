@@ -1,5 +1,3 @@
-// Import necessary Libraries
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -23,6 +21,11 @@ interface KYCUser {
   video_url: string | null;
 }
 
+type ExpandedContent = 
+  | { type: "text"; content: string }
+  | { type: "image"; url: string }
+  | { type: "video"; url: string };
+  
 export default function KYCAdminPage() {
   const [kycUsers, setKycUsers] = useState<KYCUser[]>([]);
   const [expandedContent, setExpandedContent] = useState<ExpandedContent | null>(null);

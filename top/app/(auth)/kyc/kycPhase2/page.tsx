@@ -1,7 +1,7 @@
 // components/KYCPhase2.tsx
 "use client";
 
-import IsMobile from "../../components/IsMobile";
+import IsMobile from "../../../components/IsMobile";
 
 const KYCPhase2: React.FC = () => {
   return (

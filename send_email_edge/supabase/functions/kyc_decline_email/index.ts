@@ -1,19 +1,30 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sixtyfour+Convergence&display=swap" rel="stylesheet"></link>
-    </head>
-    <body>
-        
-      <div style=" margin: 0; padding: 0; display: flex; justify-self: center; justify-content: center;
+import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
+
+console.log(`Function "email" up and running!`);
+
+const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+
+
+
+serve(async (req: Request) => {
+    try {
+      const { email, name } = await req.json(); // Adjust as per your KYC data
+      
+      if (!email || !name) {
+        return new Response(JSON.stringify({ error: "Missing data" }), { status: 400 });
+      }
+  
+      const headers = {
+        Authorization: `Bearer ${RESEND_API_KEY} `,
+        "Content-Type": "application/json",
+      };
+
+      const emailData = {
+        from: "no-reply@theommicangcircle.site",  // Use a verified email
+        to: email,
+        subject: "THE OMMICANG CIRCLE - KYC DECLINE EMAIL",
+        html: ` 
+  <div style=" margin: 0; padding: 0; display: flex; justify-self: center; justify-content: center;
       align-items: center; width: 85vw; height: auto; color: white; background-color: #a7a7a7; border: 10px ridge goldenrod;">
 
        <div style=" width: 90%; margin: 5px; padding-left: 20px; align-content: flex-start;
@@ -58,7 +69,24 @@
            
            </div>
        </div>
-     </div>
-        
-    </body>
-</html>
+     </div>`,
+      };
+  
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers,
+        body: JSON.stringify(emailData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to send email");
+      }
+  
+      return new Response(JSON.stringify({ message: "Success" }), { status: 200 });
+    } catch (error) {
+      return new Response(
+        JSON.stringify({ error: error.message }),
+        { status: 400 }
+      );
+    }
+  });

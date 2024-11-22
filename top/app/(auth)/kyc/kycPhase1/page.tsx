@@ -185,7 +185,7 @@ const KYCPhase1 = () => {
     router.push("/kyc/faceCapture");
 
   } catch (error) {
-    setError(error.message);
+    setError(error);
   } finally {
     setName("");
     setEmail("");

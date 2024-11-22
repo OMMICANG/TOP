@@ -139,7 +139,11 @@ const Login = () => {
 
     router.push("/homePage");
     }  catch (err) {
-      setError(err.message);
+      if (error instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred.");
+      }
     } finally {
       setUploading(false);
       setEmail("");

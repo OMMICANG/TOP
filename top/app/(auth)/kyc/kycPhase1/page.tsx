@@ -185,7 +185,11 @@ const KYCPhase1 = () => {
     router.push("/kyc/faceCapture");
 
   } catch (error) {
-    setError(error);
+    if (error instanceof Error) {
+      setError(error.message);
+    } else {
+      setError("An unknown error occurred.");
+    }
   } finally {
     setName("");
     setEmail("");

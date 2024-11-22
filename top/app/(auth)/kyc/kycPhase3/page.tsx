@@ -3,7 +3,6 @@
 import React, { useRef, useState, useEffect } from "react";
 // import { supabase } from "../../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
-import {kycPhase3} from "../../../utils/actions/kycPhase3/route.ts"
 import Cookies from "js-cookie";
 import IsMobile from "../../../components/IsMobile";
 import "../../../styles/VideoCapture.css"; // Add this for custom styling
@@ -140,6 +139,24 @@ const VideoCapture: React.FC = () => {
     }
 
     if (videoBlob) {
+
+      try {
+        const formData = new FormData();
+        formData.append("kycUUID", kycUUID);
+        formData.append("video", videoBlob);
+
+        const response = await fetch("/utils/actions/kycPhase3/", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+        if (!response.ok) {
+          setError(result.error || "Failed to submit the video. Try again.");
+          setCapturing(false);
+          return;
+        }
+
       // // Upload the video to Supabase storage
       // const { data, error: uploadError } = await supabase.storage
       //   .from("kyc_videos")
@@ -176,18 +193,17 @@ const VideoCapture: React.FC = () => {
       //   setCapturing(false);
       //   return;
       // }
-      const response = await kycPhase3(kycUUID, videoBlob);
 
-      if (response.error) {
-        setError(response.error);
-        setCapturing(false);
-        return;
-      }
-  
-        
+
+
       router.push("/kyc/success"); // Navigate to the KYC completion page
       
+    } catch (err) {
+      console.error(err);
+      setError("An unexpected error occurred. Please try again.");
+      setCapturing(false);
     }
+  }
   };
 
   return (
@@ -229,11 +245,7 @@ const VideoCapture: React.FC = () => {
           <button onClick={startRecording}>Start Recording</button>
         )}
 
-        {/* {isRecording ? (
-          <button onClick={stopRecording}>Stop Recording</button>
-        ) : (
-          <button onClick={startRecording}>Start Recording</button>
-        )} */}
+
 
         {videoBlob && !isRecording && (
           <>

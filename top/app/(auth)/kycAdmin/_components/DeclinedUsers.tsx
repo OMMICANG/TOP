@@ -1,5 +1,5 @@
 "use server";
-import { supabase } from "../../../lib/supabaseClient.ts";
+import { supabase } from "../../../lib/supabaseClient";
 
 const declineUser = async (uuid: string) => {
   try {

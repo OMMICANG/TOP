@@ -1,5 +1,5 @@
-
-import { supabase } from "../../../lib/supabaseClient.ts";
+"use server";
+import { supabase } from "../../../lib/supabaseClient";
 import bcrypt from "bcryptjs";
 
 const approvedUser = async (uuid: string) => {

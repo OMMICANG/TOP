@@ -4,9 +4,9 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
-import PendingCounter from "../../(auth)/kycAdmin/_components/PendingCounter";
-import DeclinedUsers from "../../(auth)/kycAdmin/_components/DeclinedUsers";
-import ApprovedUsers from "../../(auth)/kycAdmin/_components/ApprovedUsers";
+import PendingCounter from "./_components/PendingCounter";
+import DeclinedUsers from "./_components/DeclinedUsers";
+import ApprovedUsers from "./_components/ApprovedUsers";
 import { FaRegCheckSquare } from "react-icons/fa";
 import { PiKeyReturnLight } from "react-icons/pi";
 import { MdOutlineCancelPresentation } from "react-icons/md";

@@ -193,7 +193,13 @@ export default function KYCAdminPage() {
                   </button>
                   <button
                     className="identity-card-button"
-                    onClick={() => setExpandedContent({ type: "image", url: user.face_image_url })}
+                    onClick={() => {if (user.face_image_url) {
+                      setExpandedContent({ type: "image", url: user.face_image_url });
+                    } else {
+                      console.error("Face image URL is null.");
+                    }
+                  }
+                }
                   >
                     PHOTO<IoMdArrowDropdown />
                   </button>

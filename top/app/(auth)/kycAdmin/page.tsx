@@ -214,7 +214,7 @@ export default function KYCAdminPage() {
                     className="video-button"
                     // onClick={() => setExpandedContent({ type: "video", url: user.video_url })}
                     onClick={() => {if (user.video_url) {
-                      setExpandedContent({ type: "video", url: user.video_card_url });
+                      setExpandedContent({ type: "video", url: user.video_url });
                     } else {
                       console.error("Video URL is null.");
                     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import ReCAPTCHA from "react-google-recaptcha";
 import { FaCircleUser } from "react-icons/fa6";

@@ -1,4 +1,3 @@
-/* src/Preloader.css */
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300);
 
@@ -26,13 +25,10 @@
 
 #h1 {
   position: absolute;
-  /* font-family: 'Open Sans'; */
   font-weight: 600;
   font-size: 17px;
   text-transform: uppercase;
-  /* left: 50%; */
   top: 52%;
-  /* margin-left: -20px; */
 }
 
 .body {

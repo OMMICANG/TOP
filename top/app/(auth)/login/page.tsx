@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState } from "react";
-// import { supabase } from "../lib/supabaseClient";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import ReCAPTCHA from "react-google-recaptcha";
 import { FaCircleUser } from "react-icons/fa6";
@@ -10,7 +9,6 @@ import { RiLockPasswordFill } from "react-icons/ri";
 import { verifyCaptcha } from "../../pages/api/ServerActions";  // Recaptcha Server Path
 import HoldButton from "../../components/HoldButton"; // Import HoldButton
 import Cookies from "js-cookie";
-// import bcrypt from "bcryptjs"; // Import bcrypt for password comparison
 import IsMobile from "../../components/IsMobile";
 import "../../styles/Login.css";
 
@@ -31,8 +29,6 @@ const Login = () => {
       .then(() => setIsverified(true))
       .catch(() => setIsverified(false));
   }
-
-  // const countryTables = ["approved_users_Nigeria", "approved_users_UnitedKingdom"];
 
   // Email Regex for stricter validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -60,52 +56,8 @@ const Login = () => {
       return;
     }
 
-    // let userFound = null;
-
-    // for (const table of countryTables) {
-    //   const { data, error } = await supabase
-    //     .from(table)
-    //     .select(`uuid,name,country,email,password`)
-    //     .eq("email", sanitizedEmail)
-    //     .single();
-    //     console.log(JSON.stringify(data))
-    //     if (error && error.code !== "PGRST116") {
-    //       console.error(`Error fetching from ${table}:`, error);
-    //       continue;
-    //     }
-
-    //   if (data) {
-    //     userFound = data;
-    //     break;
-    //   }
-    //   console.log(error);
-    // }
-
-    // if (userFound) {
-    //  // Verify the entered password against the hashed password
-    //  const passwordMatch = await bcrypt.compare(password, userFound.password);
-
-    //  if (passwordMatch) {
-    //   setEmail("");
-    //   setPassword("");
-    //   setSuccess(true);
-    //   setUploading(false);
-
-    // // Store user details in cookies
-    // Cookies.set("circleUser", JSON.stringify({
-    //   uuid: userFound.uuid,
-    //   name: userFound.name, // Extract first name
-    //   country: userFound.country,
-    //   email: userFound.email,
-    // }),{
-    //   path: "/",
-    //   sameSite: "Strict",
-    //   secure: true, // Use true for HTTPS in production
-    // });
-
-    // Navigate to HomePage
-
     try {
+
       const response = await fetch("/pages/api/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -150,19 +102,6 @@ const Login = () => {
       setPassword("");
     }
   };
-    
-//     else {
-//       setError("Incorrect password. Please try again.");
-//       setUploading(false);
-//     } 
-//   }else {
-//     setError("You Are Not OMMICANG");
-//     setUploading(false);
-//     setEmail("");
-//     setPassword("");
-//   }
-// };
-
 
   return (
     <IsMobile>

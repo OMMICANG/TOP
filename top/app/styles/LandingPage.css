@@ -1,4 +1,3 @@
-/* src/LandingPage.css  */
 
 body {
     width: 100vw;
@@ -18,7 +17,6 @@ body {
 .landing-page {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
     width: 100vw;
     height: 100vh;
@@ -41,8 +39,6 @@ body {
     text-align: center;
     text-transform: uppercase;
     animation-delay: 2s;
-    /* background-color: white; */
-    /* border: 2px solid white; */
 }
 
 .horizontal-line {
@@ -79,8 +75,6 @@ body {
     text-align: center;
     margin-top: 0;
     margin-bottom: 10px;
-    /* background-color: white; */
-    /* border: 2px solid white; */
 }
 
 .animated-block2 {

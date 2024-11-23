@@ -1,13 +1,10 @@
 "use server";
 
-// import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
-// import { cookies } from "next/headers";
 import {supabase} from "../../../lib/supabaseClient"
 import { NextRequest, NextResponse } from "next/server";
 import { nanoid } from "nanoid";
 
 export async function POST(request: NextRequest) {
-  // const supabase = createRouteHandlerClient({ cookies });
 
   try {
     const formData = await request.formData();
@@ -18,11 +15,8 @@ export async function POST(request: NextRequest) {
     const identityCardNumber = formData.get("identityCardNumber") as string;
     const identityCard = formData.get("identityCard") as File;
 
-    // console.log(formData);
-
     // Generate a unique KYC UUID
     const kycUUID = nanoid();
-    // console.log(kycUUID);
 
 
     // Validate required fields
@@ -52,10 +46,6 @@ export async function POST(request: NextRequest) {
   
   const identityCardURL = publicUrlData.publicUrl;
   
-      
-
-    // const identityCardURL = " ";//publicURLData?.publicUrl;
-    // console.log(identityCardURL);
 
     // Insert user data into the database
     const { error: insertError } = await supabase.from("kyc_users").insert([

@@ -1,3 +1,4 @@
+
 body {
     margin: 0;
     padding: 0;
@@ -47,7 +48,6 @@ body {
   }
 
   .mdEmail{
-    /* position: absolute; */
     margin-left: -20px;
     color: #000;
   }
@@ -68,7 +68,6 @@ body {
   }
 
   .mdPassword{
-    /* position: absolute; */
     margin-left: -20px;
     color: #000;
   }

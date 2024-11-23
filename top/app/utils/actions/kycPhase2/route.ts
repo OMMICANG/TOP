@@ -2,7 +2,6 @@
 
 import { supabase } from "../../../lib/supabaseClient";
 import { NextRequest, NextResponse } from "next/server";
-// import { nanoid } from "nanoid";
 
 export async function POST(request: NextRequest) {
   try {

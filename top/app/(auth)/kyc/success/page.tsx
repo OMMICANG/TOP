@@ -66,18 +66,6 @@ I am OMMICANG`}>
                 I am OMMICANG
             </p>
 
-
-
-
-
-
-
-              {/* Background music */}
-        {/* <audio id="background-music" autoPlay loop>
-            <source src="/music/Eminem-Houdini-(Bazenation.com).mp3" type="audio/mpeg" />
-            Your browser does not support the audio element.
-        </audio> */}
-
         </div>
         </div>
             

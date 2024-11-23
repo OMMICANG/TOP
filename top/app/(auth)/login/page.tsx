@@ -23,6 +23,14 @@ const Login = () => {
   const recaptchaRef = useRef(null);
   const [isVerified, setIsverified] = useState<boolean>(false);
 
+    // Check for user session on page load
+  useEffect(() => {
+    const savedUser = Cookies.get("circleUser");
+    if (savedUser) {
+      router.push("/homePage");
+    }
+  }, []);
+
   async function handleCaptchaSubmission(token: string | null) {
     // Server function to verify captcha
     await verifyCaptcha(token)

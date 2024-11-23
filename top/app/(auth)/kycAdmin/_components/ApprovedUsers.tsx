@@ -13,7 +13,7 @@ const approvedUser = async (uuid: string) => {
 
     if (error) {
       console.error("Error fetching user data:", error);
-      return;
+      return { success: false, message: "Failed to fetch user data" };
     }
 
     // Determine country-specific table based on `identity_type`
@@ -28,12 +28,12 @@ const approvedUser = async (uuid: string) => {
 
     if (fetchError && fetchError.code !== "PGRST116") {
       console.error("Error checking existing user:", fetchError);
-      return;
+      return { success: false, message: "Error checking existing user" };
     }
 
     if (existingUser) {
-      alert("User already exists on table");
-      return;
+      // alert("User already exists on table");
+      return { success: false, message: "User already exists in the table" };
     }
 
 
@@ -57,12 +57,15 @@ const approvedUser = async (uuid: string) => {
 
     if (insertError) {
       console.error("Error inserting data into approved_users:", insertError);
+       return { success: false, message: "Failed to approve user" };
     } else {
-      alert("Approval Email Sent Successfully");
+      // alert("Approval Email Sent Successfully");
       console.log("User Approved successfully!");
+      return { success: true, message: "Approval email sent successfully" };
     }
   } catch (err) {
     console.error("An unexpected error occurred:", err);
+    return { success: false, message: "Unexpected server error" };
   }
 };
 

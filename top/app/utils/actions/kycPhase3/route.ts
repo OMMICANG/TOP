@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
 
     if (!publicUrlData?.publicUrl) {
       throw new Error("Failed to retrieve public URL");
+      
       return NextResponse.json({ error: "Failed to retrieve the public URL of the video." }, { status: 500 });
     }
 

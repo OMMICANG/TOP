@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import PendingCounter from "./_components/PendingCounter";
-import DeclinedUsers from "./_components/DeclinedUsers";
-import ApprovedUsers from "./_components/ApprovedUsers";
+import declinedUser from "./_components/DeclinedUsers";
+import approvedUser from "./_components/ApprovedUsers";
 import { FaRegCheckSquare } from "react-icons/fa";
 import { PiKeyReturnLight } from "react-icons/pi";
 import { MdOutlineCancelPresentation } from "react-icons/md";
@@ -67,6 +67,29 @@ export default function KYCAdminPage() {
     };
   }, []);
 
+  //  Function To Handle Declined User + Notification
+
+  const handleDeclinedUser = async (uuid: string) => {
+    const response = await declinedUser(uuid);
+    if (response.success) {
+      alert(response.message); // Works on the browser side
+    } else {
+      alert(`Error: ${response.message}`);
+    }
+  };
+
+  //  Function To Handle Approved User + Notification
+
+  const handleApprovedUser = async (uuid: string) => {
+    const response = await approvedUser(uuid);
+    if (response.success) {
+      alert(response.message); // Works on the browser side
+    } else {
+      alert(`Error: ${response.message}`);
+    }
+  };
+
+  
   // Function to delete a row based on UUID
   const handleDelete = async (uuid: string) => {
     const { error } = await supabase.from("kyc_users").delete().eq("uuid", uuid);
@@ -87,6 +110,11 @@ export default function KYCAdminPage() {
         setKycUsers((prevUsers) =>
           prevUsers.map((user) => {
             const imageRecord = data.find((img) => img.uuid === user.uuid);
+
+            // Debbugging Line
+            if (!imageRecord) {
+              console.warn(`No face image found for UUID: ${user.uuid}`);
+            }
             return {
               ...user,
               face_image_url: imageRecord ? imageRecord.face_image_url : null,
@@ -102,6 +130,9 @@ export default function KYCAdminPage() {
     const faceImagesSubscription = supabase
       .channel("realtime_kyc_face_images")
       .on("postgres_changes", { event: "INSERT", schema: "public", table: "kyc_face_images" }, (payload) => {
+
+        // Debugging Line
+        console.log("New face image payload:", payload);
         setKycUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.uuid === payload.new.uuid ? { ...user, face_image_url: payload.new.face_image_url } : user
@@ -191,7 +222,7 @@ export default function KYCAdminPage() {
                     onClick={() => {if (user.identity_card_url) {
                       setExpandedContent({ type: "image", url: user.identity_card_url });
                     } else {
-                      console.error("Face image URL is null.");
+                      console.error("Identity Card URL is null.");
                     }
                   }
                 }
@@ -224,13 +255,13 @@ export default function KYCAdminPage() {
                     VIDEO<IoMdArrowDropdown />
                   </button>
                   <div className="submit">
-                    <span className="decline" onClick={() => DeclinedUsers(user.uuid)}>
+                    <span className="decline" onClick={() => handleDeclinedUser(user.uuid)}>
                       <PiKeyReturnLight />
                     </span>
                     <span className="delete" onClick={() => handleDelete(user.uuid)}>
                       <MdOutlineCancelPresentation />
                     </span>
-                    <span className="approve" onClick={() => ApprovedUsers(user.uuid)}>
+                    <span className="approve" onClick={() => handleApprovedUser(user.uuid)}>
                       <FaRegCheckSquare />
                     </span>
                   </div>

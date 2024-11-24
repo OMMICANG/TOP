@@ -42,7 +42,7 @@ const Login = () => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   // Handle form submission with validation and sanitization
-  const handleSubmit = async () => {
+  const handleLogIn = async () => {
     // event.preventDefault();
     setError("");
     setSuccess(false);
@@ -89,7 +89,7 @@ const Login = () => {
         path: "/",
         sameSite: "Strict",
         secure: true,
-        // expires: saveLogin ? 7 : undefined, // Save for 7 days if checkbox is checked
+        ...(saveLogin ? { expires: 7 } : {}), // Use expires only if saveLogin is checked
       });
 
       setEmail("");
@@ -161,9 +161,9 @@ const Login = () => {
 
           <span className="buttonContainer">
             <HoldButton 
-              onComplete={handleSubmit} 
+              onComplete={handleLogIn} 
               disabled={uploading}
-              label={uploading ? "Uploading..." : "I'M OMMICANG"}
+              label={uploading ? "Logging In..." : "I'M OMMICANG"}
             />
           </span>
 

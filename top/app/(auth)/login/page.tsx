@@ -117,7 +117,7 @@ const Login = () => {
         <span className="circleUser"><FaCircleUser /></span>
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>ACCESS GRANTED : YOU ARE OMMICANG</p>}
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleLogIn}>
 
           <fieldset>
             <legend>LOGIN</legend>

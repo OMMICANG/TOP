@@ -27,7 +27,12 @@ const Login = () => {
   useEffect(() => {
     const savedUser = Cookies.get("circleUser");
     if (savedUser) {
-      router.push("/homePage");
+      const cookieData = JSON.parse(savedUser);
+      if (!cookieData.saveLogin) {
+        Cookies.remove("circleUser"); // Clear cookies explicitly
+      } else {
+        router.push("/homePage");
+      }
     }
   }, []);
 
@@ -85,6 +90,7 @@ const Login = () => {
         name: user.name,
         country: user.country,
         email: user.email,
+        saveLogin, // Add saveLogin flag to the cookie
       }), {
         path: "/",
         sameSite: "Strict",

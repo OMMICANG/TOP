@@ -4,7 +4,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation"; // Use Next.js's useRouter for navigation
 import { PiHandSwipeLeftBold } from "react-icons/pi";
 import { PiHandSwipeRightBold } from "react-icons/pi";
-import { useAudio } from '../../components/BackgroundMusic'
+// import { useAudio } from '../../components/BackgroundMusic'
 import "../../styles/LandingPage.css"; // Ensure you have this file for custom styles
 
 const LandingPage: React.FC = () => {

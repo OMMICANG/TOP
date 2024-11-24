@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
 import ReCAPTCHA from "react-google-recaptcha";
 import { FaCircleUser } from "react-icons/fa6";
@@ -24,12 +24,12 @@ const Login = () => {
   const [isVerified, setIsverified] = useState<boolean>(false);
 
     // Check for user session on page load
-  useEffect(() => {
-    const savedUser = Cookies.get("circleUser");
-    if (savedUser) {
-      router.push("/homePage");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedUser = Cookies.get("circleUser");
+  //   if (savedUser) {
+  //     router.push("/homePage");
+  //   }
+  // }, []);
 
   async function handleCaptchaSubmission(token: string | null) {
     // Server function to verify captcha
@@ -89,7 +89,7 @@ const Login = () => {
         path: "/",
         sameSite: "Strict",
         secure: true,
-        expires: saveLogin ? 7 : undefined, // Save for 7 days if checkbox is checked
+        // expires: saveLogin ? 7 : undefined, // Save for 7 days if checkbox is checked
       });
 
       setEmail("");

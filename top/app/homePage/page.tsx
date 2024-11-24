@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import HoldButton from "../components/HoldButton"; // Import HoldButton
+import '../styles/Homepage.css'
 
 const HomePage = () => {
 
@@ -13,6 +15,7 @@ const HomePage = () => {
   }
 
   const [userData, setUserData] = useState<userData | null>(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     // Retrieve cookie data
@@ -24,6 +27,19 @@ const HomePage = () => {
       console.error("User cookie not found!");
     }
   }, []);
+
+  const handleLogOut = () => {
+    setUploading(true);
+    try {
+      Cookies.remove("circleUser", { path: "/" });
+      setUserData(null); // Clear user data from state
+      console.log("User logged out successfully.");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
@@ -46,6 +62,14 @@ const HomePage = () => {
       ) : (
         <p>No user data found. Please log in.</p>
       )}
+
+<span className="buttonContainer">
+<HoldButton 
+  onComplete={handleLogOut} 
+  disabled={uploading}
+  label={uploading ? "Logging  Out..." : "Log Out"}
+/>
+</span>
     </div>
   );
 };

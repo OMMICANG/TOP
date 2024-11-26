@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
     const countryTable = `approved_users_${country.replace(/\s+/g, '')}`; // Construct the table name dynamically
     const ip =  req.headers.get('x-forwarded-for') || 'Unknown IP'; // Use header to get IP address
     const location = await fetch(`https://ipinfo.io/${ip}/json`).then(res => res.json()); // // Use an IP location service to fetch location data (replace with actual API call)
-    const device = req.headers['user-agent'] || 'Unknown Device';
+    const device = req.headers.get('user-agent') || 'Unknown Device';
 
     const loginData = {
       last_login: new Date().toISOString(),  // Timestamp for last login

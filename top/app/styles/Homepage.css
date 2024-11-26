@@ -1,7 +1,217 @@
 body{
-    background-color: #000;
-    color: #fff;
+  margin: 0;
+  padding:0;
+  box-sizing: border-box;
+  background-color: #000;
+  color: #fff;
+  font-size: 0.875rem;
 }
+
+.bodyContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.upperIndex{
+  position: fixed;
+  background-color: #000;
+  z-index: 3;
+}
+
+.topHeaderContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 95vw;
+  height: 7vh;
+  margin-top:0.625rem;
+  border: 2px solid white;
+  
+}
+
+.userProfile{
+
+  margin-left: 0.625rem;
+  padding: 1rem;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+.userWelcome{
+
+  margin-right: 5rem;
+  padding: 0.625rem;
+  border: 1px solid white;
+}
+
+.icons{
+
+  width: 15vw;
+  padding: 1rem;
+  border: 1px solid white;
+  margin-right: 0.625rem;
+}
+
+.newsEventsContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-self: flex-end;
+  justify-content: center ;
+  width: 60vw;
+  height: 7vh;
+  margin-top:0.625rem;
+  border: 2px solid white;
+  
+}
+
+.streaksAndBalanceContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 95vw;
+  height: 7vh;
+  margin-top:0.625rem;
+  margin-bottom:0.625rem;
+  border: 2px solid white;
+  
+}
+
+.streaksAndBalanceContainer>div{
+
+  padding: 1rem;
+  border: 1px solid white;
+}
+
+.dailyStreaks{
+  width: 50vw;
+  margin-left: 0.625rem;
+}
+
+.rank{
+  width: 30vw;
+  margin-left: 1rem;
+}
+
+.balance{
+  width: 10vw;
+  margin-right: 0.625rem;
+}
+
+.inAppFeaturesContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 95vw;
+  height: 7vh;
+  margin-top:0.625rem;
+  border: 2px solid white;
+  overflow-x: auto ;
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+  
+}
+
+.inAppFeaturesContainer>div{
+  margin-right: 3.5rem;
+  padding: 1rem;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+.academy{
+  margin-left: 0.625rem;
+}
+
+.filtersAndSelectionsContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 95vw;
+  height: 7vh;
+  margin-top:0.625rem;
+  margin-bottom:0.625rem;
+  border: 2px solid white;
+
+}
+
+
+.filters{
+
+  padding: 1rem;
+  width: 20vw;
+  margin-left: 0.625rem;
+  border: 1px solid white;
+}
+
+.selections{
+  display: flex;
+  flex-direction: row;
+  width: 50vw;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
+}
+
+.selections>div.item{
+
+  width: 10vw;
+  padding: 1rem;
+  margin-right: 2rem;
+  border: 1px solid white;
+  border-radius:25%;
+}
+
+.donateHomePage{
+  display: flex;
+  flex-flow:row wrap;
+  margin-top: 17rem;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.donateHomePage>div{
+  width: 30vw;
+  height: 20vh;
+  padding: 1rem;
+  margin-bottom: 0.875rem;
+  border: 1px solid white;
+  border-radius: 1rem;
+}
+
+.bottomMenuContainer{
+
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  width: 95vw;
+  height: 12vh;
+  align-items: center;
+  justify-content: space-evenly;
+  bottom: 0;
+  border: 2px solid white;
+  border-radius: 0.625rem 0;
+  background-color: #000;
+  z-index: 3;
+
+}
+
+.bottomMenuContainer>div{
+  padding: 1.2rem;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+
+
+
 
 .buttonContainer{
     display: flex;
@@ -9,6 +219,7 @@ body{
     padding: 2px;
     width: 90vw;
     margin-bottom: 5px;
+    visibility: hidden;
   }
 
   button{
@@ -16,7 +227,7 @@ body{
     font-size:12px;
     font-weight: 700;
     text-transform: uppercase;
-    padding: 15px;
+    padding: 1rem;
     border-radius: 5px;
     color: white;
     border: 2px ridge  goldenrod;

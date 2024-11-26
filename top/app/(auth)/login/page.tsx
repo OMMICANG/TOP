@@ -1,12 +1,12 @@
 "use client";
 
-import {  useState, useEffect } from "react"; //useRef,
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation"; // For navigation to the next phase
-// import ReCAPTCHA from "react-google-recaptcha";
+import ReCAPTCHA from "react-google-recaptcha";
 import { FaCircleUser } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
-// import { verifyCaptcha } from "../../pages/api/ServerActions";  // Recaptcha Server Path
+import { verifyCaptcha } from "../../pages/api/ServerActions";  // Recaptcha Server Path
 import HoldButton from "../../components/HoldButton"; // Import HoldButton
 import Cookies from "js-cookie";
 import IsMobile from "../../components/IsMobile";
@@ -20,8 +20,8 @@ const Login = () => {
   const [uploading, setUploading] = useState(false); // To track upload status
   const [saveLogin, setSaveLogin] = useState(false); // Track checkbox state
   const router = useRouter(); // Use Next.js router for navigation
-  // const recaptchaRef = useRef(null);
-  // const [isVerified, setIsverified] = useState<boolean>(false);
+  const recaptchaRef = useRef(null);
+  const [isVerified, setIsverified] = useState<boolean>(false);
 
     // Check for user session on page load
   useEffect(() => {
@@ -36,12 +36,12 @@ const Login = () => {
     }
   }, []);
 
-  // async function handleCaptchaSubmission(token: string | null) {
-  //   // Server function to verify captcha
-  //   await verifyCaptcha(token)
-  //     .then(() => setIsverified(true))
-  //     .catch(() => setIsverified(false));
-  // }
+  async function handleCaptchaSubmission(token: string | null) {
+    // Server function to verify captcha
+    await verifyCaptcha(token)
+      .then(() => setIsverified(true))
+      .catch(() => setIsverified(false));
+  }
 
   // Email Regex for stricter validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -57,7 +57,7 @@ const Login = () => {
     const sanitizedEmail = email.trim();
 
     // Validate inputs
-    if (!sanitizedEmail || !password ) { //|| !isVerified
+    if (!sanitizedEmail || !password || !isVerified ) {
       setError("Please fill in all the fields and complete the reCAPTCHA.");
       setUploading(false);
       return;
@@ -203,13 +203,13 @@ const Login = () => {
           </span>
 
           {/* reCAPTCHA component */}
-          {/* <span className="recaptcha">
+          <span className="recaptcha">
             <ReCAPTCHA
               sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
               ref={recaptchaRef}
               onChange={handleCaptchaSubmission}
             />
-          </span> */}
+          </span>
 
           <span className="register">don&apos;t have  an account? <a href="../kyc/kycPhase1"> Be Ommicang</a> </span>
         </form>

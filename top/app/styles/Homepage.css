@@ -140,7 +140,7 @@ body{
 }
 
 
-.buttonContainer>button{
+button{
   font-size:12px;
   font-weight: 700;
   width: 5rem;
@@ -149,7 +149,7 @@ body{
   border-radius: 5px;
   color: white;
   border: 2px ridge  goldenrod;
-  background: aliceblue;
+  background: blue;
 }
 
 

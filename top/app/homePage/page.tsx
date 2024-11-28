@@ -60,8 +60,8 @@ const HomePage = () => {
               duration={60} // Timer duration in seconds
               size={25}
               strokeWidth={1.5}
-              trailColor={["#ffc400"]}
-              colors={[ "#000"]}
+              trailColor= "#ffc400"
+              colors="#000"
               colorsTime={[0]} // Color changes at specified seconds
               onComplete={() => ({ shouldRepeat: true, delay: 1 })} // Loop with a 1-second delay
             >

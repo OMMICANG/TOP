@@ -21,7 +21,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({ onComplete, disabled, label }) 
   };
 
   useEffect(() => {
-    if (holdTime >= 3000) {
+    if (holdTime >= 5000) {
       clearInterval(intervalRef.current as NodeJS.Timeout);
       onComplete();
       setHoldTime(0);

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 // import { useRouter } from "next/navigation"; // For navigation to the next phase
 import Cookies from "js-cookie";
-import StreakButton from "./_components/streakButton"; // Import HoldButton
+import StreakButton from "./_components/StreakButton"; // Import HoldButton
 import { PiCallBellDuotone } from "react-icons/pi";
 import '../styles/Homepage.css'
 

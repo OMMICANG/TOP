@@ -62,7 +62,7 @@ const HomePage = () => {
               strokeWidth={1.5}
               trailColor= "#ffc400"
               colors="#000"
-              colorsTime={[0]} // Color changes at specified seconds
+              colorsTime={0} // Color changes at specified seconds
               onComplete={() => ({ shouldRepeat: true, delay: 1 })} // Loop with a 1-second delay
             >
             </CountdownCircleTimer>

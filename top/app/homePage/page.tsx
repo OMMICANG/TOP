@@ -55,7 +55,7 @@ const HomePage = () => {
           <div className="userProfile">
 
             <CountdownCircleTimer
-              className="circleTimer"
+
               isPlaying
               duration={60} // Timer duration in seconds
               size={25}
@@ -65,7 +65,6 @@ const HomePage = () => {
               colorsTime={[0]} // Color changes at specified seconds
               onComplete={() => ({ shouldRepeat: true, delay: 1 })} // Loop with a 1-second delay
             >
-             {({ remainingTime }) => <span>{remainingTime}s</span>} {/* Display seconds */}
             </CountdownCircleTimer>
 
           </div>

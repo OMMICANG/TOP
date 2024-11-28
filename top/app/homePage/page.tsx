@@ -65,7 +65,7 @@ const HomePage = () => {
               colorsTime={[0]} // Color changes at specified seconds
               onComplete={() => ({ shouldRepeat: true, delay: 1 })} // Loop with a 1-second delay
             >
-              {({ remainingTime }) => remainingTime} {/* Display seconds */}
+             {({ remainingTime }) => <span>{remainingTime}s</span>} {/* Display seconds */}
             </CountdownCircleTimer>
 
           </div>

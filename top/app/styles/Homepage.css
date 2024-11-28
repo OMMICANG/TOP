@@ -1,10 +1,27 @@
+:root{
+
+  --sff: "Anton", sans-serif;
+  --pCol: hsl(0,5%,5%);
+  --sCol: hsl(0,50%,100%);
+  --tCol: hsl(0,0%,5%);
+  --paBCol: hsl(45,100%, 40%);
+  --paBorder: 2px ridge var(--paBCol);
+
+  .vt323-regular {
+    font-family: "VT323", monospace;
+    font-weight: 500;
+  }
+  
+
+}
+
 body{
   margin: 0;
   padding:0;
   box-sizing: border-box;
-  background-color: #000;
-  color: #fff;
-  font-size: 0.875rem;
+  background-color: var(--pCol);
+  color: var(--sCol);
+  font-size: 0.625rem;
 }
 
 .bodyContainer{
@@ -16,7 +33,7 @@ body{
 
 .upperIndex{
   position: fixed;
-  background-color: #000;
+  background-color: var(--pCol);
   z-index: 3;
 }
 
@@ -27,35 +44,45 @@ body{
   justify-content: space-between;
   width: 95vw;
   height: 7vh;
-  margin-top:0.625rem;
-  border: 2px solid white;
-  
+  margin-top:0.312rem;
+  background-color: var(--tCol);
+  border: var(--paBorder);
+  border-radius: 0.625rem;
 }
 
 .userProfile{
 
   margin-left: 0.625rem;
-  padding: 1rem;
-  border: 1px solid white;
+  /* border: 1px solid white; */
   border-radius: 50%;
+
 }
+
+
+ /* User Profile Timer Effect */
+
+
+/* User Greeting Text */
 
 .userWelcome{
 
+  font-size: 0.875rem;
+  width: 80vw;
   margin-right: 5rem;
-  padding: 0.625rem;
-  border: 1px solid white;
+  font-weight: 700;
+  padding: 0.3rem;
 }
 
 .icons{
 
-  width: 15vw;
-  padding: 1rem;
-  border: 1px solid white;
-  margin-right: 0.625rem;
+  font-size: 1rem;
+  color: #fff;
+  margin-right: 0.75rem;
 }
 
-.newsEventsContainer{
+
+
+/* .newsEventsContainer{
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -64,56 +91,101 @@ body{
   width: 60vw;
   height: 7vh;
   margin-top:0.625rem;
-  border: 2px solid white;
+  border: var(--paBorder);
   
-}
+} */
 
 .streaksAndBalanceContainer{
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  font-size:0.875rem;
   width: 95vw;
-  height: 7vh;
+  height: 9vh;
   margin-top:0.625rem;
-  margin-bottom:0.625rem;
-  border: 2px solid white;
   
 }
 
 .streaksAndBalanceContainer>div{
 
-  padding: 1rem;
-  border: 1px solid white;
+  border: var(--paBorder);
 }
 
-.dailyStreaks{
-  width: 50vw;
-  margin-left: 0.625rem;
+.streaksContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40vw;
+  height: 9vh;
+  margin: 0;
+  border-radius: 0.625rem;
+}
+
+.streakText{
+  margin: 0;
+  margin-top: -0.5rem;
+  line-height: 1.5rem;
+}
+
+.lowerStreakCon{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0;
+
+}
+
+
+.buttonContainer>button{
+  font-size:12px;
+  font-weight: 700;
+  width: 5rem;
+  height: 2rem;
+  text-transform: uppercase;
+  border-radius: 5px;
+  color: white;
+  border: 2px ridge  goldenrod;
+  background: aliceblue;
+}
+
+
+
+.rankBalCon{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40vw;
+  height: 9vh;
+  border-radius: 0.625rem;
+
+}
+
+.rankBalCon>div{
+  padding: 0;
 }
 
 .rank{
-  width: 30vw;
-  margin-left: 1rem;
-}
+  margin-bottom: .5rem;
 
-.balance{
-  width: 10vw;
-  margin-right: 0.625rem;
 }
-
 .inAppFeaturesContainer{
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
   width: 95vw;
-  height: 7vh;
+  height: 9vh;
   margin-top:0.625rem;
-  border: 2px solid white;
+  border: var(--paBorder);
+  border-radius: 0.625rem;
   overflow-x: auto ;
   white-space: nowrap;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scroll-behavior: smooth;
   
 }
@@ -138,7 +210,8 @@ body{
   height: 7vh;
   margin-top:0.625rem;
   margin-bottom:0.625rem;
-  border: 2px solid white;
+  border: var(--paBorder);
+  border-radius: 0.625rem;
 
 }
 
@@ -157,7 +230,7 @@ body{
   width: 50vw;
   overflow-x: auto;
   white-space: nowrap;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scroll-behavior: smooth;
 }
 
@@ -193,13 +266,13 @@ body{
   flex-direction: row;
   position: fixed;
   width: 95vw;
-  height: 12vh;
+  height: 10vh;
   align-items: center;
   justify-content: space-evenly;
   bottom: 0;
-  border: 2px solid white;
+  border: var(--paBorder);
   border-radius: 0.625rem 0;
-  background-color: #000;
+  background-color: var(--tCol);
   z-index: 3;
 
 }
@@ -209,27 +282,3 @@ body{
   border: 1px solid white;
   border-radius: 50%;
 }
-
-
-
-
-.buttonContainer{
-    display: flex;
-    justify-content: flex-end;
-    padding: 2px;
-    width: 90vw;
-    margin-bottom: 5px;
-    visibility: hidden;
-  }
-
-  button{
-    font-family: "Anton";
-    font-size:12px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 1rem;
-    border-radius: 5px;
-    color: white;
-    border: 2px ridge  goldenrod;
-    background-color: transparent;
-  }

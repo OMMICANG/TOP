@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // For navigation to the next phase
+import { CountdownCircleTimer } from "react-countdown-circle-timer";
+// import { useRouter } from "next/navigation"; // For navigation to the next phase
 import Cookies from "js-cookie";
-import HoldButton from "../components/HoldButton"; // Import HoldButton
+import StreakButton from "./_components/streakButton"; // Import HoldButton
+import { PiCallBellDuotone } from "react-icons/pi";
 import '../styles/Homepage.css'
 
 const HomePage = () => {
@@ -16,8 +18,8 @@ const HomePage = () => {
   }
 
   const [userData, setUserData] = useState<userData | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const router = useRouter(); // Use Next.js router for navigation
+  // const [uploading, setUploading] = useState(false);
+  // const router = useRouter(); // Use Next.js router for navigation
 
 
   useEffect(() => {
@@ -30,43 +32,82 @@ const HomePage = () => {
     }
   }, []);
 
-  const handleLogOut = () => {
-    setUploading(true);
-    try {
-      Cookies.remove("circleUser", { path: "/" });
-      setUserData(null); // Clear user data from state
-      router.push("/login");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    } finally {
-      setUploading(false);
-    }
-  };
+
+  // const handleLogOut = () => {
+  //   setUploading(true);
+  //   try {
+  //     Cookies.remove("circleUser", { path: "/" });
+  //     setUserData(null); // Clear user data from state
+  //     router.push("/login");
+  //   } catch (error) {
+  //     console.error("Error logging out:", error);
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
 
   return (
     <div className="bodyContainer">
 
       <div className="upperIndex">
-      <div className="topHeaderContainer">
+        <div className="topHeaderContainer">
 
-        <div className="userProfile"></div>
-        {userData ? (      
-          <div className="userWelcome"> Hi {userData.name.split(' ')[0]}</div> 
-        ) : (
-        <p>No user data found.</p>
-        )}
+          <div className="userProfile">
 
-        <div className="icons"></div>
+            <CountdownCircleTimer
+              className="circleTimer"
+              isPlaying
+              duration={60} // Timer duration in seconds
+              size={25}
+              strokeWidth={1.5}
+              trailColor={["#ffc400"]}
+              colors={[ "#000"]}
+              colorsTime={[0]} // Color changes at specified seconds
+              onComplete={() => ({ shouldRepeat: true, delay: 1 })} // Loop with a 1-second delay
+            >
+              {({ remainingTime }) => remainingTime} {/* Display seconds */}
+            </CountdownCircleTimer>
+
+          </div>
+            {userData ? (      
+          <div className="userWelcome vt323-regular"> good morning  {userData.name.split(' ')[0]}</div> 
+            ) : (
+            <p>No user data found.</p>
+            )}
+
+        <div className="icons"><PiCallBellDuotone /></div>
 
       </div>
       
-      <div className="newsEventsContainer">news and events!!</div>
+      {/* <div className="newsEventsContainer">news and events!!</div> */}
 
-      <div className="streaksAndBalanceContainer">
+      <div className="streaksAndBalanceContainer vt323-regular">
 
-        <div className="dailyStreaks"></div>
-        <div className="rank"></div>
-        <div className="balance"></div>
+        <div className="streaksContainer">
+
+          <h5 className="streakText">streak</h5>
+
+          <div className="lowerStreakCon">
+            <div className="buttonContainer">
+              <StreakButton 
+              // onComplete={}
+              // disabled={uploading}
+              // label={uploading ? "Logging In..." : "I'M OMMICANG"}
+              />
+            </div>
+
+            <div className="streakCount">300</div>
+          </div>
+          
+          
+        </div>
+
+        <div className="rankBalCon">
+
+          <div className="rank">veteran</div>
+          <div className="balance">10</div>
+
+        </div>
 
       </div>
 
@@ -83,7 +124,7 @@ const HomePage = () => {
       <div className="filtersAndSelectionsContainer">
 
         <div className="filters"></div>
-        
+
         <div className="selections">
           <div className="item"></div>
           <div className="item"></div>
@@ -117,12 +158,13 @@ const HomePage = () => {
       </footer>
 
 
-      <span className="buttonContainer">
+      {/* <span className="buttonContainer">
         <HoldButton 
           onComplete={handleLogOut} 
           disabled={uploading}
           label={uploading ? "Logging  Out..." : "Log Out"}/>
-      </span>
+      </span> */}
+
     </div>
   );
 };

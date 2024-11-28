@@ -14,7 +14,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com"/>
         <link href="https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap" rel="stylesheet"/>
-        <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sixtyfour+Convergence&display=swap" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Anton&family=Sixtyfour+Convergence&family=VT323&display=swap" rel="stylesheet"></link>
       </head>
       <body>
         {children}

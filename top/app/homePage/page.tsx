@@ -5,6 +5,8 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 // import { useRouter } from "next/navigation"; // For navigation to the next phase
 import Cookies from "js-cookie";
 import { FaCircleUser } from "react-icons/fa6";
+import { getGreeting } from "./_components/Greeting";
+import AnimatedText from "./_components/AnimatedText";
 // import StreakButton from "./_components/StreakButton"; // Import HoldButton
 import { PiCallBellDuotone } from "react-icons/pi";
 import '../styles/Homepage.css'
@@ -32,7 +34,6 @@ const HomePage = () => {
       console.error("User cookie not found!");
     }
   }, []);
-
 
   // const handleLogOut = () => {
   //   setUploading(true);
@@ -70,7 +71,7 @@ const HomePage = () => {
 
           </div>
             {userData ? (      
-          <div className="userWelcome vt323-regular"> good morning  {userData.name.split(' ')[0]}</div> 
+          <div className="userWelcome vt323-regular"> <AnimatedText  className="animated-text" text={`${getGreeting()} ${userData.name.split(' ')[0]}!`} /></div> 
             ) : (
             <p>No user data found.</p>
             )}

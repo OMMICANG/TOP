@@ -81,6 +81,9 @@ body{
   padding: 0.3rem;
 }
 
+.animated-text {
+  animation-delay: 4s;
+}
 .icons{
 
   font-size: 1rem;

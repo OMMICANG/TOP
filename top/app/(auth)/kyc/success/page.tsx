@@ -46,7 +46,7 @@ const Success: React.FC = () => {
 
 
     return (
-        <div className="landing-page">
+        <div className="success-page">
             <h1 className="animated-text" data-value="KYC verification complete">KYC verification Complete</h1>
             <hr className="horizontal-line" />
 

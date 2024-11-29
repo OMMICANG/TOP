@@ -82,6 +82,8 @@ body{
 }
 
 .animated-text {
+  font-family: "VT323", monospace;
+  font-weight: 500;
   animation-delay: 4s;
 }
 .icons{

@@ -36,7 +36,7 @@ const HoldButton: React.FC<HoldButtonProps> = ({ onComplete, disabled, label }) 
       onTouchCancel={handleTouchEnd}
       disabled={disabled}
       style={{
-        background: `linear-gradient(to right, goldenrod ${holdTime / 50}%, transparent 0%)`,
+        background: `linear-gradient(to right, hsl(100, 100%, 40%) ${holdTime / 50}%, goldenrod 0%)`,
       }}
     >
       {label}

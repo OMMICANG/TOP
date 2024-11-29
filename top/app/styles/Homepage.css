@@ -6,6 +6,7 @@
   --tCol: hsl(0,0%,5%);
   --paBCol: hsl(45,100%, 40%);
   --paBorder: 2px ridge var(--paBCol);
+  --chBorder: 1px ridge var(--sCol);
 
   .vt323-regular {
     font-family: "VT323", monospace;
@@ -53,7 +54,7 @@ body{
 .userProfile{
 
   margin-left: 0.625rem;
-  /* border: 1px solid white; */
+  border: var(--chBorder);
   border-radius: 50%;
 
 }
@@ -61,7 +62,14 @@ body{
 
  /* User Profile Timer Effect */
 
+ .circleUserAvatar{
 
+  font-size: 0.9rem;
+  position: absolute;
+  margin-top: 0.18rem;
+  margin-left: 0.18rem;
+  z-index: 1;
+}
 /* User Greeting Text */
 
 .userWelcome{
@@ -149,7 +157,6 @@ button{
   border-radius: 5px;
   color: white;
   border: 2px ridge  goldenrod;
-  background: blue;
 }
 
 

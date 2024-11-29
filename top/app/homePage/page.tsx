@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 // import { useRouter } from "next/navigation"; // For navigation to the next phase
 import Cookies from "js-cookie";
-import StreakButton from "./_components/StreakButton"; // Import HoldButton
+import { FaCircleUser } from "react-icons/fa6";
+// import StreakButton from "./_components/StreakButton"; // Import HoldButton
 import { PiCallBellDuotone } from "react-icons/pi";
 import '../styles/Homepage.css'
 
@@ -53,12 +54,13 @@ const HomePage = () => {
         <div className="topHeaderContainer">
 
           <div className="userProfile">
+          <span className="circleUserAvatar"><FaCircleUser /></span>
 
             <CountdownCircleTimer
 
               isPlaying
               duration={60} // Timer duration in seconds
-              size={25}
+              size={20}
               strokeWidth={1.5}
               trailColor= "#ffc400"
               colors="#000"
@@ -86,13 +88,13 @@ const HomePage = () => {
           <h5 className="streakText">streak</h5>
 
           <div className="lowerStreakCon">
-            <div className="buttonContainer">
+            {/* <div className="buttonContainer">
               <StreakButton 
               // onComplete={}
               // disabled={uploading}
               // label={uploading ? "Logging In..." : "I'M OMMICANG"}
               />
-            </div>
+            </div> */}
 
             <div className="streakCount">300</div>
           </div>

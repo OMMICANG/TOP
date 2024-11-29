@@ -71,7 +71,7 @@ const HomePage = () => {
 
           </div>
             {userData ? (      
-          <div className="userWelcome vt323-regular"> <AnimatedText  className="animated-text" text={`${getGreeting()} ${userData.name.split(' ')[0]}!`} /></div> 
+          <div className="userWelcome vt323-regular"> <AnimatedText  className="animatedGreeting" text={`${getGreeting()} ${userData.name.split(' ')[0]}!`} /></div> 
             ) : (
             <p>No user data found.</p>
             )}

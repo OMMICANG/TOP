@@ -81,7 +81,7 @@ body{
   padding: 0.3rem;
 }
 
-.animated-text {
+.animatedGreeting {
   font-family: "VT323", monospace;
   font-weight: 500;
   animation-delay: 4s;

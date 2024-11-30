@@ -9,6 +9,7 @@ import { getGreeting } from "./_components/Greeting";
 import AnimatedText from "./_components/AnimatedText";
 // import StreakButton from "./_components/StreakButton"; // Import HoldButton
 import { PiCallBellDuotone } from "react-icons/pi";
+import MenuIcon from "./_components/MenuIcon"
 import '../styles/Homepage.css'
 
 const HomePage = () => {
@@ -77,6 +78,7 @@ const HomePage = () => {
             )}
 
         <div className="icons"><PiCallBellDuotone /></div>
+        <div className="menuIcon vt323-regular"><MenuIcon /></div>
 
       </div>
       
@@ -89,8 +91,8 @@ const HomePage = () => {
           <h5 className="streakText">streak</h5>
 
           <div className="lowerStreakCon">
-            {/* <div className="buttonContainer">
-              <StreakButton 
+            <div className="buttonContainer">
+              {/* <StreakButton 
               // onComplete={}
               // disabled={uploading}
               // label={uploading ? "Logging In..." : "I'M OMMICANG"}

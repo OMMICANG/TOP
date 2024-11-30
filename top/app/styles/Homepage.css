@@ -89,6 +89,18 @@ body{
   font-size: 1rem;
   color: #fff;
   margin-right: 0.75rem;
+  /* border: var(--chBorder); */
+}
+
+.menuIcon{
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 1.25rem;
+  margin-right: 0.625rem;
+  /* border: var(--chBorder); */
 }
 
 
@@ -121,6 +133,8 @@ body{
 .streaksAndBalanceContainer>div{
 
   border: var(--paBorder);
+  border-radius: 0.625rem;
+  
 }
 
 .streaksContainer{
@@ -131,7 +145,8 @@ body{
   width: 40vw;
   height: 9vh;
   margin: 0;
-  border-radius: 0.625rem;
+  box-shadow: 2px 0 2px 0.5px hsla(45, 100%, 40%, 0.5), -2px 0 2px 0.5px hsla(45, 100%, 40%, 0.5);
+
 }
 
 .streakText{
@@ -171,7 +186,8 @@ button{
   justify-content: center;
   width: 40vw;
   height: 9vh;
-  border-radius: 0.625rem;
+  box-shadow:-2px 0 2px 0.5px hsla(45, 100%, 40%, 0.5),2px 0 2px 0.5px hsla(45, 100%, 40%, 0.5);
+
 
 }
 
@@ -283,7 +299,7 @@ button{
   border: var(--paBorder);
   border-radius: 0.625rem 0;
   background-color: var(--tCol);
-  z-index: 3;
+  z-index: 2;
 
 }
 

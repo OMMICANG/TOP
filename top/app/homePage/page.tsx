@@ -91,8 +91,8 @@ const HomePage = () => {
           <h5 className="streakText">streak</h5>
 
           <div className="lowerStreakCon">
-            <div className="buttonContainer">
-              {/* <StreakButton 
+            {/* <div className="buttonContainer">
+              <StreakButton 
               // onComplete={}
               // disabled={uploading}
               // label={uploading ? "Logging In..." : "I'M OMMICANG"}

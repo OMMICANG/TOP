@@ -5,10 +5,12 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 // import { useRouter } from "next/navigation"; // For navigation to the next phase
 import Cookies from "js-cookie";
 import { FaCircleUser } from "react-icons/fa6";
+import UserMenu from "./_components/UserMenu"
 import { getGreeting } from "./_components/Greeting";
 import AnimatedText from "./_components/AnimatedText";
-// import StreakButton from "./_components/StreakButton"; // Import HoldButton
+import StreakButton from "./_components/StreakButton"; // Import HoldButton
 import { PiCallBellDuotone } from "react-icons/pi";
+import { RiRotateLockFill } from "react-icons/ri";
 import MenuIcon from "./_components/MenuIcon"
 import '../styles/Homepage.css'
 
@@ -16,6 +18,7 @@ const HomePage = () => {
 
   interface userData {
     name: string;
+    disabled?: boolean;
     email: string;
     country: string;
     uuid: string;
@@ -35,6 +38,31 @@ const HomePage = () => {
       console.error("User cookie not found!");
     }
   }, []);
+
+  const handleStreakUpdate = async () => {
+    try {
+      const response = await fetch("/pages/api/homepageStreakButton/", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          uuid: userData?.uuid,
+          country: userData?.country, // Ensure `country` is included
+         }),
+      });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Streak updated successfully:", data);
+  } catch (error) {
+    console.error("Error updating streak:", error);
+  }
+  };
+  
 
   // const handleLogOut = () => {
   //   setUploading(true);
@@ -57,6 +85,8 @@ const HomePage = () => {
 
           <div className="userProfile">
           <span className="circleUserAvatar"><FaCircleUser /></span>
+        <div className="userMenu vt323-regular"><UserMenu /></div>
+
 
             <CountdownCircleTimer
 
@@ -90,16 +120,16 @@ const HomePage = () => {
 
           <h5 className="streakText">streak</h5>
 
-          <div className="lowerStreakCon">
-            {/* <div className="buttonContainer">
+          {/* <div className="lowerStreakCon"> */}
+            <div className="buttonContainer">
               <StreakButton 
-              // onComplete={}
-              // disabled={uploading}
-              // label={uploading ? "Logging In..." : "I'M OMMICANG"}
+              onComplete={handleStreakUpdate}
+              disabled={false} // Handle dynamic logic to enable/disable
+              label="HOLD"
               />
-            </div> */}
+            {/* </div> */}
 
-            <div className="streakCount">300</div>
+            {/* <div className="streakCount">300</div> */}
           </div>
           
           
@@ -107,8 +137,8 @@ const HomePage = () => {
 
         <div className="rankBalCon">
 
-          <div className="rank">veteran</div>
-          <div className="balance">10</div>
+          <div className="rank neon">veteran</div>
+          <div className="bal">10</div>
 
         </div>
 
@@ -116,24 +146,68 @@ const HomePage = () => {
 
       <div className="inAppFeaturesContainer">
         
-        <div className="academy"></div>
-        <div className="habits"></div>
-        <div className="spotTrade"></div>
-        <div className="marketPlace"></div>
-        <div className="volunteer"></div>
+        <div className="academy">
+          <RiRotateLockFill className="rotateLock" />
+          <h6 className="bottomText">----</h6>
+        </div>
+        <div className="habits">
+          <RiRotateLockFill className="rotateLock" />
+          <h6 className="bottomText">----</h6>
+        </div>
+        <div className="spotTrade">
+          <RiRotateLockFill className="rotateLock" />
+          <h6 className="bottomText">----</h6>
+        </div>
+        <div className="marketPlace">
+          <RiRotateLockFill className="rotateLock" />
+          <h6 className="bottomText">----</h6>
+        </div>
+        <div className="volunteer">
+          <RiRotateLockFill className="rotateLock" />
+          <h6 className="bottomText">----</h6>
+        </div>
 
       </div>
 
       <div className="filtersAndSelectionsContainer">
 
-        <div className="filters"></div>
+        <div className="filters">
+        <RiRotateLockFill className="rotateLockFilters" />
+          <select 
+          className="filtersSelect" 
+          name="filtersSelect" 
+          id="filters"
+          disabled={true}
+          >
+            <option value="">Filters</option>
+          </select>
+        </div>
 
         <div className="selections">
-          <div className="item"></div>
-          <div className="item"></div>
-          <div className="item"></div>
-          <div className="item"></div>
-          <div className="item"></div>
+          <div className="item">
+          <RiRotateLockFill className="rotateLockSelections" />
+          <h6 className="bottomText">----</h6>
+          </div>
+          
+          <div className="item">
+          <RiRotateLockFill className="rotateLockSelections" />
+          <h6 className="bottomText">----</h6>
+          </div>
+          
+          <div className="item">
+          <RiRotateLockFill className="rotateLockSelections" />
+          <h6 className="bottomText">----</h6>
+          </div>
+
+          <div className="item">
+          <RiRotateLockFill className="rotateLockSelections" />
+          <h6 className="bottomText">----</h6>
+          </div>
+          
+          <div className="item">
+          <RiRotateLockFill className="rotateLockSelections" />
+          <h6 className="bottomText">----</h6>
+          </div>
         </div>
       </div>
 
@@ -141,22 +215,58 @@ const HomePage = () => {
 
       <div className="donateHomePage">
 
-        <div className="item1"></div>
-        <div className="item2"></div>
-        <div className="item3"></div>
-        <div className="item4"></div>
-        <div className="item5"></div>
-        <div className="item6"></div>
+        <div className="item1">
+        <RiRotateLockFill className="rotateLock" />
+        </div>
+
+        <div className="item2">
+        <RiRotateLockFill className="rotateLock" />
+        </div>
+        
+        <div className="item3">
+        <RiRotateLockFill className="rotateLock" />
+        </div>
+
+        <div className="item4">
+        <RiRotateLockFill className="rotateLock" />
+        </div>
+
+        <div className="item5">
+        <RiRotateLockFill className="rotateLock" />
+        </div>
+
+        <div className="item6">
+        <RiRotateLockFill className="rotateLock" />
+        </div>
 
       </div>
 
       <footer className="bottomMenuContainer">
 
-        <div className="item1"></div>
-        <div className="item2"></div>
-        <div className="item3"></div>
-        <div className="item4"></div>
-        <div className="item5"></div>
+        <div className="item1">
+        <RiRotateLockFill className="rotateLock" />
+        <h6 className="bottomText">----</h6>
+        </div>
+
+        <div className="item2">
+        <RiRotateLockFill className="rotateLock" />
+        <h6 className="bottomText">----</h6>
+        </div>
+
+        <div className="item3">
+        <RiRotateLockFill className="rotateLock" />
+        <h6 className="bottomText">----</h6>
+        </div>
+
+        <div className="item4">
+        <RiRotateLockFill className="rotateLock" />
+        <h6 className="bottomText">----</h6>
+        </div>
+        
+        <div className="item5">
+        <RiRotateLockFill className="rotateLock" />
+        <h6 className="bottomText">----</h6>
+        </div>
 
       </footer>
 

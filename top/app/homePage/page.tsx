@@ -24,7 +24,7 @@ const HomePage = () => {
     uuid: string;
   }
 
-  const [userData, setUserData] = useState<userData | null>(null);
+  const [userData, setUserData] = useState< typeof userData | null>(null);
   // const [uploading, setUploading] = useState(false);
   // const router = useRouter(); // Use Next.js router for navigation
 

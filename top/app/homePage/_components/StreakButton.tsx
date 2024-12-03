@@ -165,26 +165,38 @@ useEffect(() => {
   };
 
   return (
-    <div
-      // type="button"
+    <button
+      type="button"
       className={styles.button}
     >
-      <button  // Changed From original div Elem To button Due to deployment error on Vercel | Test
-      className={styles.top}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-      onTouchCancel={handleTouchEnd}
-      disabled={disabled || cooldown}
-      style={{
-        background: cooldown //streakCount !== null
-          ? "hsl(0, 0%, 50%)"
-          : `linear-gradient(to right, hsl(100, 100%, 40%) ${holdTime / 30}%, goldenrod 0%)`,
-        cursor: disabled ? "not-allowed" : "pointer",
-      }}
+      <div 
+  role="button"
+  className={styles.top}
+  onTouchStart={!disabled && !cooldown ? handleTouchStart : undefined}
+  onTouchEnd={handleTouchEnd}
+  onTouchCancel={handleTouchEnd}
+  style={{
+    background: cooldown
+      ? "hsl(0, 0%, 50%)"
+      : `linear-gradient(to right, hsl(100, 100%, 40%) ${holdTime / 30}%, goldenrod 0%)`,
+    cursor: disabled || cooldown ? "not-allowed" : "pointer",
+  }}
+      // {/* <button  // Changed From original div Elem To button Due to deployment error on Vercel | Test
+      // className={styles.top}
+      // onTouchStart={handleTouchStart}
+      // onTouchEnd={handleTouchEnd}
+      // onTouchCancel={handleTouchEnd}
+      // disabled={disabled || cooldown}
+      // style={{
+      //   background: cooldown //streakCount !== null
+      //     ? "hsl(0, 0%, 50%)"
+      //     : `linear-gradient(to right, hsl(100, 100%, 40%) ${holdTime / 30}%, goldenrod 0%)`,
+      //   cursor: disabled ? "not-allowed" : "pointer",
+      // }} */}
       
-      >{streakCount !== null ? `🔥 ${streakCount}` : label}</button>
+      >{streakCount !== null ? `🔥 ${streakCount}` : label}</div>
       <div className={styles.bottom}></div>
-    </div>
+    </button>
   );
 };
 

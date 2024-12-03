@@ -11,11 +11,17 @@ interface StreakButtonProps {
   country: string;
 }
 
+interface userData {
+  uuid: string;
+  country: string;
+}
+
+
 
 const StreakButton: React.FC<StreakButtonProps> = ({ onComplete, disabled, label }) => {
   const [holdTime, setHoldTime] = useState(0);
   const [streakCount, setStreakCount] = useState<number | null>(null);
-  const [userData, setUserData] = useState< typeof userData | null>(null);
+  const [userData, setUserData] = useState<userData | null>(null);
   const [cooldown, setCooldown] = useState<boolean>(true);
   const [remainingTime, setRemainingTime] = useState<number | null>(null);
   // const [isCompleted, setIsCompleted] = useState(false);

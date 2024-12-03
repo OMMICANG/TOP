@@ -4,11 +4,11 @@ import Cookies from "js-cookie";
 import styles from "../../styles/StreakButton.module.css"
 
 interface StreakButtonProps {
-  onComplete: () => Promise <void>;
+  onComplete: () => Promise<void>;
   disabled?: boolean;
   label: string;
-  uuid: string;
-  country: string;
+  // uuid: string;
+  // country: string;
 }
 
 interface userData {
@@ -165,7 +165,7 @@ useEffect(() => {
   };
 
   return (
-    <button
+    <div
       type="button"
       className={styles.button}
     >
@@ -184,7 +184,7 @@ useEffect(() => {
       
       >{streakCount !== null ? `🔥 ${streakCount}` : label}</button>
       <div className={styles.bottom}></div>
-    </button>
+    </div>
   );
 };
 

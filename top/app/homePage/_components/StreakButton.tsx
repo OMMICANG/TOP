@@ -169,7 +169,7 @@ useEffect(() => {
       type="button"
       className={styles.button}
     >
-      <div 
+      <button 
       className={styles.top}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}

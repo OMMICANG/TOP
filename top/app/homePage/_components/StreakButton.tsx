@@ -169,7 +169,7 @@ useEffect(() => {
       type="button"
       className={styles.button}
     >
-      <button 
+      <button  // Changed From original div Elem To button Due to deployment error on Vercel | Test
       className={styles.top}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -182,7 +182,7 @@ useEffect(() => {
         cursor: disabled ? "not-allowed" : "pointer",
       }}
       
-      >{streakCount !== null ? `🔥 ${streakCount}` : label}</div>
+      >{streakCount !== null ? `🔥 ${streakCount}` : label}</button>
       <div className={styles.bottom}></div>
     </button>
   );

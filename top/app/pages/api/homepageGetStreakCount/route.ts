@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       lastStreak: data.last_streak,
     });
   } catch (error) {
-    console.error("Error fetching streak count:", error.message);
+    console.error("Error fetching streak count:", error);
     return NextResponse.json({ error: "Internal server error" });
   }
 };

@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     // No update needed if no days were missed
     return NextResponse.json({ message: "No streak decrement needed", streakCount: streak_count });
   } catch (error) {
-    console.error("Error decrementing streak:", error.message);
+    console.error("Error decrementing streak:", error ); //error.message
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

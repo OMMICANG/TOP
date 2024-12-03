@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import styles from "../../styles/StreakButton.module.css"
 
 interface StreakButtonProps {
-  onComplete: () => promise <void>;
+  onComplete: () => Promise <void>;
   disabled?: boolean;
   label: string;
   uuid: string;

@@ -166,7 +166,7 @@ useEffect(() => {
 
   return (
     <div
-      type="button"
+      // type="button"
       className={styles.button}
     >
       <button  // Changed From original div Elem To button Due to deployment error on Vercel | Test

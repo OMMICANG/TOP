@@ -398,16 +398,14 @@ div > .selections > .item> .bottomText{
 .bottomMenuContainer{
 
   display: flex;
-  flex-direction: row;
   position: fixed;
   width: 95vw;
   height: 10vh;
   align-items: center;
-  justify-content: space-evenly;
   bottom: 0;
-  border: var(--paBorder);
-  border-radius: 0.625rem 0;
-  background-color: var(--tCol);
+  /* border: var(--paBorder); */
+  /* border-radius: 0.625rem 0; */
+  /* background-color: var(--tCol); */
   z-index: 2;
 
 }

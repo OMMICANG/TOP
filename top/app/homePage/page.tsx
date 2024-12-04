@@ -12,6 +12,7 @@ import StreakButton from "./_components/StreakButton"; // Import HoldButton
 import { PiCallBellDuotone } from "react-icons/pi";
 import { RiRotateLockFill } from "react-icons/ri";
 import MenuIcon from "./_components/MenuIcon"
+import BottomNavMenu from "./_components/BottomNavMenu";
 import '../styles/Homepage.css'
 
 const HomePage = () => {
@@ -243,7 +244,9 @@ const HomePage = () => {
 
       <footer className="bottomMenuContainer">
 
-        <div className="item1">
+      <BottomNavMenu />
+
+        {/* <div className="item1">
         <RiRotateLockFill className="rotateLock" />
         <h6 className="bottomText">----</h6>
         </div>
@@ -266,7 +269,7 @@ const HomePage = () => {
         <div className="item5">
         <RiRotateLockFill className="rotateLock" />
         <h6 className="bottomText">----</h6>
-        </div>
+        </div> */}
 
       </footer>
 

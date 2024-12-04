@@ -7,6 +7,8 @@ export function middleware(req: NextRequest) {
 
   // Retrieve KYC progress from cookies
   const kycProgress = req.cookies.get('kyc_progress')?.value;
+  const circleUser = req.cookies.get('circleUser')?.value;
+
 
   // Redirect to preloader if starting elsewhere
   if (!kycProgress && pathname !== '/') {
@@ -66,6 +68,8 @@ export const config = {
     '/kyc/kycPhase3/:path*',
     '/kyc/success/:path*',
     '/login:path*',
+    '/homePage:path*',
+
     
 
   ],

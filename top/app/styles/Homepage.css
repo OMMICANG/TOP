@@ -376,7 +376,8 @@ div > .selections > .item> .bottomText{
 .donateHomePage{
   display: flex;
   flex-flow:row wrap;
-  margin-top: 17rem;
+  position: relative;
+  margin-top: 44vh;
   align-items: center;
   justify-content: space-evenly;
   scrollbar-width: none;

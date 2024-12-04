@@ -79,7 +79,6 @@ const FaceCapture: React.FC = () => {
           return;
         }
 
-
       // Navigate to the next phase (video submission)
       router.push("/kyc/kycPhase3"); // Fix: Route to kycPhase3
     } catch (err) {

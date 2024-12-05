@@ -24,7 +24,28 @@ export function middleware(req: NextRequest) {
     }
   }
 
-  if (pathname.startsWith('/kyc')) {
+  if (pathname.startsWith('/kyc/kycPhase1')) {
+    if (!kycProgress) {
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (pathname.startsWith('/kyc/faceCapture')) {
+    if (kycProgress !== 'kycPhase1-completed') {
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (pathname.startsWith('/kyc/kycPhase3')) {
+    if (kycProgress !== 'faceCapture-completed') {
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
+  }
+
+  if (pathname.startsWith('/kyc/success')) {
     if (!kycProgress) {
       url.pathname = '/';
       return NextResponse.redirect(url);

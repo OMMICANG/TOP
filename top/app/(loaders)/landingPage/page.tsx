@@ -69,7 +69,7 @@ const LandingPage: React.FC = () => {
 
     useEffect(() => {
         // Preload KYC and Login pages for smooth navigation
-        router.prefetch("/kyc");
+        router.prefetch("/kyc/kycPhase1");
         router.prefetch("/login");
     }, [router]);
 

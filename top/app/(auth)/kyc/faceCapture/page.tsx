@@ -99,7 +99,7 @@ const FaceCapture: React.FC = () => {
             <li>center your face within the circle | No Facial Accessories</li>
             <li>smile for the camera</li>
             <li>capture</li>
-            <li>previe || submit and continue</li>
+            <li>preview Photo || submit and continue</li>
           </ul>
         </fieldset>
 

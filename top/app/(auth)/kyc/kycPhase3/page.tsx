@@ -175,7 +175,7 @@ const VideoCapture: React.FC = () => {
           <ul>
             <li>center your face within the circle</li>
             <li>Start Recording and say the words below:</li>
-            <li>hi, i am (your full name). | i am ommicang</li>
+            <li>Hi, i am (your full name). | i am ommicang</li>
             <li>preview video and do not close preview || submit and continue</li>
           </ul>
         </fieldset>

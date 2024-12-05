@@ -56,11 +56,12 @@
 }
 .navigation ul li a .text {
     position: fixed;
-    color: #fff;
     margin:0;
     padding:0;
+    font-family: "Anton", sans-serif;
     font-weight: 400;
     font-size: .875em;
+    color: hsl(0,50%,100%);
     letter-spacing: .05em;
     opacity: 0;
     transform: translateY(2.2vh);

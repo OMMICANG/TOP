@@ -216,44 +216,68 @@ export default function KYCAdminPage() {
                   <button onClick={() => setExpandedContent({ type: "text", content: user.identity_card_number })}>
                     ID: {user.identity_card_number.slice(0, 2)}**** <IoMdArrowDropdown />
                   </button>
+
+                  {user.identity_card_url ? (
+
                   <button
                     className="identity-card-button"
-                    // onClick={() => setExpandedContent({ type: "image", url: user.identity_card_url })}
-                    onClick={() => {if (user.identity_card_url) {
-                      setExpandedContent({ type: "image", url: user.identity_card_url });
-                    } else {
-                      console.error("Identity Card URL is null.");
-                    }
-                  }
-                }
+                    onClick={() => setExpandedContent({ type: "image", url: user.identity_card_url })}
+                //     onClick={() => {if (user.identity_card_url) {
+                //       setExpandedContent({ type: "image", url: user.identity_card_url });
+                //     } else {
+                //       <p>No ID</p>
+                //       // console.error("Identity Card URL is null.");
+                //     }
+                //   }
+                // }
                   >
                     ID CARD<IoMdArrowDropdown />
                   </button>
+                  ) : (
+                      <p>No ID</p>
+                  )}
+                  
+
+                  {user.face_image_url ? (
+
                   <button
                     className="identity-card-button"
-                    onClick={() => {if (user.face_image_url) {
-                      setExpandedContent({ type: "image", url: user.face_image_url });
-                    } else {
-                      console.error("Face image URL is null.");
-                    }
-                  }
-                }
+                    onClick={() => setExpandedContent({ type: "image", url: user.face_image_url })}
+                //     onClick={() => {if (user.face_image_url) {
+                //       setExpandedContent({ type: "image", url: user.face_image_url });
+                //     } else {
+                //       <p>No Image</p>
+                //       // console.error("Face image URL is null.");
+                //     }
+                //   }
+                // }
                   >
                     PHOTO<IoMdArrowDropdown />
                   </button>
+                   ) : (
+                    <p>No Photo</p>
+                  )}
+
+                  {user.video_url ? (
+
                   <button
                     className="video-button"
-                    // onClick={() => setExpandedContent({ type: "video", url: user.video_url })}
-                    onClick={() => {if (user.video_url) {
-                      setExpandedContent({ type: "video", url: user.video_url });
-                    } else {
-                      console.error("Video URL is null.");
-                    }
-                  }
-                }
+                    onClick={() => setExpandedContent({ type: "video", url: user.video_url })}
+                    // onClick={() => {if (user.video_url) {
+                    //   setExpandedContent({ type: "video", url: user.video_url });
+                //     } else {
+                //       <p>No Video</p>
+                //       // console.error("Video URL is null.");
+                //     }
+                //   }
+                // }
                   >
                     VIDEO<IoMdArrowDropdown />
                   </button>
+                  ) : (
+                    <p>No Video</p>
+                  )}
+
                   <div className="submit">
                     <span className="decline" onClick={() => handleDeclinedUser(user.uuid)}>
                       <PiKeyReturnLight />

@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useEffect } from "react";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
 import "../../../styles/Success.css"; // Ensure you have this file for custom styles
 
 const Success: React.FC = () => {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    const kyc_progress = Cookies.get("kyc_progress");
-    console.log(kyc_progress);
+    // const kyc_progress = Cookies.get("kyc_progress");
+    // console.log(kyc_progress);
 
 
     useEffect(() => {

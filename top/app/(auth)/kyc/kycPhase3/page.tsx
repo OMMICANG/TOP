@@ -159,7 +159,7 @@ const VideoCapture: React.FC = () => {
           return;
         }
 
-      Cookies.set("kyc_progress", "kycPhase3-completed", { path: "/" });
+      // Cookies.set("kyc_progress", "kycPhase3-completed", { path: "/" });
       router.push("/kyc/success"); // Navigate to the KYC completion page
       
     } catch (err) {

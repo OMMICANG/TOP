@@ -221,7 +221,7 @@ export default function KYCAdminPage() {
 
                   <button
                     className="identity-card-button"
-                    onClick={() => setExpandedContent({ type: "image", url: user.identity_card_url })}
+                    onClick={() => setExpandedContent({ type: "image", url: user.identity_card_url || "null" })}
                 //     onClick={() => {if (user.identity_card_url) {
                 //       setExpandedContent({ type: "image", url: user.identity_card_url });
                 //     } else {
@@ -262,7 +262,7 @@ export default function KYCAdminPage() {
 
                   <button
                     className="video-button"
-                    onClick={() => setExpandedContent({ type: "video", url: user.video_url })}
+                    onClick={() => setExpandedContent({ type: "video", url: user.video_url || "null" })}
                     // onClick={() => {if (user.video_url) {
                     //   setExpandedContent({ type: "video", url: user.video_url });
                 //     } else {

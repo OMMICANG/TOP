@@ -128,7 +128,7 @@ const KYCPhase1 = () => {
     // Store the UUID in localStorage for subsequent phases
     
     Cookies.set("kycUUID", kycUUID,  { path: "/"});
-    Cookies.set("kyc_progress", "kycPhase1-completed", { path: "/" });
+    // Cookies.set("kyc_progress", "kycPhase1-completed", { path: "/" });
 
 
     setSuccess(true);

@@ -1,7 +1,7 @@
 // BottomMenu Magic Navigation Menu Indicator | By Codehal YT
 import React, { useState } from "react";
 import { HiHomeModern } from "react-icons/hi2";
-import { RiCommunityLine } from "react-icons/ri";
+import { RiCommunityFill } from "react-icons/ri";
 import { RiRotateLockFill } from "react-icons/ri";
 import styles from "../../styles/BottomNavMenu.module.css";
 
@@ -12,7 +12,7 @@ const BottomNavMenu: React.FC = () => {
     { label: "Home", icon: <HiHomeModern />, href: "/homePage" },
     { label: "----", icon: <RiRotateLockFill/>, href: "#" },
     { label: "----", icon: <RiRotateLockFill/>, href: "#" },
-    { label: "Circle", icon: <RiCommunityLine />, href: "https://t.me/+gprQPD5jFQ1iODU0" },
+    { label: "Circle", icon: <RiCommunityFill />, href: "https://t.me/+gprQPD5jFQ1iODU0" },
     { label: "----", icon: <RiRotateLockFill/>, href: "#" },
   ];
 

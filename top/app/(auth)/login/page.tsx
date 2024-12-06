@@ -23,6 +23,9 @@ const Login = () => {
   const recaptchaRef = useRef(null);
   const [isVerified, setIsverified] = useState<boolean>(false);
 
+  const kyc_progress = Cookies.get("kyc_progress");
+  console.log(kyc_progress);
+  
     // Check for user session on page load
   useEffect(() => {
     const savedUser = Cookies.get("circleUser");

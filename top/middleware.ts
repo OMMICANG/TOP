@@ -31,26 +31,26 @@ export function middleware(req: NextRequest) {
   //   }
   // }
 
-  // if (pathname.startsWith('/kyc/faceCapture')) {
-  //   if (kycProgress !== 'kycPhase1-completed') {
-  //     url.pathname = '/';
-  //     return NextResponse.redirect(url);
-  //   }
-  // }
+  if (pathname.startsWith('/kyc/faceCapture')) {
+    if (kycProgress !== 'kycPhase1-completed') {
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
+  }
 
-  // if (pathname.startsWith('/kyc/kycPhase3')) {
-  //   if (kycProgress !== 'faceCapture-completed') {
-  //     url.pathname = '/';
-  //     return NextResponse.redirect(url);
-  //   }
-  // }
+  if (pathname.startsWith('/kyc/kycPhase3')) {
+    if (kycProgress !== 'faceCapture-completed') {
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
+  }
 
-  // if (pathname.startsWith('/kyc/success')) {
-  //   if (!kycProgress) {
-  //     url.pathname = '/';
-  //     return NextResponse.redirect(url);
-  //   }
-  // }
+  if (pathname.startsWith('/kyc/success')) {
+    if (kycProgress !== 'kycPhase3-completed') {
+      url.pathname = '/';
+      return NextResponse.redirect(url);
+    }
+  }
 
   if (pathname.startsWith('/login')) {
     if (!kycProgress) {
@@ -83,10 +83,10 @@ export const config = {
   matcher: [
 
     '/landingPage/:path*',
-    // '/kyc/kycPhase1/:path*',
-    // '/kyc/faceCapture/:path*',
-    // '/kyc/kycPhase3/:path*',
-    // '/kyc/success/:path*',
+    '/kyc/kycPhase1/:path*',
+    '/kyc/faceCapture/:path*',
+    '/kyc/kycPhase3/:path*',
+    '/kyc/success/:path*',
     '/login:path*',
     '/homePage:path*',
 

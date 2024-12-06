@@ -51,7 +51,9 @@ const FaceCapture: React.FC = () => {
 
     // Retrieve the UUID from localStorage
     const kycUUID = Cookies.get("kycUUID");
-    Cookies.set("kyc_progress", "kycPhase1-completed", { path: "/" });
+    const kyc_progress = Cookies.get("kyc_progress");
+    console.log(kyc_progress);
+
     if (!kycUUID) {
       setError("Session expired or invalid. Please restart the KYC process.");
       return;
@@ -80,6 +82,7 @@ const FaceCapture: React.FC = () => {
           return;
         }
 
+    Cookies.set("kyc_progress", "faceCapture-completed", { path: "/" });
       // Navigate to the next phase (video submission)
       router.push("/kyc/kycPhase3"); // Fix: Route to kycPhase3
     } catch (err) {

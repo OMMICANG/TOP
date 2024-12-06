@@ -131,7 +131,9 @@ const VideoCapture: React.FC = () => {
 
     // Retrieve the UUID from localStorage
     const kycUUID = Cookies.get("kycUUID");
-    Cookies.set("kyc_progress", "faceCapture-completed", { path: "/" });
+    const kyc_progress = Cookies.get("kyc_progress");
+    console.log(kyc_progress);
+    
     if (!kycUUID) {
       setError("Session expired or invalid. Please restart the KYC process.");
       setCapturing(false);
@@ -157,6 +159,7 @@ const VideoCapture: React.FC = () => {
           return;
         }
 
+      Cookies.set("kyc_progress", "kycPhase3-completed", { path: "/" });
       router.push("/kyc/success"); // Navigate to the KYC completion page
       
     } catch (err) {

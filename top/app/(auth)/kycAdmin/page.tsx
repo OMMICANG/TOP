@@ -242,7 +242,7 @@ export default function KYCAdminPage() {
 
                   <button
                     className="identity-card-button"
-                    onClick={() => setExpandedContent({ type: "image", url: user.face_image_url ?? null })}
+                    onClick={() => setExpandedContent({ type: "image", url: user.face_image_url || "null" })}
                 //     onClick={() => {if (user.face_image_url) {
                 //       setExpandedContent({ type: "image", url: user.face_image_url });
                 //     } else {

@@ -18,6 +18,9 @@ const FaceCapture: React.FC = () => {
   const [hasPreviewed, setHasPreviewed] = useState(false); // Track if the user has previewed
   const router = useRouter();
 
+    const kyc_progress = Cookies.get("kyc_progress");
+    console.log(kyc_progress);
+
   const capture = () => {
     setError(null);
 
@@ -82,7 +85,7 @@ const FaceCapture: React.FC = () => {
           return;
         }
 
-    // Cookies.set("kyc_progress", "faceCapture-completed", { path: "/" });
+    Cookies.set("kyc_progress", "faceCapture-completed", { path: "/" });
       // Navigate to the next phase (video submission)
       router.push("/kyc/kycPhase3"); // Fix: Route to kycPhase3
     } catch (err) {

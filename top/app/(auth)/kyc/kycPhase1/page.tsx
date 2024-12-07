@@ -36,6 +36,9 @@ const KYCPhase1 = () => {
   const recaptchaRef = useRef(null);
   const [isVerified, setIsverified] = useState<boolean>(false);
 
+  const kyc_progress = Cookies.get("kyc_progress");
+  console.log(kyc_progress);
+
   async function handleCaptchaSubmission(token: string | null) {
     // Server function to verify captcha
     await verifyCaptcha(token)
@@ -128,7 +131,7 @@ const KYCPhase1 = () => {
     // Store the UUID in localStorage for subsequent phases
     
     Cookies.set("kycUUID", kycUUID,  { path: "/"});
-    // Cookies.set("kyc_progress", "kycPhase1-completed", { path: "/" });
+    Cookies.set("kyc_progress", "kycPhase1-completed", { path: "/" });
 
 
     setSuccess(true);

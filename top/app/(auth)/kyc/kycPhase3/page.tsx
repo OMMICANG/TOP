@@ -19,6 +19,8 @@ const VideoCapture: React.FC = () => {
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const router = useRouter();
 
+    const kyc_progress = Cookies.get("kyc_progress");
+    console.log(kyc_progress);
 
   //  Is Recording Effect
   useEffect(() => {
@@ -159,7 +161,7 @@ const VideoCapture: React.FC = () => {
           return;
         }
 
-      // Cookies.set("kyc_progress", "kycPhase3-completed", { path: "/" });
+      Cookies.set("kyc_progress", "kycPhase3-completed", { path: "/" });
       router.push("/kyc/success"); // Navigate to the KYC completion page
       
     } catch (err) {

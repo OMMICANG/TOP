@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     for (const table of countryTables) {
       const { data, error } = await supabase
         .from(table)
-        .select("uuid, name, country, email, password")
+        .select("uuid, name, country, email, password, isBetaUser, isMerchant")
         .eq("email", email)
         .single();
 
@@ -46,6 +46,8 @@ export async function POST(req: NextRequest) {
       name: userFound.name,
       country: userFound.country,
       email: userFound.email,
+      isBetaUser: userFound.isBetaUser,
+      isMerchant: userFound.isMerchant,
     });
   } catch (error) {
     console.error("Error in login handler:", error);

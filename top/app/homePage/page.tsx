@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-// import { useRouter } from "next/navigation"; // For navigation to the next phase
+import { useRouter } from "next/navigation"; // For navigation to the next phase
 import Cookies from "js-cookie";
 import { FaCircleUser } from "react-icons/fa6";
 import UserMenu from "./_components/UserMenu"
@@ -13,6 +13,7 @@ import { PiCallBellDuotone } from "react-icons/pi";
 import { RiRotateLockFill } from "react-icons/ri";
 import MenuIcon from "./_components/MenuIcon"
 import BottomNavMenu from "./_components/BottomNavMenu";
+// import HoldButton from "../components/HoldButton"
 import '../styles/Homepage.css'
 
 const HomePage = () => {
@@ -27,14 +28,21 @@ const HomePage = () => {
 
   const [userData, setUserData] = useState<userData | null>(null);
   // const [uploading, setUploading] = useState(false);
-  // const router = useRouter(); // Use Next.js router for navigation
+  const router = useRouter(); // Use Next.js router for navigation
+  const [isBetaUser, setIsBetaUser] = useState(false);
+  const [isMerchant, setIsMerchant] = useState(false);
+
 
 
   useEffect(() => {
     // Retrieve cookie data
     const cookieData = Cookies.get("circleUser");
+    const parsedData = JSON.parse(cookieData);
     if (cookieData) {
-      setUserData(JSON.parse(cookieData));
+      setUserData(parsedData);
+      setIsBetaUser(parsedData.isBetaUser === true);
+      setIsMerchant(parsedData.isMerchant === true);
+      console.log(parsedData);
     }else {
       console.error("User cookie not found!");
     }
@@ -62,6 +70,12 @@ const HomePage = () => {
   } catch (error) {
     console.error("Error updating streak:", error);
   }
+  };
+
+  const handleSpotNavigation = () => {
+    if (isBetaUser && isMerchant) {
+      router.push("/spot");
+    }
   };
   
 
@@ -156,8 +170,21 @@ const HomePage = () => {
           <h6 className="bottomText">----</h6>
         </div>
         <div className="spotTrade">
-          <RiRotateLockFill className="rotateLock" />
-          <h6 className="bottomText">----</h6>
+
+        {isBetaUser && isMerchant ? (
+            <div onClick={handleSpotNavigation} style={{ cursor: "pointer" }}>
+              {/* <RiRotateLockFill className="rotateLock" /> */}
+              <h6 className="bottomText">Spot</h6>
+            </div>
+          ) : (
+            <div>
+              <RiRotateLockFill className="rotateLock" />
+              <h6 className="bottomText">----</h6>
+            </div>
+          )}
+          
+          {/* <RiRotateLockFill className="rotateLock" /> */}
+          {/* <h6 className="bottomText">----</h6> */}
         </div>
         <div className="marketPlace">
           <RiRotateLockFill className="rotateLock" />
@@ -214,6 +241,7 @@ const HomePage = () => {
 
       </div>
 
+
       <div className="donateHomePage">
 
         <div className="item1">
@@ -241,6 +269,7 @@ const HomePage = () => {
         </div>
 
       </div>
+
 
       <footer className="bottomMenuContainer">
 
@@ -273,13 +302,15 @@ const HomePage = () => {
 
       </footer>
 
+<span className="buttonContainer">
 
-      {/* <span className="buttonContainer">
-        <HoldButton 
-          onComplete={handleLogOut} 
-          disabled={uploading}
-          label={uploading ? "Logging  Out..." : "Log Out"}/>
-      </span> */}
+{/* <HoldButton 
+ onComplete={handleLogOut} 
+ disabled={uploading}
+ label={uploading ? "Logging  Out..." : "Log Out"}/> */}
+
+</span>
+
 
     </div>
   );

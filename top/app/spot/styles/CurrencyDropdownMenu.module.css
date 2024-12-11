@@ -1,0 +1,49 @@
+.currencyDropdown {
+    position: relative;
+    display: flex;
+    width: 100px;
+  }
+  
+  .dropdownHeader {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    background-color: #f9f9f9;
+  }
+  
+  .dropdownMenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dropdownItem {
+    padding: 8px 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .dropdownItem:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .dropdownItem.active {
+    font-weight: bold;
+    color: #007bff;
+  }
+  
+  .checkIcon {
+    margin-left: 10px;
+    color: #007bff;
+  }
+  

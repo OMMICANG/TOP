@@ -93,6 +93,8 @@ const Login = () => {
         name: user.name,
         country: user.country,
         email: user.email,
+        isBetaUser: user.isBetaUser,
+        isMerchant: user.isMerchant,
         saveLogin, // Add saveLogin flag to the cookie
       }), {
         path: "/",

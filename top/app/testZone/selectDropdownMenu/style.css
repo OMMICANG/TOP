@@ -1,0 +1,85 @@
+body{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "VT323";
+}
+
+.hero{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(#f44336, #730228);
+}
+
+.selector{
+    width: 21rem;
+}
+
+#selectField{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.9rem;
+    background: rgba(255,255,255,0.7);
+    border-radius: 0.312rem;
+    cursor: pointer;
+    box-sizing: border-box; /* toggle this on or off for cool box diff effect*/
+
+}
+
+#selectField img{
+    width: 0.75rem;
+    transition: transform 0.5s;
+}
+
+#list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: rgba(255,255,255,0.7);
+    border-radius: 0.312rem;
+    overflow: hidden;
+
+
+}
+
+.options{
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 0.875rem;
+    list-style: none;
+    cursor: pointer;
+
+}
+
+
+.options img {
+    width: 1.5rem;
+    margin-right: 2rem;
+    margin-left: 1rem;
+}
+
+.options:hover{
+    background: hsl(0, 10%, 10%);
+    color: hsl(0, 50%, 100%);
+    transition: 0.5s ease-in-out;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.rotate {
+    transform: rotate(180deg);
+}

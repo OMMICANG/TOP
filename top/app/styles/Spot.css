@@ -1,0 +1,348 @@
+
+:root{
+
+  --sff: "Anton", sans-serif;
+  --pCol: hsl(0,10%,10%);
+  --sCol: hsl(0,50%,100%);
+  --tCol: hsl(0,0%,5%);
+  --sTxtCol:hsl(0,0%,50%);
+  --paBCol: hsl(45,100%, 40%);
+  --paBorder: 2px ridge var(--paBCol);
+  --chBorder: 1px ridge var(--sCol);
+  --clr-neon: var(--paBCol);
+  --clr-bg: var(--tCol);
+
+  .vt323-regular {
+    font-family: "VT323", monospace;
+    font-weight: 500;
+  }
+  
+} 
+
+body {
+    margin: 0;
+    padding:0;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: var(--pCol);
+    color: var(--sCol);
+   
+}
+
+.upperIndex{
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  align-items: center;
+  width: 100vw;
+  background-color: var(--pCol);
+  z-index: 3;
+}
+
+.bodyContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  }
+
+  .topHeaderContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 95vw;
+    height: 7vh;
+    margin-top:0.312rem;
+    background-color: var(--tCol);
+    /* border: var(--paBorder); */
+    /* border-radius: 0.625rem; */
+  }
+
+  .backIcon{
+
+    font-size: 1.5rem;
+    margin-left: 0.625rem;
+  
+  }
+  
+  .centerHeaderText{
+
+    display: flex;
+    font-size: 0.875rem;
+    width:40vw;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 700;
+    margin-left: 2rem;
+    padding: 0.3rem;
+    border: var(--paBorder);
+    border-radius: 0.625rem;
+
+  }
+
+  .neon {
+    /* margin-top: -150px; */
+    /* font-size: var(--font-size); */
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    border: var(--clr-neon) 0.125em solid;
+    /* padding: 0.25em 1em; */
+    border-radius: 0.25em;
+    text-shadow: 
+      0 0 .20em var(--sCol)7,
+      0 0 .30em var(--clr-neon);
+    box-shadow: 
+      inset 0 0 .5em var(--clr-neon),
+            0 0 .5em var(--clr-neon);
+  }
+
+  .iconContainer{
+    display: flex;
+    
+  }
+
+  .icons{
+
+    font-size: 1.2rem;
+    color: var(--sCol);
+    margin-right: 0.75rem;
+    /* border: var(--chBorder); */
+  }
+
+  .menuIcon{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 1.25rem;
+    /* margin-right: 0.312rem; */
+    /* border: var(--chBorder); */
+  }
+
+  .tradeFiatFiltersContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 95vw;
+    height: 7vh;
+    margin-top:0.875rem;
+    margin-bottom:0.625rem;
+    border: 2px ridge var(--sTxtCol);
+    border-left: none;
+    border-right: none;
+    border-radius: 0.625rem;
+  
+  }
+
+  .tradeFiatFiltersContainer>div{
+  }
+
+  .buttonContainer {
+    display: flex;
+    width: 40vw;
+    margin-right: 4rem;
+    gap: 10px;
+  }
+  
+  .button {
+    font-family: var(--sff);
+    font-size: 1rem;
+    margin-left: 0.625rem;
+    padding: 4px 8px;
+    border: none;
+    background-color: transparent;
+    color: var(--sTxtCol);
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .activeBuy {
+    background-color: #4caf50;
+    color: var(--sCol);
+    border-radius: 0.312rem;
+  }
+  
+  .activeSell {
+    background-color: #ff5722;
+    color: var(--sCol);
+    border-radius: 0.312rem;
+  }
+
+
+
+  .fiatSelectContainer{
+
+    display: flex;
+    align-items: center;
+  
+  }
+
+  .filtersSelectContainer{
+    margin-right: 0.312rem;
+  }
+  
+  select,.filtersSelect{
+    width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 0.312rem;
+    /* background-color: hsla(0, 0%, 25%, 1); */
+  }
+
+  .tradeFiatFiltersContainer2{
+    margin-top: 0;
+  }
+
+  .currencySelectContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: 0.625rem;
+    width: 4rem;
+    border: none;
+    outline: none;
+    border-radius: 0.312rem;
+    background-color: var(--sTxtCol);
+
+  }
+
+  .currencySelect{
+    
+    width: 100%;
+    text-align: center;
+    border: none;
+    outline: none;
+    align-items: center;
+    text-decoration: none;
+    
+  }
+
+  .currencyDropdownSelect{
+
+    margin-top: 1rem;
+    width: 10rem;
+    position: absolute;
+    color: var(--pCol);
+    background-color: var(--sTxtCol);
+    border: none;
+    z-index: 3;
+    border-radius: 0.625rem;
+  }
+
+  .exchangeSelectContainer{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    border: none;
+    outline: none;
+    border-radius: 0.312rem;
+    background-color: var(--sTxtCol);
+  }
+
+    .amountSelectContainer{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 4rem;
+    padding: 0.25rem;
+    border: none;
+    outline: none;
+    border-radius: 0.312rem;
+    background-color: var(--sTxtCol);
+    overflow: hidden;
+
+  }
+
+  .amountPlaceholder {
+
+  font-size: 0.75rem;
+  width: 100%;
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.dropdownContent {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  align-self: center;
+  justify-content: center;
+  top: 100%;
+  left: 5%;
+  width: 90vw;
+  background-color: var(--sTxtCol);
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.amountInput {
+  /* width: calc(100% - 20px); */
+  width: 90%;
+  padding: 5px;
+  margin-bottom: 10px;
+  color: var(--sCol);
+  background-color: var(--pCol);
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.confirmButton {
+  background-color: var(--paBCol);
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: none;
+  width: 100%;
+}
+
+.confirmButton:hover {
+  background-color: var(--pCol);
+}
+
+  .bankSelectContainer{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    border: none;
+    outline: none;
+    border-radius: 0.312rem;
+    background-color: var(--sTxtCol);
+    margin-right: 0.312rem;
+
+  }
+
+  .rc-select-dropdown-menu-item {
+    text-align: center;
+  }
+
+  .p2pMarketDisplayPage{
+    display: flex;
+    flex-flow:nowrap;
+    position: relative;
+    width: 95vw;
+    height: 100vh;
+    margin-top: 44vh;
+    align-items: center;
+    justify-content: space-evenly;
+    scrollbar-width: none;
+  }

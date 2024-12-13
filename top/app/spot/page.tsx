@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Select, { Option } from "rc-select";
-import { TiArrowBack } from "react-icons/ti";
+import BackIcon from "./_components/BackIcon";
 import { RiFileList2Line } from "react-icons/ri";
 import P2pMenuIcon from "./_components/p2pMenuIcon"
 import BuyPage from "./_components/BuyPage";
@@ -49,7 +49,7 @@ const Spot = () => {
         <div className="topHeaderContainer">
 
           <div className="backIcon">
-          <TiArrowBack />
+          <BackIcon />
           </div>
 
           <div className="centerHeaderText neon">spot [p2p]</div>

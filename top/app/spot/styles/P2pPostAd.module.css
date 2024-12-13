@@ -1,11 +1,47 @@
-.container {
+.bodyContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    background-color: hsl(0, 10%,10%);
   }
+
+  .upperIndex{
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    align-items: center;
+    width: 100vw;
+    background-color: var(--pCol);
+    z-index: 3;
+  }
+  
+
+  
+    .topHeaderContainer{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 95vw;
+      height: 7vh;
+      margin-top:0.312rem;
+      background-color: var(--tCol);
+      /* border: var(--paBorder); */
+      /* border-radius: 0.625rem; */
+    }
+  
+    .backIcon{
+  
+      font-size: 1.5rem;
+      margin-left: 0.625rem;
+    
+    }
+    
   
   .postAdButton {
     padding: 15px 30px;

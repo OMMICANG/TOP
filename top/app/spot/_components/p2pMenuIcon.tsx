@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/router"; // Import Next.js router
 // import { FaCircleUser } from "react-icons/fa6";
 import styles from "../styles/P2pMenuIcon.module.css"; // Import CSS module for styling
 
@@ -6,8 +7,17 @@ const P2pMenuIcon: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [focusIndex, setFocusIndex] = useState(0); // Tracks the focused item
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const router = useRouter(); // Initialize router
 
-  const items = [ " ", "Profile", "My Ads", "p2p Help", "p2p How-to", "Report Scam", " "]; // Example sidebar items
+  const items = [ 
+    " ", 
+    "Profile", 
+    "My Ads", 
+    "p2p Help", 
+    "p2p How-to", 
+    "Report Scam", 
+    " ",
+  ]; // sidebar items
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -27,6 +37,12 @@ const P2pMenuIcon: React.FC = () => {
     }, { index: -1, distance: Infinity });
 
     setFocusIndex(closestIndex.index);
+  };
+
+  const handleItemClick = (item: string) => {
+    if (item === "My Ads") {
+      router.push("/spot/P2pPostAd"); // Navigate to the desired route
+    }
   };
 
   useEffect(() => {
@@ -70,6 +86,8 @@ const P2pMenuIcon: React.FC = () => {
                 transform: `scale(${index === focusIndex ? 1.2 : 1})`,
                 opacity: index === focusIndex ? 1 : 0.5,
               }}
+
+              onClick={() => handleItemClick(item)}
             >
               {item}
             </div>

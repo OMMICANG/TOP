@@ -41,7 +41,7 @@ const P2pMenuIcon: React.FC = () => {
 
   const handleItemClick = (item: string) => {
     if (item === "My Ads") {
-      router.push("/spot/P2pPostAd"); // Navigate to the desired route
+      router.push("/spot/p2pPostAd"); // Navigate to the desired route
     }
   };
 
